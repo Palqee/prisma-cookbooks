@@ -1,6 +1,6 @@
 # Palqee Prisma Cookbooks
 
-Practical guides for validating LLM applications with the Prisma AI SDK.
+Practical guides for transforming human-review workflows with the Prisma AI SDK.
 
 **[View the cookbooks →](https://palqee.github.io/prisma-cookbooks)**
 

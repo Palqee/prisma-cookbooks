@@ -1,5 +1,5 @@
 site_name: Palqee Prisma Cookbooks
-site_description: Practical guides for validating LLM applications with the Prisma AI SDK
+site_description: Practical guides for transforming human-review workflows with the Prisma AI SDK
 site_url: https://palqee.github.io/prisma-cookbooks
 
 theme:
@@ -18,12 +18,12 @@ theme:
 nav:
   - Home: index.md
   - Getting Started: getting-started.md
-  - Detect Hallucinations in RAG: rag-hallucination-detection.md
   - Automated QA for Call Centers: call-center-qa.md
   - Custom Policy Evaluators: custom-policy-evaluators.md
+  - Human-in-the-Loop Feedback: hitl-feedback-loop.md
+  - Detect Hallucinations in RAG: rag-hallucination-detection.md
   - CI/CD Quality Gates: cicd-quality-gates.md
   - Real-Time Production Evaluation: realtime-production-evaluation.md
-  - Human-in-the-Loop Feedback: hitl-feedback-loop.md
 
 markdown_extensions:
   - pymdownx.highlight:
