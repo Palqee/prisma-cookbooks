@@ -6,7 +6,7 @@ A practical cookbook for using Prisma to bring high-precision validation and pol
 
 | Cookbook | What You'll Build |
 |---------|-------------------|
-| [Getting Started](getting-started.md) | Evaluate an OpenAI app in 5 minutes |
+| [Getting Started](getting-started.md) | Validate contact center interactions in 5 minutes |
 | [Automated QA for Call Centers](call-center-qa.md) | Batch evaluation of conversation transcripts |
 | [Custom Policy Evaluators](custom-policy-evaluators.md) | Domain-specific evaluators for regulated industries |
 | [Human-in-the-Loop Feedback](hitl-feedback-loop.md) | Expert feedback that makes evaluations smarter |

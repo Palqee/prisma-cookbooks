@@ -34,64 +34,66 @@ export OPENAI_API_KEY="your-openai-api-key"
 
 ## Step 1: Create a Golden Test Dataset
 
-A golden dataset is a curated set of queries with known-good reference answers. These represent the core behaviors your LLM must get right. Store this as a JSON file in your repository:
+A golden dataset is a curated set of queries with known-good reference answers. These are **not training data** — they are behavioral specifications for your application, similar to regression test fixtures in traditional software. Each query tests whether your application's pipeline (system prompt, retrieval, post-processing) still produces correct output.
 
-Save this as `tests/eval/golden_dataset.json`:
+The example below assumes a **compliance documentation assistant** — an LLM application that answers employee questions about company policies using retrieved internal documents. Save this as `tests/eval/golden_dataset.json`:
 
 ```json
 [
   {
-    "query": "What is the capital of France?",
-    "reference": "The capital of France is Paris."
+    "query": "What is the maximum reimbursement for a domestic flight under our travel policy?",
+    "reference": "Domestic flights are reimbursed up to $600 per round trip. Flights exceeding this amount require VP-level pre-approval."
   },
   {
-    "query": "Explain photosynthesis in one sentence.",
-    "reference": "Photosynthesis is the process by which green plants convert sunlight, water, and carbon dioxide into glucose and oxygen."
+    "query": "Who do I contact to report a potential GDPR data breach?",
+    "reference": "Report potential GDPR breaches to the Data Protection Officer (dpo@company.com) within 24 hours of discovery. The DPO will coordinate the 72-hour supervisory authority notification."
   },
   {
-    "query": "What does the HTTP 404 status code mean?",
-    "reference": "HTTP 404 means the requested resource was not found on the server."
+    "query": "Can a contractor access our production customer database?",
+    "reference": "No. Under Policy SEC-401, contractors are restricted to sandbox and staging environments. Production access requires full-time employee status and completion of SOC 2 access training."
   },
   {
-    "query": "What is the time complexity of binary search?",
-    "reference": "Binary search has a time complexity of O(log n)."
+    "query": "What is the retention period for client communication records in financial services?",
+    "reference": "Client communication records must be retained for a minimum of 7 years per SEC Rule 17a-4 and our internal policy FIN-203."
   },
   {
-    "query": "Convert 100 degrees Celsius to Fahrenheit.",
-    "reference": "100 degrees Celsius is 212 degrees Fahrenheit."
+    "query": "How do I escalate a customer complaint that involves a regulatory violation?",
+    "reference": "Regulatory complaints must be escalated immediately to the Compliance team via the #compliance-escalations channel and logged in the incident tracker within 4 hours. Do not attempt to resolve regulatory matters directly with the customer."
   },
   {
-    "query": "What is a Python decorator?",
-    "reference": "A Python decorator is a function that wraps another function to extend or modify its behavior without changing its source code."
+    "query": "What training is required before handling PII data?",
+    "reference": "All employees must complete the annual Data Privacy Foundations course and the role-specific PII Handling certification before accessing any system containing personally identifiable information."
   },
   {
-    "query": "Name the four fundamental forces of nature.",
-    "reference": "The four fundamental forces are gravity, electromagnetism, the strong nuclear force, and the weak nuclear force."
+    "query": "Is it acceptable to use a personal device for accessing internal tools while traveling?",
+    "reference": "Personal devices may access internal tools only through the approved MDM-enrolled browser profile. Downloading company data to personal device storage is prohibited under Policy SEC-112."
   },
   {
-    "query": "What is the difference between TCP and UDP?",
-    "reference": "TCP is a connection-oriented protocol that guarantees delivery and ordering, while UDP is connectionless and does not guarantee delivery, making it faster but less reliable."
+    "query": "What are the approval requirements for a vendor contract over $50,000?",
+    "reference": "Vendor contracts exceeding $50,000 require sign-off from the department head, Procurement, and Legal. Contracts over $200,000 additionally require CFO approval."
   },
   {
-    "query": "What does ACID stand for in databases?",
-    "reference": "ACID stands for Atomicity, Consistency, Isolation, and Durability."
+    "query": "How frequently must access reviews be conducted for SOX-critical systems?",
+    "reference": "SOX-critical systems require quarterly access reviews conducted by the system owner, with results submitted to Internal Audit within 10 business days of the quarter close."
   },
   {
-    "query": "What is the purpose of a load balancer?",
-    "reference": "A load balancer distributes incoming network traffic across multiple servers to ensure no single server is overwhelmed, improving availability and reliability."
+    "query": "What should I do if I discover our application is logging sensitive cardholder data?",
+    "reference": "Immediately notify the Security team and cease the logging. Under PCI DSS Requirement 3.4, cardholder data must never be stored in plaintext logs. File a P1 incident and reference Policy PCI-007."
   },
   {
-    "query": "Explain the CAP theorem.",
-    "reference": "The CAP theorem states that a distributed system can provide at most two of the following three guarantees simultaneously: Consistency, Availability, and Partition tolerance."
+    "query": "Summarize the company's policy on using generative AI tools with client data.",
+    "reference": "Client data must not be entered into any external generative AI tool unless it has been approved by the AI Governance Board and appears on the Approved AI Tools list. Internal tools with data residency guarantees are permitted for classification and summarization tasks."
   },
   {
-    "query": "What is Docker used for?",
-    "reference": "Docker is used to package applications and their dependencies into lightweight, portable containers that run consistently across different environments."
+    "query": "What happens if an employee fails to complete mandatory compliance training by the deadline?",
+    "reference": "Employees who miss the compliance training deadline have their system access suspended until completion. After 30 days, the matter is escalated to HR and the employee's manager for a formal performance note."
   }
 ]
 ```
 
-Keep this dataset small (10-15 examples) so evaluation runs fast in CI. Focus on high-value queries that cover your application's critical paths.
+Each of these queries tests something your **application pipeline** must get right — the correct answer depends on retrieved company documents and your system prompt, not on the LLM's general knowledge. If a code change breaks your retrieval logic or alters your system prompt, these queries will catch it.
+
+Keep this dataset small (10–15 examples) so evaluation runs fast in CI. Focus on high-value queries that cover your application's critical behavioral categories: policy lookup, escalation procedures, access control rules, and regulatory requirements.
 
 ## Step 2: Write the Evaluation Gate Script
 
@@ -126,9 +128,14 @@ EVALUATORS = ["correctness", "hallucination"]
 
 DATASET_PATH = Path(__file__).parent / "golden_dataset.json"
 
-# Your LLM configuration
+# Your LLM configuration — match your application's actual settings
 LLM_MODEL = "gpt-4o"
-LLM_SYSTEM_PROMPT = "You are a helpful assistant. Answer concisely and accurately."
+LLM_SYSTEM_PROMPT = (
+    "You are a compliance documentation assistant for a regulated financial services company. "
+    "Answer employee questions using only the retrieved policy documents provided as context. "
+    "Always cite the specific policy number. If the answer is not in the provided documents, "
+    "say so — do not guess or use general knowledge."
+)
 
 
 def load_golden_dataset() -> list[dict]:
@@ -330,7 +337,12 @@ DATASET_PATH = Path(__file__).parent / "golden_dataset.json"
 EVALUATORS = ["correctness", "hallucination"]
 
 LLM_MODEL = "gpt-4o"
-LLM_SYSTEM_PROMPT = "You are a helpful assistant. Answer concisely and accurately."
+LLM_SYSTEM_PROMPT = (
+    "You are a compliance documentation assistant for a regulated financial services company. "
+    "Answer employee questions using only the retrieved policy documents provided as context. "
+    "Always cite the specific policy number. If the answer is not in the provided documents, "
+    "say so — do not guess or use general knowledge."
+)
 
 
 @pytest.fixture(scope="module")
