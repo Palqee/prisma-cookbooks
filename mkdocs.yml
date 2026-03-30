@@ -1,5 +1,5 @@
 site_name: Palqee Prisma Cookbooks
-site_description: Practical guides for evaluating LLM applications with the Prisma AI SDK
+site_description: Practical guides for validating LLM applications with the Prisma AI SDK
 site_url: https://palqee.github.io/prisma-cookbooks
 
 theme:

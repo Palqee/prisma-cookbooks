@@ -1,6 +1,6 @@
 # Palqee Prisma Cookbooks
 
-Practical guides for evaluating LLM applications with the Prisma AI SDK.
+Practical guides for validating LLM applications with the Prisma AI SDK.
 Each cookbook is a self-contained walkthrough you can complete in 15-20 minutes.
 
 ## Cookbooks
