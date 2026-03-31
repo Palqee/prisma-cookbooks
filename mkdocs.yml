@@ -18,12 +18,12 @@ theme:
 nav:
   - Home: index.md
   - Getting Started: getting-started.md
-  - Automated QA for Call Centers: call-center-qa.md
-  - Custom Policy Evaluators: custom-policy-evaluators.md
-  - Human-in-the-Loop Feedback: hitl-feedback-loop.md
-  - Detect Hallucinations in RAG: rag-hallucination-detection.md
-  - CI/CD Quality Gates: cicd-quality-gates.md
-  - Real-Time Production Evaluation: realtime-production-evaluation.md
+  - Evaluating Contact Center Agents: contact-center-agents.md
+  - Building Policy-Based Metrics: policy-based-metrics.md
+  - Human Review & Evaluation Memory: human-review.md
+  - Real-Time Policy Monitoring: realtime-policy-monitoring.md
+  - Policy Compliance in CI/CD: cicd-policy-compliance.md
+  - AI Performance Metrics: ai-performance-metrics.md
 
 markdown_extensions:
   - pymdownx.highlight:

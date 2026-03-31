@@ -6,21 +6,22 @@ A practical cookbook for using Prisma to bring high-precision validation and pol
 
 | Cookbook | What You'll Build |
 |---------|-------------------|
-| [Getting Started](getting-started.md) | Validate contact center interactions in 5 minutes |
-| [Automated QA for Call Centers](call-center-qa.md) | Batch evaluation of conversation transcripts |
-| [Custom Policy Evaluators](custom-policy-evaluators.md) | Domain-specific evaluators for regulated industries |
-| [Human-in-the-Loop Feedback](hitl-feedback-loop.md) | Expert feedback that makes evaluations smarter |
-| [Detect Hallucinations in RAG](rag-hallucination-detection.md) | RAG pipeline with automatic hallucination scoring |
-| [CI/CD Quality Gates](cicd-quality-gates.md) | Automated quality checks in your deployment pipeline |
-| [Real-Time Production Evaluation](realtime-production-evaluation.md) | Production FastAPI app with live evaluation |
+| [Getting Started](getting-started.md) | Validate contact center interactions against a policy metric in 5 minutes |
+| [Evaluating Contact Center Agents](contact-center-agents.md) | Scale policy validation to hundreds of transcripts with multiple metrics |
+| [Building Policy-Based Metrics](policy-based-metrics.md) | Encode your organization's rules as metrics across any industry |
+| [Human Review & Evaluation Memory](human-review.md) | Expert feedback that makes your policy metrics smarter over time |
+| [Real-Time Policy Monitoring](realtime-policy-monitoring.md) | Live policy validation on production traffic |
+| [Policy Compliance in CI/CD](cicd-policy-compliance.md) | Automated quality gates using policy metrics |
+| [AI Performance Metrics](ai-performance-metrics.md) | Traditional correctness and hallucination checks for AI applications |
 
 ## Where to Start
 
 Start with **Getting Started** for the basics. Then pick based on your use case:
 
-- **Evaluating AI outputs** → Getting Started → RAG Hallucinations → Real-Time Evaluation
-- **Compliance and QA** → Getting Started → Call Center QA → Custom Evaluators → HITL Feedback
-- **CI/CD and MLOps** → Getting Started → CI/CD Quality Gates → Real-Time Evaluation
+- **Contact center QA** → Getting Started → Contact Center Agents → Human Review
+- **Compliance & regulated industries** → Getting Started → Policy-Based Metrics → Human Review
+- **Production monitoring** → Getting Started → Real-Time Monitoring → CI/CD
+- **Traditional AI evals** → AI Performance Metrics
 
 ## Prerequisites
 
