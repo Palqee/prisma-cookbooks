@@ -97,7 +97,7 @@ Three options is a good starting point for compliance metrics:
 - **`missing_disclosure`** -- The response discusses investments or performance but omits one or more required disclosures entirely.
 - **`partial`** -- Some disclosures are present but others are missing, or disclosures are buried in a way that reduces their visibility.
 
-Why three instead of two? A binary `compliant` / `non_compliant` split forces the validator to make a hard call on borderline cases. The `partial` option gives it a place to put responses that are technically incomplete but not egregiously wrong -- and those cases often end up in re-evaluation where `{memories}` from past human reviews provide the nuance to make a final call.
+Why three instead of two? A binary `compliant` / `non_compliant` split loses nuance. The `partial` option lets you distinguish between responses that are technically incomplete but not egregiously wrong, versus those that are clearly non-compliant. All three are definitive classifications — none of them trigger human review. Only `ambiguous` (which Prisma adds automatically to every metric) triggers re-evaluation and HITL routing.
 
 ### Step 2: Write the evaluation system prompt
 
@@ -478,7 +478,7 @@ In practice, you would typically apply industry-specific metrics to the relevant
 
 **Make options mutually exclusive.** If a validator could reasonably assign two different options to the same interaction, your options overlap. Tighten the definitions in the system prompt.
 
-**Include a "gray area" option.** Options like `partial`, `incomplete`, or `needs_specialist_review` give the validator a place to put borderline cases instead of forcing them into a definitive bucket. These cases often end up in re-evaluation, where `{memories}` provides the context to resolve them.
+**Include a "gray area" option.** Options like `partial`, `incomplete`, or `needs_specialist_review` give the validator a place to put borderline cases instead of forcing them into a definitive bucket. These are still definitive classifications — only `ambiguous` (added automatically by Prisma) triggers re-evaluation and HITL routing.
 
 ### Writing prompts
 

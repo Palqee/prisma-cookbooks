@@ -1,6 +1,6 @@
 # Human Review & Evaluation Memory
 
-A QA lead notices that some validations come back as "ambiguous" — the policy metric can't confidently decide compliant vs non-compliant. A human expert reviews the case, makes a judgment call, and that decision becomes memory for all future validations of similar cases. Over time, ambiguous rates drop. This is the "aha moment": Prisma doesn't just validate, it **learns from your team's expertise**.
+A QA lead notices that some validations come back as "ambiguous" — the policy metric can't confidently decide compliant vs non-compliant. A human expert reviews the case, makes a judgment call, and that decision becomes memory for all future validations of similar cases. Over time, ambiguous rates drop. What makes Prisma unique is that it doesn't just validate — it **learns from your team's expertise**.
 
 ## What You'll Learn
 
@@ -239,7 +239,7 @@ Behind the scenes, Prisma validates each interaction against the `response-compl
 
 ## 2. Retrieve Pending Reviews
 
-Once validation completes, check the Prisma dashboard. Under the **compliance-review-demo** project, you'll see HITL requests queued for expert review. You can also retrieve them programmatically via the REST API.
+Once validation completes, retrieve pending HITL requests via the REST API. Individual requests can be viewed for submitting feedback, and bulk exports are available through the analytics endpoint.
 
 Create a file called `review_pending.py`:
 
@@ -258,7 +258,7 @@ headers = {
 
 # List pending HITL reviews for the project
 response = httpx.get(
-    f"{PRISMA_BASE_URL}/api/v1/hitl/reviews",
+    f"{PRISMA_BASE_URL}/api/v1/hitl/requests",
     params={"project_id": "your-project-id", "status": "pending"},
     headers=headers,
 )
@@ -369,8 +369,8 @@ feedback_decisions = [
 for decision in feedback_decisions:
     review_id = decision.pop("review_id")
     response = httpx.post(
-        f"{PRISMA_BASE_URL}/api/v1/hitl/reviews/{review_id}/feedback",
-        json=decision,
+        f"{PRISMA_BASE_URL}/api/v1/hitl/feedbacks",
+        json={"request_id": review_id, **decision},
         headers=headers,
     )
     print(f"Feedback submitted for {review_id}: {response.status_code}")
@@ -608,7 +608,7 @@ bulk_payload = {
 }
 
 response = httpx.post(
-    f"{PRISMA_BASE_URL}/api/v1/hitl/reviews/bulk-feedback",
+    f"{PRISMA_BASE_URL}/api/v1/hitl/feedbacks",
     json=bulk_payload,
     headers=headers,
 )
@@ -622,9 +622,9 @@ print(f"Submitted: {result['submitted']} | Errors: {result['errors']}")
 Export the current review queue for offline analysis or integration with external tools:
 
 ```python
-response = httpx.get(
-    f"{PRISMA_BASE_URL}/api/v1/hitl/reviews/export",
-    params={
+response = httpx.post(
+    f"{PRISMA_BASE_URL}/api/v1/hitl/feedbacks/export",
+    json={
         "project_id": "your-project-id",
         "status": "pending",
         "format": "json",
