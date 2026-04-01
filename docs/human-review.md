@@ -1,6 +1,6 @@
 # Human Review & Evaluation Memory
 
-A QA lead notices that some validations come back as "ambiguous" — the policy metric can't confidently decide compliant vs non-compliant. A human expert reviews the case, makes a judgment call, and that decision becomes memory for all future validations of similar cases. Over time, ambiguous rates drop. What makes Prisma unique is that it doesn't just validate — it **learns from your team's expertise**.
+Often policies don't cover edge cases, making it difficult to catch and track them. Prisma changes that through optimized human-in-the-loop. Whenever your policy doesn't provide sufficient context for a clear validation on compliance, it flags edge cases as 'ambiguous' for human review. The feedback provided is turned into controls and stored in what we call Highly Superior Catalogued Memory (HSCM) for future validations of similar cases - enabling Prisma to recall relevant controls from memory to process similar edge cases in the future. Over time, ambiguous rates drop.
 
 ## What You'll Learn
 
