@@ -1,0 +1,1610 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Practical guides for transforming human-review workflows with the Prisma AI SDK">
+      
+      
+      
+        <link rel="canonical" href="https://palqee.github.io/prisma-cookbooks/human-review/">
+      
+      
+        <link rel="prev" href="../policy-based-metrics/">
+      
+      
+        <link rel="next" href="../realtime-policy-monitoring/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Human Review & Evaluation Memory - Palqee Prisma Cookbooks</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#human-review-evaluation-memory" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Palqee Prisma Cookbooks" class="md-header__button md-logo" aria-label="Palqee Prisma Cookbooks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Palqee Prisma Cookbooks
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Human Review & Evaluation Memory
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Palqee Prisma Cookbooks" class="md-nav__button md-logo" aria-label="Palqee Prisma Cookbooks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Palqee Prisma Cookbooks
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contact-center-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluating Contact Center Agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../policy-based-metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building Policy-Based Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Human Review & Evaluation Memory
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Human Review & Evaluation Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You'll Learn
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-feedback-loop-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the Feedback Loop Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-generate-ambiguous-validations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Generate Ambiguous Validations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-retrieve-pending-reviews" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Retrieve Pending Reviews
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-submit-expert-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Submit Expert Feedback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-how-feedback-becomes-evaluation-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. How Feedback Becomes Evaluation Memory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-verify-the-flywheel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Verify the Flywheel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Verify the Flywheel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#before-vs-after-ambiguous-rates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before vs. After: Ambiguous Rates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-managing-evaluation-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Managing Evaluation Memory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Managing Evaluation Memory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List Controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bulk Feedback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#export-pending-reviews" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export Pending Reviews
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production Considerations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Production Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#review-cadence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review Cadence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#control-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Control Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reviewer-consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reviewer Consistency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../realtime-policy-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Real-Time Policy Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cicd-policy-compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy Compliance in CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-performance-metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Performance Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You'll Learn
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-feedback-loop-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How the Feedback Loop Works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-generate-ambiguous-validations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Generate Ambiguous Validations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-retrieve-pending-reviews" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Retrieve Pending Reviews
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-submit-expert-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Submit Expert Feedback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-how-feedback-becomes-evaluation-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. How Feedback Becomes Evaluation Memory
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-verify-the-flywheel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Verify the Flywheel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Verify the Flywheel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#before-vs-after-ambiguous-rates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before vs. After: Ambiguous Rates
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-managing-evaluation-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Managing Evaluation Memory
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Managing Evaluation Memory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        List Controls
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bulk Feedback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#export-pending-reviews" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Export Pending Reviews
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production Considerations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Production Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#review-cadence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Review Cadence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#control-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Control Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reviewer-consistency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reviewer Consistency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="human-review-evaluation-memory">Human Review &amp; Evaluation Memory</h1>
+<p>Often policies don't cover edge cases, making it difficult to catch and track them. Prisma changes that through optimized human-in-the-loop. Whenever your policy doesn't provide sufficient context for a clear validation on compliance, it flags edge cases as 'ambiguous' for human review. The feedback provided is turned into controls and stored in what we call Highly Superior Catalogued Memory (HSCM) for future validations of similar cases - enabling Prisma to recall relevant controls from memory to process similar edge cases in the future. Over time, ambiguous rates drop.</p>
+<h2 id="what-youll-learn">What You'll Learn</h2>
+<ul>
+<li>Why some validations produce ambiguous results and what triggers the human review queue</li>
+<li>How to retrieve pending reviews and submit expert feedback via the Prisma REST API</li>
+<li>How feedback becomes <strong>evaluation memory</strong> (controls) that future validations use automatically</li>
+<li>The flywheel effect: how a batch of expert reviews drops ambiguous rates from ~30% to ~5%</li>
+<li>Operational patterns for managing controls, bulk reviews, and audit exports</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Python 3.10+</strong></li>
+<li><strong>A Prisma AI API key</strong> (from your Prisma instance settings)</li>
+<li><strong>Access to a running Prisma instance</strong></li>
+<li>Familiarity with the <a href="../getting-started/">Getting Started</a> guide (policy metric definition, OTLP logging)</li>
+</ul>
+<p>No third-party API keys are required. Prisma handles all validation internally.</p>
+<h2 id="how-the-feedback-loop-works">How the Feedback Loop Works</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────┐     ┌──────────────────┐     ┌─────────────────────┐
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│ Interaction      │────▶│ Policy Metric    │────▶│ Result:             │
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│ (transcript)     │     │ Validation       │     │ compliant / non_    │
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>└─────────────────┘     └──────────────────┘     │ compliant / AMBIG.  │
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>                                                  └──────────┬──────────┘
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>                                                             │
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>                                                    ambiguous cases only
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>                                                             │
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>                                                             ▼
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>                                                  ┌─────────────────────┐
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>                                                  │ HITL Review Queue    │
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>                                                  │ (REST API)           │
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>                                                  └──────────┬──────────┘
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>                                                             │
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>                                                    expert submits feedback
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>                                                             │
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>                                                             ▼
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>                                                  ┌─────────────────────┐
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>                                                  │ Control Created      │
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>                                                  │ (evaluation memory)  │
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>                                                  └──────────┬──────────┘
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>                                                             │
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>                                                    future validations
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>                                                             │
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>                                                             ▼
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>                                                  ┌─────────────────────┐
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>                                                  │ Re-validation with   │
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>                                                  │ {memories} context   │
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>                                                  │ = confident result   │
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>                                                  └─────────────────────┘
+</code></pre></div>
+<p>When a policy metric classifies a result as <strong>ambiguous</strong>, Prisma automatically queues it for human review. Once an expert submits feedback, Prisma stores it as a <strong>control</strong> — a piece of evaluation memory scoped to the project. When similar cases appear in future validations (in the same run or subsequent runs), the re-evaluation prompts receive this memory via the <code>{memories}</code> placeholder, allowing the metric to make more confident decisions.</p>
+<p>Every expert review makes the system better. The validation pipeline builds institutional knowledge from your team's decisions — the same way a senior reviewer trains new auditors.</p>
+<h2 id="1-generate-ambiguous-validations">1. Generate Ambiguous Validations</h2>
+<p>Start by defining a <code>response-compliance</code> policy metric and logging a borderline interaction — one where the agent verified the customer's identity informally but didn't follow the exact scripted process.</p>
+<p>Create a file called <code>human_review_demo.py</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">prisma_ai</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">prisma_ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">Evaluators</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Define a policy metric with strict identity verification criteria</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">response_compliance</span> <span class="o">=</span> <span class="n">Evaluators</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;response-compliance&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;compliant&quot;</span><span class="p">,</span> <span class="s2">&quot;non_compliant&quot;</span><span class="p">],</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">evaluation_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        <span class="s2">&quot;You are a compliance auditor for a financial services contact center. &quot;</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>        <span class="s2">&quot;Your job is to determine whether an agent&#39;s response to a customer &quot;</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        <span class="s2">&quot;follows company policy. The policy requires:</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        <span class="s2">&quot;1. GREETING: Professional greeting with agent name and company name.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>        <span class="s2">&quot;2. IDENTITY VERIFICATION: Before taking any action, the agent must &quot;</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        <span class="s2">&quot;verify the customer&#39;s identity by requesting at least two pieces of &quot;</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>        <span class="s2">&quot;identifying information (account number + date of birth, or last four &quot;</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>        <span class="s2">&quot;SSN digits + mailing address).</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>        <span class="s2">&quot;3. ACCURATE INFORMATION: Response consistent with company policy.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>        <span class="s2">&quot;4. PROFESSIONAL CLOSE: Summary of actions, next steps, offer for &quot;</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>        <span class="s2">&quot;further assistance.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>        <span class="s2">&quot;If ALL four criteria are met, classify as &#39;compliant&#39;. &quot;</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>        <span class="s2">&quot;If ANY criterion is missing or incorrect, classify as &#39;non_compliant&#39;.&quot;</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>    <span class="p">),</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>    <span class="n">evaluation_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>        <span class="s2">&quot;Validate the following contact center interaction.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>        <span class="s2">&quot;Expected policy-correct response:</span><span class="se">\n</span><span class="si">{reference}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>        <span class="s2">&quot;Classification options: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>        <span class="s2">&quot;Which classification applies? Explain your reasoning.&quot;</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>    <span class="p">),</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>    <span class="n">reeval_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>        <span class="s2">&quot;You are a senior compliance auditor reviewing a case where a previous &quot;</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>        <span class="s2">&quot;auditor was uncertain. Apply the policy strictly. Pay special attention &quot;</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>        <span class="s2">&quot;to identity verification — agents must follow the exact scripted process, &quot;</span>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>        <span class="s2">&quot;not an informal or abbreviated version.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>        <span class="s2">&quot;Use the evaluation memory below to guide your decision. These are prior &quot;</span>
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>        <span class="s2">&quot;expert rulings on similar borderline cases.&quot;</span>
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>    <span class="p">),</span>
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>    <span class="n">reeval_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>        <span class="s2">&quot;A previous auditor was uncertain about this interaction.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>        <span class="s2">&quot;Expected policy-correct response:</span><span class="se">\n</span><span class="si">{reference}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>        <span class="s2">&quot;Previous auditor notes and evaluation memory:</span><span class="se">\n</span><span class="si">{memories}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>        <span class="s2">&quot;Provide your final classification as &#39;compliant&#39; or &#39;non_compliant&#39;. &quot;</span>
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>        <span class="s2">&quot;Explain your reasoning.&quot;</span>
+<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>    <span class="p">),</span>
+<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a><span class="p">)</span>
+<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>
+<a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a><span class="c1"># Initialize Prisma with the policy metric</span>
+<a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a><span class="n">session</span> <span class="o">=</span> <span class="n">prisma_ai</span><span class="o">.</span><span class="n">init</span><span class="p">(</span>
+<a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a>    <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;compliance-review-demo&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>    <span class="n">evaluators</span><span class="o">=</span><span class="p">[</span><span class="n">response_compliance</span><span class="p">],</span>
+<a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a>    <span class="n">enable_logging</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a><span class="p">)</span>
+<a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a>
+<a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+</code></pre></div>
+<p>Now log several borderline interactions. These are deliberately ambiguous — the agent does <em>something</em> to verify identity, but it doesn't match the scripted two-factor process exactly:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">borderline_transcripts</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="p">{</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>            <span class="s2">&quot;Hi, I need to update the mailing address on my account.&quot;</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>        <span class="p">),</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="s2">&quot;response&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>            <span class="s2">&quot;Good morning, this is Rebecca with Meridian Financial. I&#39;d be happy to &quot;</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>            <span class="s2">&quot;help with that address change. I can see your account is already pulled &quot;</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>            <span class="s2">&quot;up from your phone number on file — can you just confirm the last four &quot;</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>            <span class="s2">&quot;digits of your account number? Great, thank you. I&#39;ve updated your &quot;</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>            <span class="s2">&quot;mailing address to 742 Evergreen Terrace. You&#39;ll receive a confirmation &quot;</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>            <span class="s2">&quot;letter at the new address within 5 business days. Anything else I can &quot;</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>            <span class="s2">&quot;help with today?&quot;</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>        <span class="p">),</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>        <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>            <span class="s2">&quot;Address changes require two-factor identity verification: account number &quot;</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>            <span class="s2">&quot;plus date of birth, or last four SSN digits plus current mailing address. &quot;</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>            <span class="s2">&quot;Phone number caller ID does not count as a verification factor. Confirm &quot;</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>            <span class="s2">&quot;the change and send written confirmation.&quot;</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>        <span class="p">),</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>    <span class="p">},</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>    <span class="p">{</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>        <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>            <span class="s2">&quot;I&#39;d like to increase my credit card limit from $5,000 to $10,000.&quot;</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>        <span class="p">),</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>        <span class="s2">&quot;response&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>            <span class="s2">&quot;Hello, this is Marcus at Meridian Financial. I can look into a credit &quot;</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>            <span class="s2">&quot;limit increase for you. Before I proceed, could you verify your date of &quot;</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>            <span class="s2">&quot;birth? Perfect, thank you. I&#39;ve submitted a request to increase your &quot;</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>            <span class="s2">&quot;limit to $10,000. You&#39;ll receive a decision by email within 2 business &quot;</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>            <span class="s2">&quot;days. Is there anything else I can assist with?&quot;</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>        <span class="p">),</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>        <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>            <span class="s2">&quot;Credit limit increases require full identity verification with two &quot;</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>            <span class="s2">&quot;factors before processing. Agent must request account number plus date &quot;</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>            <span class="s2">&quot;of birth, or last four SSN digits plus mailing address. A single &quot;</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>            <span class="s2">&quot;verification factor is insufficient per Policy FIN-201.&quot;</span>
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>        <span class="p">),</span>
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>    <span class="p">},</span>
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>    <span class="p">{</span>
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>        <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>            <span class="s2">&quot;Can you tell me the interest rate on my savings account?&quot;</span>
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>        <span class="p">),</span>
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a>        <span class="s2">&quot;response&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a>            <span class="s2">&quot;Thanks for calling Meridian Financial, I&#39;m Dana. Sure, let me look &quot;</span>
+<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a>            <span class="s2">&quot;that up — I just need to confirm who I&#39;m speaking with. Can you give &quot;</span>
+<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a>            <span class="s2">&quot;me your account number and the last four of your Social? Perfect. Your &quot;</span>
+<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a>            <span class="s2">&quot;savings account is currently earning 3.25% APY. That rate is variable &quot;</span>
+<a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a>            <span class="s2">&quot;and reviewed quarterly. Would you like to hear about our fixed-rate CD &quot;</span>
+<a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a>            <span class="s2">&quot;options? Great, is there anything else I can help with?&quot;</span>
+<a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a>        <span class="p">),</span>
+<a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a>        <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a>            <span class="s2">&quot;For account inquiries, verify identity with two factors before &quot;</span>
+<a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a>            <span class="s2">&quot;disclosing any account details. Provide the current rate and note &quot;</span>
+<a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a>            <span class="s2">&quot;whether it is fixed or variable. Offer related products if appropriate.&quot;</span>
+<a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a>        <span class="p">),</span>
+<a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a>    <span class="p">},</span>
+<a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a>    <span class="p">{</span>
+<a id="__codelineno-2-59" name="__codelineno-2-59" href="#__codelineno-2-59"></a>        <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a>            <span class="s2">&quot;I need to dispute a charge of $89.99 from an online retailer.&quot;</span>
+<a id="__codelineno-2-61" name="__codelineno-2-61" href="#__codelineno-2-61"></a>        <span class="p">),</span>
+<a id="__codelineno-2-62" name="__codelineno-2-62" href="#__codelineno-2-62"></a>        <span class="s2">&quot;response&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-2-63" name="__codelineno-2-63" href="#__codelineno-2-63"></a>            <span class="s2">&quot;Hi there, Marcus here at Meridian Financial. I&#39;m sorry to hear about &quot;</span>
+<a id="__codelineno-2-64" name="__codelineno-2-64" href="#__codelineno-2-64"></a>            <span class="s2">&quot;that charge. Let me pull up your account — could you confirm your name &quot;</span>
+<a id="__codelineno-2-65" name="__codelineno-2-65" href="#__codelineno-2-65"></a>            <span class="s2">&quot;and the last four digits of the card? OK, I can see the $89.99 charge. &quot;</span>
+<a id="__codelineno-2-66" name="__codelineno-2-66" href="#__codelineno-2-66"></a>            <span class="s2">&quot;I&#39;ve opened a dispute and you&#39;ll receive provisional credit within 10 &quot;</span>
+<a id="__codelineno-2-67" name="__codelineno-2-67" href="#__codelineno-2-67"></a>            <span class="s2">&quot;business days. We&#39;ll notify you of the outcome. Anything else?&quot;</span>
+<a id="__codelineno-2-68" name="__codelineno-2-68" href="#__codelineno-2-68"></a>        <span class="p">),</span>
+<a id="__codelineno-2-69" name="__codelineno-2-69" href="#__codelineno-2-69"></a>        <span class="s2">&quot;reference&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-2-70" name="__codelineno-2-70" href="#__codelineno-2-70"></a>            <span class="s2">&quot;Disputes require identity verification with two factors: account number &quot;</span>
+<a id="__codelineno-2-71" name="__codelineno-2-71" href="#__codelineno-2-71"></a>            <span class="s2">&quot;plus date of birth, or last four SSN plus mailing address. Name and &quot;</span>
+<a id="__codelineno-2-72" name="__codelineno-2-72" href="#__codelineno-2-72"></a>            <span class="s2">&quot;partial card number alone do not meet the two-factor requirement per &quot;</span>
+<a id="__codelineno-2-73" name="__codelineno-2-73" href="#__codelineno-2-73"></a>            <span class="s2">&quot;Policy SEC-105. After verification, open the dispute and confirm the &quot;</span>
+<a id="__codelineno-2-74" name="__codelineno-2-74" href="#__codelineno-2-74"></a>            <span class="s2">&quot;provisional credit timeline.&quot;</span>
+<a id="__codelineno-2-75" name="__codelineno-2-75" href="#__codelineno-2-75"></a>        <span class="p">),</span>
+<a id="__codelineno-2-76" name="__codelineno-2-76" href="#__codelineno-2-76"></a>    <span class="p">},</span>
+<a id="__codelineno-2-77" name="__codelineno-2-77" href="#__codelineno-2-77"></a><span class="p">]</span>
+<a id="__codelineno-2-78" name="__codelineno-2-78" href="#__codelineno-2-78"></a>
+<a id="__codelineno-2-79" name="__codelineno-2-79" href="#__codelineno-2-79"></a><span class="k">for</span> <span class="n">transcript</span> <span class="ow">in</span> <span class="n">borderline_transcripts</span><span class="p">:</span>
+<a id="__codelineno-2-80" name="__codelineno-2-80" href="#__codelineno-2-80"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+<a id="__codelineno-2-81" name="__codelineno-2-81" href="#__codelineno-2-81"></a>        <span class="n">query</span><span class="o">=</span><span class="n">transcript</span><span class="p">[</span><span class="s2">&quot;query&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-82" name="__codelineno-2-82" href="#__codelineno-2-82"></a>        <span class="n">response</span><span class="o">=</span><span class="n">transcript</span><span class="p">[</span><span class="s2">&quot;response&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-83" name="__codelineno-2-83" href="#__codelineno-2-83"></a>        <span class="n">reference</span><span class="o">=</span><span class="n">transcript</span><span class="p">[</span><span class="s2">&quot;reference&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-84" name="__codelineno-2-84" href="#__codelineno-2-84"></a>    <span class="p">)</span>
+<a id="__codelineno-2-85" name="__codelineno-2-85" href="#__codelineno-2-85"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Logged: </span><span class="si">{</span><span class="n">transcript</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">][:</span><span class="mi">60</span><span class="p">]</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-86" name="__codelineno-2-86" href="#__codelineno-2-86"></a>
+<a id="__codelineno-2-87" name="__codelineno-2-87" href="#__codelineno-2-87"></a><span class="n">session</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</code></pre></div>
+<p>Run the script:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>human_review_demo.py
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Logged: Hi, I need to update the mailing address on my account....
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Logged: I&#39;d like to increase my credit card limit from $5,000 t...
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Logged: Can you tell me the interest rate on my savings account?...
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>Logged: I need to dispute a charge of $89.99 from an online ret...
+</code></pre></div>
+<p>Behind the scenes, Prisma validates each interaction against the <code>response-compliance</code> metric. The third transcript (savings account inquiry) should pass — the agent used two proper verification factors. The others are borderline: the agents verified identity, but used only one factor, or used factors that don't meet the scripted requirements (caller ID, name + partial card number). These are the cases that land in the ambiguous queue.</p>
+<h2 id="2-retrieve-pending-reviews">2. Retrieve Pending Reviews</h2>
+<p>Once validation completes, retrieve pending HITL requests via the REST API. Individual requests can be viewed for submitting feedback, and bulk exports are available through the analytics endpoint.</p>
+<p>Create a file called <code>review_pending.py</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">PRISMA_BASE_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PRISMA_BASE_URL&quot;</span><span class="p">]</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">PRISMA_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PRISMA_API_KEY&quot;</span><span class="p">]</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">PRISMA_API_KEY</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="p">}</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="c1"># List pending HITL reviews for the project</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">PRISMA_BASE_URL</span><span class="si">}</span><span class="s2">/api/v1/hitl/requests&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>    <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;project_id&quot;</span><span class="p">:</span> <span class="s2">&quot;your-project-id&quot;</span><span class="p">,</span> <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;pending&quot;</span><span class="p">},</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>    <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="p">)</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="n">reviews</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Pending reviews: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">reviews</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="k">for</span> <span class="n">review</span> <span class="ow">in</span> <span class="n">reviews</span><span class="p">[</span><span class="s2">&quot;items&quot;</span><span class="p">]:</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Review </span><span class="si">{</span><span class="n">review</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Metric: </span><span class="si">{</span><span class="n">review</span><span class="p">[</span><span class="s1">&#39;evaluator_name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Result: </span><span class="si">{</span><span class="n">review</span><span class="p">[</span><span class="s1">&#39;classification&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (ambiguous)&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Query:  </span><span class="si">{</span><span class="n">review</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">][</span><span class="s1">&#39;query&#39;</span><span class="p">][:</span><span class="mi">80</span><span class="p">]</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Response: </span><span class="si">{</span><span class="n">review</span><span class="p">[</span><span class="s1">&#39;input&#39;</span><span class="p">][</span><span class="s1">&#39;response&#39;</span><span class="p">][:</span><span class="mi">80</span><span class="p">]</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>python<span class="w"> </span>review_pending.py
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Pending reviews: 3
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>--- Review rev_a1b2c3 ---
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  Metric: response-compliance
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  Result: ambiguous (ambiguous)
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  Query:  Hi, I need to update the mailing address on my account....
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>  Response: Good morning, this is Rebecca with Meridian Financial. I&#39;d be happy to help...
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>--- Review rev_d4e5f6 ---
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  Metric: response-compliance
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>  Result: ambiguous (ambiguous)
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>  Query:  I&#39;d like to increase my credit card limit from $5,000 to $10,000....
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>  Response: Hello, this is Marcus at Meridian Financial. I can look into a credit limit...
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>--- Review rev_g7h8i9 ---
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>  Metric: response-compliance
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>  Result: ambiguous (ambiguous)
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>  Query:  I need to dispute a charge of $89.99 from an online retailer....
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>  Response: Hi there, Marcus here at Meridian Financial. I&#39;m sorry to hear about that c...
+</code></pre></div>
+<p>Three of the four interactions are ambiguous. The savings account inquiry passed because the agent used two proper verification factors (account number + last four SSN). The other three used informal or incomplete verification — exactly the kind of edge case that needs a human expert.</p>
+<h2 id="3-submit-expert-feedback">3. Submit Expert Feedback</h2>
+<p>Now the QA lead examines each case and submits a judgment. This is the critical step: the expert's reasoning becomes part of Prisma's evaluation memory.</p>
+<p>Create a file called <code>submit_feedback.py</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">PRISMA_BASE_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PRISMA_BASE_URL&quot;</span><span class="p">]</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">PRISMA_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PRISMA_API_KEY&quot;</span><span class="p">]</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>    <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">PRISMA_API_KEY</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>    <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="p">}</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="c1"># Expert reviews each ambiguous case and submits feedback</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="n">feedback_decisions</span> <span class="o">=</span> <span class="p">[</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>    <span class="p">{</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>        <span class="s2">&quot;review_id&quot;</span><span class="p">:</span> <span class="s2">&quot;rev_a1b2c3&quot;</span><span class="p">,</span>  <span class="c1"># Address change — caller ID + partial account</span>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>        <span class="s2">&quot;classification&quot;</span><span class="p">:</span> <span class="s2">&quot;non_compliant&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>        <span class="s2">&quot;reasoning&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>            <span class="s2">&quot;The agent used caller ID (phone number on file) as one verification &quot;</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>            <span class="s2">&quot;factor and only requested the last four digits of the account number &quot;</span>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>            <span class="s2">&quot;as the second. Caller ID does not count as a verification factor per &quot;</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>            <span class="s2">&quot;Policy SEC-105. The agent needed to request a second proper factor &quot;</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>            <span class="s2">&quot;(date of birth or mailing address) in addition to the account number. &quot;</span>
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>            <span class="s2">&quot;This is non-compliant despite the agent&#39;s good intent.&quot;</span>
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>        <span class="p">),</span>
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>        <span class="s2">&quot;reviewer&quot;</span><span class="p">:</span> <span class="s2">&quot;jane.doe@company.com&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>        <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;identity-verification&quot;</span><span class="p">,</span> <span class="s2">&quot;single-factor&quot;</span><span class="p">,</span> <span class="s2">&quot;address-change&quot;</span><span class="p">],</span>
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>    <span class="p">},</span>
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>    <span class="p">{</span>
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>        <span class="s2">&quot;review_id&quot;</span><span class="p">:</span> <span class="s2">&quot;rev_d4e5f6&quot;</span><span class="p">,</span>  <span class="c1"># Credit limit increase — single factor only</span>
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a>        <span class="s2">&quot;classification&quot;</span><span class="p">:</span> <span class="s2">&quot;non_compliant&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a>        <span class="s2">&quot;reasoning&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a>            <span class="s2">&quot;The agent requested only date of birth as a verification factor. &quot;</span>
+<a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a>            <span class="s2">&quot;Policy FIN-201 requires two distinct factors for credit limit changes. &quot;</span>
+<a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a>            <span class="s2">&quot;The agent should have also requested the account number or last four &quot;</span>
+<a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a>            <span class="s2">&quot;SSN digits. A single factor is insufficient regardless of the factor&#39;s &quot;</span>
+<a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a>            <span class="s2">&quot;strength. Non-compliant.&quot;</span>
+<a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a>        <span class="p">),</span>
+<a id="__codelineno-8-38" name="__codelineno-8-38" href="#__codelineno-8-38"></a>        <span class="s2">&quot;reviewer&quot;</span><span class="p">:</span> <span class="s2">&quot;jane.doe@company.com&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-39" name="__codelineno-8-39" href="#__codelineno-8-39"></a>        <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;identity-verification&quot;</span><span class="p">,</span> <span class="s2">&quot;single-factor&quot;</span><span class="p">,</span> <span class="s2">&quot;credit-limit&quot;</span><span class="p">],</span>
+<a id="__codelineno-8-40" name="__codelineno-8-40" href="#__codelineno-8-40"></a>    <span class="p">},</span>
+<a id="__codelineno-8-41" name="__codelineno-8-41" href="#__codelineno-8-41"></a>    <span class="p">{</span>
+<a id="__codelineno-8-42" name="__codelineno-8-42" href="#__codelineno-8-42"></a>        <span class="s2">&quot;review_id&quot;</span><span class="p">:</span> <span class="s2">&quot;rev_g7h8i9&quot;</span><span class="p">,</span>  <span class="c1"># Dispute — name + partial card</span>
+<a id="__codelineno-8-43" name="__codelineno-8-43" href="#__codelineno-8-43"></a>        <span class="s2">&quot;classification&quot;</span><span class="p">:</span> <span class="s2">&quot;non_compliant&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-44" name="__codelineno-8-44" href="#__codelineno-8-44"></a>        <span class="s2">&quot;reasoning&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-8-45" name="__codelineno-8-45" href="#__codelineno-8-45"></a>            <span class="s2">&quot;The agent verified the customer&#39;s name and last four digits of the &quot;</span>
+<a id="__codelineno-8-46" name="__codelineno-8-46" href="#__codelineno-8-46"></a>            <span class="s2">&quot;card number. Neither of these qualifies as a verification factor under &quot;</span>
+<a id="__codelineno-8-47" name="__codelineno-8-47" href="#__codelineno-8-47"></a>            <span class="s2">&quot;Policy SEC-105 — name is not a secret, and the card number is printed &quot;</span>
+<a id="__codelineno-8-48" name="__codelineno-8-48" href="#__codelineno-8-48"></a>            <span class="s2">&quot;on the physical card. The agent needed account number + date of birth &quot;</span>
+<a id="__codelineno-8-49" name="__codelineno-8-49" href="#__codelineno-8-49"></a>            <span class="s2">&quot;or last four SSN + mailing address. Non-compliant.&quot;</span>
+<a id="__codelineno-8-50" name="__codelineno-8-50" href="#__codelineno-8-50"></a>        <span class="p">),</span>
+<a id="__codelineno-8-51" name="__codelineno-8-51" href="#__codelineno-8-51"></a>        <span class="s2">&quot;reviewer&quot;</span><span class="p">:</span> <span class="s2">&quot;jane.doe@company.com&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-52" name="__codelineno-8-52" href="#__codelineno-8-52"></a>        <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;identity-verification&quot;</span><span class="p">,</span> <span class="s2">&quot;weak-factors&quot;</span><span class="p">,</span> <span class="s2">&quot;dispute&quot;</span><span class="p">],</span>
+<a id="__codelineno-8-53" name="__codelineno-8-53" href="#__codelineno-8-53"></a>    <span class="p">},</span>
+<a id="__codelineno-8-54" name="__codelineno-8-54" href="#__codelineno-8-54"></a><span class="p">]</span>
+<a id="__codelineno-8-55" name="__codelineno-8-55" href="#__codelineno-8-55"></a>
+<a id="__codelineno-8-56" name="__codelineno-8-56" href="#__codelineno-8-56"></a><span class="k">for</span> <span class="n">decision</span> <span class="ow">in</span> <span class="n">feedback_decisions</span><span class="p">:</span>
+<a id="__codelineno-8-57" name="__codelineno-8-57" href="#__codelineno-8-57"></a>    <span class="n">review_id</span> <span class="o">=</span> <span class="n">decision</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;review_id&quot;</span><span class="p">)</span>
+<a id="__codelineno-8-58" name="__codelineno-8-58" href="#__codelineno-8-58"></a>    <span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+<a id="__codelineno-8-59" name="__codelineno-8-59" href="#__codelineno-8-59"></a>        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">PRISMA_BASE_URL</span><span class="si">}</span><span class="s2">/api/v1/hitl/feedbacks&quot;</span><span class="p">,</span>
+<a id="__codelineno-8-60" name="__codelineno-8-60" href="#__codelineno-8-60"></a>        <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;request_id&quot;</span><span class="p">:</span> <span class="n">review_id</span><span class="p">,</span> <span class="o">**</span><span class="n">decision</span><span class="p">},</span>
+<a id="__codelineno-8-61" name="__codelineno-8-61" href="#__codelineno-8-61"></a>        <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<a id="__codelineno-8-62" name="__codelineno-8-62" href="#__codelineno-8-62"></a>    <span class="p">)</span>
+<a id="__codelineno-8-63" name="__codelineno-8-63" href="#__codelineno-8-63"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Feedback submitted for </span><span class="si">{</span><span class="n">review_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python<span class="w"> </span>submit_feedback.py
+</code></pre></div>
+<p>Expected output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Feedback submitted for rev_a1b2c3: 200
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Feedback submitted for rev_d4e5f6: 200
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>Feedback submitted for rev_g7h8i9: 200
+</code></pre></div>
+<p>Each feedback submission does two things: it resolves the pending review, and it creates a <strong>control</strong> — a piece of evaluation memory that Prisma stores for future use.</p>
+<h2 id="4-how-feedback-becomes-evaluation-memory">4. How Feedback Becomes Evaluation Memory</h2>
+<p>When you submit feedback on an ambiguous case, Prisma creates a control scoped to the project and metric. A control contains the expert's classification and reasoning. When future validations encounter similar borderline cases, the re-evaluation prompt receives these controls via the <code>{memories}</code> placeholder.</p>
+<p>Here's what <code>{memories}</code> looks like when it's populated with controls:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Prior expert rulings on similar cases:
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>1. [non_compliant] Address change request — &quot;The agent used caller ID (phone
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>   number on file) as one verification factor and only requested the last four
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>   digits of the account number as the second. Caller ID does not count as a
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>   verification factor per Policy SEC-105. The agent needed to request a second
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>   proper factor (date of birth or mailing address) in addition to the account
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>   number. This is non-compliant despite the agent&#39;s good intent.&quot;
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>2. [non_compliant] Credit limit increase — &quot;The agent requested only date of
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>   birth as a verification factor. Policy FIN-201 requires two distinct factors
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>   for credit limit changes. A single factor is insufficient regardless of the
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>   factor&#39;s strength.&quot;
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>3. [non_compliant] Dispute with weak factors — &quot;The agent verified the
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>   customer&#39;s name and last four digits of the card number. Neither qualifies
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>   as a verification factor under Policy SEC-105 — name is not a secret, and
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>   the card number is printed on the physical card.&quot;
+</code></pre></div>
+<p>This is the key insight. The re-evaluation prompt from Section 1 includes:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Previous auditor notes and evaluation memory:\n{memories}
+</code></pre></div>
+<p>So when the metric encounters a new borderline case — say, an agent who verified identity using only a mother's maiden name — it now has three expert-reviewed precedents that establish a clear pattern: <strong>informal or single-factor verification is always non-compliant</strong>. The metric doesn't need to guess anymore. It has institutional knowledge.</p>
+<h2 id="5-verify-the-flywheel">5. Verify the Flywheel</h2>
+<p>Now log a new borderline interaction — similar to the ones the expert already reviewed — and see how the metric handles it with evaluation memory in place.</p>
+<p>Add to <code>human_review_demo.py</code> or create a new file called <code>verify_flywheel.py</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">prisma_ai</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">prisma_ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">Evaluators</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># Same policy metric definition as before (from Section 1)</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="n">response_compliance</span> <span class="o">=</span> <span class="n">Evaluators</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;response-compliance&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>    <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;compliant&quot;</span><span class="p">,</span> <span class="s2">&quot;non_compliant&quot;</span><span class="p">],</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>    <span class="n">evaluation_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>        <span class="s2">&quot;You are a compliance auditor for a financial services contact center. &quot;</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>        <span class="s2">&quot;Your job is to determine whether an agent&#39;s response to a customer &quot;</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>        <span class="s2">&quot;follows company policy. The policy requires:</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>        <span class="s2">&quot;1. GREETING: Professional greeting with agent name and company name.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>        <span class="s2">&quot;2. IDENTITY VERIFICATION: Before taking any action, the agent must &quot;</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>        <span class="s2">&quot;verify the customer&#39;s identity by requesting at least two pieces of &quot;</span>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>        <span class="s2">&quot;identifying information (account number + date of birth, or last four &quot;</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>        <span class="s2">&quot;SSN digits + mailing address).</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>        <span class="s2">&quot;3. ACCURATE INFORMATION: Response consistent with company policy.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>        <span class="s2">&quot;4. PROFESSIONAL CLOSE: Summary of actions, next steps, offer for &quot;</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>        <span class="s2">&quot;further assistance.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>        <span class="s2">&quot;If ALL four criteria are met, classify as &#39;compliant&#39;. &quot;</span>
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>        <span class="s2">&quot;If ANY criterion is missing or incorrect, classify as &#39;non_compliant&#39;.&quot;</span>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>    <span class="p">),</span>
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a>    <span class="n">evaluation_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>        <span class="s2">&quot;Validate the following contact center interaction.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a>        <span class="s2">&quot;Expected policy-correct response:</span><span class="se">\n</span><span class="si">{reference}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a>        <span class="s2">&quot;Classification options: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a>        <span class="s2">&quot;Which classification applies? Explain your reasoning.&quot;</span>
+<a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a>    <span class="p">),</span>
+<a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a>    <span class="n">reeval_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a>        <span class="s2">&quot;You are a senior compliance auditor reviewing a case where a previous &quot;</span>
+<a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a>        <span class="s2">&quot;auditor was uncertain. Apply the policy strictly. Pay special attention &quot;</span>
+<a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a>        <span class="s2">&quot;to identity verification — agents must follow the exact scripted process, &quot;</span>
+<a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a>        <span class="s2">&quot;not an informal or abbreviated version.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a>        <span class="s2">&quot;Use the evaluation memory below to guide your decision. These are prior &quot;</span>
+<a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a>        <span class="s2">&quot;expert rulings on similar borderline cases.&quot;</span>
+<a id="__codelineno-13-38" name="__codelineno-13-38" href="#__codelineno-13-38"></a>    <span class="p">),</span>
+<a id="__codelineno-13-39" name="__codelineno-13-39" href="#__codelineno-13-39"></a>    <span class="n">reeval_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-13-40" name="__codelineno-13-40" href="#__codelineno-13-40"></a>        <span class="s2">&quot;A previous auditor was uncertain about this interaction.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-41" name="__codelineno-13-41" href="#__codelineno-13-41"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-42" name="__codelineno-13-42" href="#__codelineno-13-42"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-43" name="__codelineno-13-43" href="#__codelineno-13-43"></a>        <span class="s2">&quot;Expected policy-correct response:</span><span class="se">\n</span><span class="si">{reference}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-44" name="__codelineno-13-44" href="#__codelineno-13-44"></a>        <span class="s2">&quot;Previous auditor notes and evaluation memory:</span><span class="se">\n</span><span class="si">{memories}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-13-45" name="__codelineno-13-45" href="#__codelineno-13-45"></a>        <span class="s2">&quot;Provide your final classification as &#39;compliant&#39; or &#39;non_compliant&#39;. &quot;</span>
+<a id="__codelineno-13-46" name="__codelineno-13-46" href="#__codelineno-13-46"></a>        <span class="s2">&quot;Explain your reasoning.&quot;</span>
+<a id="__codelineno-13-47" name="__codelineno-13-47" href="#__codelineno-13-47"></a>    <span class="p">),</span>
+<a id="__codelineno-13-48" name="__codelineno-13-48" href="#__codelineno-13-48"></a><span class="p">)</span>
+<a id="__codelineno-13-49" name="__codelineno-13-49" href="#__codelineno-13-49"></a>
+<a id="__codelineno-13-50" name="__codelineno-13-50" href="#__codelineno-13-50"></a><span class="c1"># Start a new run in the same project — controls carry over</span>
+<a id="__codelineno-13-51" name="__codelineno-13-51" href="#__codelineno-13-51"></a><span class="n">session</span> <span class="o">=</span> <span class="n">prisma_ai</span><span class="o">.</span><span class="n">init</span><span class="p">(</span>
+<a id="__codelineno-13-52" name="__codelineno-13-52" href="#__codelineno-13-52"></a>    <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;compliance-review-demo&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-53" name="__codelineno-13-53" href="#__codelineno-13-53"></a>    <span class="n">run_name</span><span class="o">=</span><span class="s2">&quot;post-feedback-verification&quot;</span><span class="p">,</span>
+<a id="__codelineno-13-54" name="__codelineno-13-54" href="#__codelineno-13-54"></a>    <span class="n">evaluators</span><span class="o">=</span><span class="p">[</span><span class="n">response_compliance</span><span class="p">],</span>
+<a id="__codelineno-13-55" name="__codelineno-13-55" href="#__codelineno-13-55"></a>    <span class="n">enable_logging</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-13-56" name="__codelineno-13-56" href="#__codelineno-13-56"></a><span class="p">)</span>
+<a id="__codelineno-13-57" name="__codelineno-13-57" href="#__codelineno-13-57"></a>
+<a id="__codelineno-13-58" name="__codelineno-13-58" href="#__codelineno-13-58"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+<a id="__codelineno-13-59" name="__codelineno-13-59" href="#__codelineno-13-59"></a>
+<a id="__codelineno-13-60" name="__codelineno-13-60" href="#__codelineno-13-60"></a><span class="c1"># A NEW borderline interaction — similar pattern to the ones reviewed</span>
+<a id="__codelineno-13-61" name="__codelineno-13-61" href="#__codelineno-13-61"></a><span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+<a id="__codelineno-13-62" name="__codelineno-13-62" href="#__codelineno-13-62"></a>    <span class="n">query</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-13-63" name="__codelineno-13-63" href="#__codelineno-13-63"></a>        <span class="s2">&quot;I&#39;d like to set up automatic bill pay from my checking account.&quot;</span>
+<a id="__codelineno-13-64" name="__codelineno-13-64" href="#__codelineno-13-64"></a>    <span class="p">),</span>
+<a id="__codelineno-13-65" name="__codelineno-13-65" href="#__codelineno-13-65"></a>    <span class="n">response</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-13-66" name="__codelineno-13-66" href="#__codelineno-13-66"></a>        <span class="s2">&quot;Hi, this is Taylor with Meridian Financial. I can set that up for you. &quot;</span>
+<a id="__codelineno-13-67" name="__codelineno-13-67" href="#__codelineno-13-67"></a>        <span class="s2">&quot;Let me just verify — can you confirm your mother&#39;s maiden name? Great, &quot;</span>
+<a id="__codelineno-13-68" name="__codelineno-13-68" href="#__codelineno-13-68"></a>        <span class="s2">&quot;thank you. I&#39;ve enabled automatic bill pay on your checking account &quot;</span>
+<a id="__codelineno-13-69" name="__codelineno-13-69" href="#__codelineno-13-69"></a>        <span class="s2">&quot;ending in 3847. Your first automatic payment will process on the 1st &quot;</span>
+<a id="__codelineno-13-70" name="__codelineno-13-70" href="#__codelineno-13-70"></a>        <span class="s2">&quot;of next month. You&#39;ll get an email confirmation shortly. Is there &quot;</span>
+<a id="__codelineno-13-71" name="__codelineno-13-71" href="#__codelineno-13-71"></a>        <span class="s2">&quot;anything else I can help with today?&quot;</span>
+<a id="__codelineno-13-72" name="__codelineno-13-72" href="#__codelineno-13-72"></a>    <span class="p">),</span>
+<a id="__codelineno-13-73" name="__codelineno-13-73" href="#__codelineno-13-73"></a>    <span class="n">reference</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-13-74" name="__codelineno-13-74" href="#__codelineno-13-74"></a>        <span class="s2">&quot;Setting up automatic bill pay requires two-factor identity verification: &quot;</span>
+<a id="__codelineno-13-75" name="__codelineno-13-75" href="#__codelineno-13-75"></a>        <span class="s2">&quot;account number plus date of birth, or last four SSN digits plus mailing &quot;</span>
+<a id="__codelineno-13-76" name="__codelineno-13-76" href="#__codelineno-13-76"></a>        <span class="s2">&quot;address. Mother&#39;s maiden name is not an approved verification factor &quot;</span>
+<a id="__codelineno-13-77" name="__codelineno-13-77" href="#__codelineno-13-77"></a>        <span class="s2">&quot;per Policy SEC-105. After verification, confirm the bill pay details &quot;</span>
+<a id="__codelineno-13-78" name="__codelineno-13-78" href="#__codelineno-13-78"></a>        <span class="s2">&quot;and send written confirmation.&quot;</span>
+<a id="__codelineno-13-79" name="__codelineno-13-79" href="#__codelineno-13-79"></a>    <span class="p">),</span>
+<a id="__codelineno-13-80" name="__codelineno-13-80" href="#__codelineno-13-80"></a><span class="p">)</span>
+<a id="__codelineno-13-81" name="__codelineno-13-81" href="#__codelineno-13-81"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Logged new borderline interaction for verification.&quot;</span><span class="p">)</span>
+<a id="__codelineno-13-82" name="__codelineno-13-82" href="#__codelineno-13-82"></a>
+<a id="__codelineno-13-83" name="__codelineno-13-83" href="#__codelineno-13-83"></a><span class="n">session</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>python<span class="w"> </span>verify_flywheel.py
+</code></pre></div>
+<p><strong>Before evaluation memory:</strong> This interaction would have been marked ambiguous — the agent <em>did</em> attempt verification (mother's maiden name), but it's unclear whether that meets policy.</p>
+<p><strong>After evaluation memory:</strong> The metric now has three expert-reviewed controls establishing that informal or non-standard verification factors are always non-compliant. The re-evaluation prompt receives these controls via <code>{memories}</code>, and the metric confidently classifies the interaction as <code>non_compliant</code> without needing another human review.</p>
+<p>This is the flywheel in action. Each expert review teaches the metric how to handle similar edge cases.</p>
+<h3 id="before-vs-after-ambiguous-rates">Before vs. After: Ambiguous Rates</h3>
+<p>After submitting a batch of expert reviews across a real project with hundreds of interactions, the impact is measurable:</p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Before HITL Reviews</th>
+<th>After HITL Reviews</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ambiguous rate</td>
+<td>~30%</td>
+<td>~5%</td>
+</tr>
+<tr>
+<td>Cases needing human review per run</td>
+<td>~90 of 300</td>
+<td>~15 of 300</td>
+</tr>
+<tr>
+<td>Average time to resolve per case</td>
+<td>Manual review required</td>
+<td>Resolved automatically</td>
+</tr>
+</tbody>
+</table>
+<p>The remaining ~5% ambiguous cases represent genuinely novel edge cases that the metric hasn't seen before — which is exactly when you want a human expert involved.</p>
+<h2 id="6-managing-evaluation-memory">6. Managing Evaluation Memory</h2>
+<p>As your team submits more feedback, you'll accumulate controls that shape how your policy metrics behave. Prisma provides REST API endpoints for managing this evaluation memory at scale.</p>
+<h3 id="list-controls">List Controls</h3>
+<p>View all controls (evaluation memory) for a project:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="n">PRISMA_BASE_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PRISMA_BASE_URL&quot;</span><span class="p">]</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="n">PRISMA_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PRISMA_API_KEY&quot;</span><span class="p">]</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>    <span class="s2">&quot;Authorization&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Bearer </span><span class="si">{</span><span class="n">PRISMA_API_KEY</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="p">}</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">PRISMA_BASE_URL</span><span class="si">}</span><span class="s2">/api/v1/controls&quot;</span><span class="p">,</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>    <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;project_id&quot;</span><span class="p">:</span> <span class="s2">&quot;your-project-id&quot;</span><span class="p">},</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>    <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="p">)</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="n">controls</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total controls: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">controls</span><span class="p">[</span><span class="s1">&#39;items&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="k">for</span> <span class="n">control</span> <span class="ow">in</span> <span class="n">controls</span><span class="p">[</span><span class="s2">&quot;items&quot;</span><span class="p">]:</span>
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">--- Control </span><span class="si">{</span><span class="n">control</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> ---&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Classification: </span><span class="si">{</span><span class="n">control</span><span class="p">[</span><span class="s1">&#39;classification&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Reviewer: </span><span class="si">{</span><span class="n">control</span><span class="p">[</span><span class="s1">&#39;reviewer&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Tags: </span><span class="si">{</span><span class="n">control</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Created: </span><span class="si">{</span><span class="n">control</span><span class="p">[</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="bulk-feedback">Bulk Feedback</h3>
+<p>When your QA team has a batch of reviews ready — say, from a weekly review session — submit them all at once:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="n">bulk_payload</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>    <span class="s2">&quot;feedback&quot;</span><span class="p">:</span> <span class="p">[</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>        <span class="p">{</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>            <span class="s2">&quot;review_id&quot;</span><span class="p">:</span> <span class="s2">&quot;rev_x1y2z3&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>            <span class="s2">&quot;classification&quot;</span><span class="p">:</span> <span class="s2">&quot;compliant&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>            <span class="s2">&quot;reasoning&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>                <span class="s2">&quot;The agent verified identity with account number and date of birth &quot;</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>                <span class="s2">&quot;before proceeding. Both factors meet Policy SEC-105 requirements.&quot;</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>            <span class="p">),</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>            <span class="s2">&quot;reviewer&quot;</span><span class="p">:</span> <span class="s2">&quot;jane.doe@company.com&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>            <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;identity-verification&quot;</span><span class="p">,</span> <span class="s2">&quot;two-factor&quot;</span><span class="p">,</span> <span class="s2">&quot;compliant-example&quot;</span><span class="p">],</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a>        <span class="p">},</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>        <span class="p">{</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a>            <span class="s2">&quot;review_id&quot;</span><span class="p">:</span> <span class="s2">&quot;rev_a4b5c6&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>            <span class="s2">&quot;classification&quot;</span><span class="p">:</span> <span class="s2">&quot;non_compliant&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a>            <span class="s2">&quot;reasoning&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>                <span class="s2">&quot;The agent asked for the customer&#39;s email address and zip code. &quot;</span>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>                <span class="s2">&quot;Neither is an approved verification factor. Non-compliant.&quot;</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>            <span class="p">),</span>
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a>            <span class="s2">&quot;reviewer&quot;</span><span class="p">:</span> <span class="s2">&quot;jane.doe@company.com&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>            <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;identity-verification&quot;</span><span class="p">,</span> <span class="s2">&quot;unapproved-factors&quot;</span><span class="p">],</span>
+<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a>        <span class="p">},</span>
+<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>        <span class="c1"># ... more feedback items</span>
+<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a>    <span class="p">]</span>
+<a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a><span class="p">}</span>
+<a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a>
+<a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a><span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+<a id="__codelineno-16-28" name="__codelineno-16-28" href="#__codelineno-16-28"></a>    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">PRISMA_BASE_URL</span><span class="si">}</span><span class="s2">/api/v1/hitl/feedbacks&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a>    <span class="n">json</span><span class="o">=</span><span class="n">bulk_payload</span><span class="p">,</span>
+<a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a>    <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<a id="__codelineno-16-31" name="__codelineno-16-31" href="#__codelineno-16-31"></a><span class="p">)</span>
+<a id="__codelineno-16-32" name="__codelineno-16-32" href="#__codelineno-16-32"></a>
+<a id="__codelineno-16-33" name="__codelineno-16-33" href="#__codelineno-16-33"></a><span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<a id="__codelineno-16-34" name="__codelineno-16-34" href="#__codelineno-16-34"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Submitted: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;submitted&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> | Errors: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="export-pending-reviews">Export Pending Reviews</h3>
+<p>Export the current review queue for offline analysis or integration with external tools:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">PRISMA_BASE_URL</span><span class="si">}</span><span class="s2">/api/v1/hitl/feedbacks/export&quot;</span><span class="p">,</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>        <span class="s2">&quot;project_id&quot;</span><span class="p">:</span> <span class="s2">&quot;your-project-id&quot;</span><span class="p">,</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;pending&quot;</span><span class="p">,</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>        <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;json&quot;</span><span class="p">,</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>    <span class="p">},</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>    <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="p">)</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="c1"># Save to file for review in a spreadsheet or external tool</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;pending_reviews.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exported </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s1">&#39;items&#39;</span><span class="p">])</span><span class="si">}</span><span class="s2"> pending reviews&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="production-considerations">Production Considerations</h2>
+<h3 id="review-cadence">Review Cadence</h3>
+<p>Establish a regular rhythm for expert reviews. Weekly works well for most teams:</p>
+<ul>
+<li><strong>Monday</strong>: Export the previous week's ambiguous cases</li>
+<li><strong>Tuesday-Thursday</strong>: QA leads review and submit feedback</li>
+<li><strong>Friday</strong>: Verify that ambiguous rates dropped for the current week's runs</li>
+</ul>
+<p>The first few weeks will have the most reviews. As controls accumulate, the queue shrinks naturally.</p>
+<h3 id="control-lifecycle">Control Lifecycle</h3>
+<p>Controls are scoped to a project and metric. As your policies change, old controls may become outdated. Review your controls periodically:</p>
+<ul>
+<li>After a policy update, audit existing controls to ensure they still reflect current standards</li>
+<li>Tag controls with the policy version they reference (e.g., <code>sec-105-v2</code>) so you can filter and retire them when the policy changes</li>
+<li>Prisma applies all active controls during re-evaluation — removing outdated ones keeps the <code>{memories}</code> context clean and relevant</li>
+</ul>
+<h3 id="reviewer-consistency">Reviewer Consistency</h3>
+<p>When multiple reviewers submit feedback on the same type of case, inconsistent reasoning creates conflicting evaluation memory. Mitigate this by:</p>
+<ul>
+<li>Establishing written guidelines for common edge cases before reviewers start</li>
+<li>Assigning borderline categories to specific domain experts (e.g., identity verification cases go to the security team lead)</li>
+<li>Reviewing controls periodically for conflicting reasoning and resolving disagreements</li>
+</ul>
+<h2 id="next-steps">Next Steps</h2>
+<p>Your policy metrics now learn from your team's expertise. Every human review makes future validations more confident and consistent. Next: run policy validation on live production traffic.</p>
+<ul>
+<li><a href="../realtime-policy-monitoring/">Real-Time Policy Monitoring</a> — validate interactions as they happen in production</li>
+<li><a href="../getting-started/">Getting Started</a> — set up Prisma AI from scratch</li>
+<li><a href="../policy-based-metrics/">Building Policy-Based Metrics</a> — encode your organization's rules as metrics</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.sections", "content.code.copy", "search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

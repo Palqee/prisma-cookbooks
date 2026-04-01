@@ -1,0 +1,1496 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Practical guides for transforming human-review workflows with the Prisma AI SDK">
+      
+      
+      
+        <link rel="canonical" href="https://palqee.github.io/prisma-cookbooks/cicd-policy-compliance/">
+      
+      
+        <link rel="prev" href="../realtime-policy-monitoring/">
+      
+      
+        <link rel="next" href="../ai-performance-metrics/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Policy Compliance in CI/CD - Palqee Prisma Cookbooks</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#policy-compliance-in-cicd" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Palqee Prisma Cookbooks" class="md-header__button md-logo" aria-label="Palqee Prisma Cookbooks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Palqee Prisma Cookbooks
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Policy Compliance in CI/CD
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Palqee Prisma Cookbooks" class="md-nav__button md-logo" aria-label="Palqee Prisma Cookbooks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Palqee Prisma Cookbooks
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contact-center-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluating Contact Center Agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../policy-based-metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building Policy-Based Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../human-review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Human Review & Evaluation Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../realtime-policy-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Real-Time Policy Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy Compliance in CI/CD
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy Compliance in CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You'll Learn
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-create-a-golden-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Create a Golden Dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-define-the-policy-metric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Define the Policy Metric
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-write-the-validation-gate-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Write the Validation Gate Script
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-define-quality-thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Define Quality Thresholds
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Define Quality Thresholds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#choosing-a-threshold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing a threshold
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-github-actions-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. GitHub Actions Integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-pytest-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Pytest Integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Expected Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#passing-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passing run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failing-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failing run
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complete-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complete Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-performance-metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Performance Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You'll Learn
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-create-a-golden-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Create a Golden Dataset
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-define-the-policy-metric" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Define the Policy Metric
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-write-the-validation-gate-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Write the Validation Gate Script
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-define-quality-thresholds" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Define Quality Thresholds
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Define Quality Thresholds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#choosing-a-threshold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Choosing a threshold
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-github-actions-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. GitHub Actions Integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-pytest-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Pytest Integration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#expected-output" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Expected Output
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Expected Output">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#passing-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Passing run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failing-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failing run
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complete-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complete Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="policy-compliance-in-cicd">Policy Compliance in CI/CD</h1>
+<p>Catch policy regressions before they reach production. This cookbook builds a quality gate that validates a small golden dataset of contact center interactions against a policy metric using Prisma's sync API, then integrates that gate into GitHub Actions and pytest.</p>
+<p>The sync API (<code>POST /api/v1/evaluate</code>) is designed for small datasets where you need immediate results -- a golden dataset of 10-15 interactions, not a full production corpus. It returns pass/fail synchronously, which makes it ideal for CI/CD pipelines that block on a result.</p>
+<h2 id="what-youll-learn">What You'll Learn</h2>
+<ul>
+<li>Build a golden dataset of realistic contact center interactions with policy-specific scenarios</li>
+<li>Define a <code>response-compliance</code> policy metric inline using the 4-prompt pattern</li>
+<li>Call the Prisma sync API for immediate validation results</li>
+<li>Set pass/fail thresholds based on policy metric scores</li>
+<li>Write a validation gate script that loads the dataset, sends it to the sync API, and checks thresholds</li>
+<li>Wire the gate into GitHub Actions and pytest</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Python 3.10+</strong></li>
+<li><strong>A Prisma AI API key</strong> (from your Prisma instance settings)</li>
+<li><strong>Access to a running Prisma instance</strong></li>
+<li><strong>A GitHub repository</strong> (for the Actions integration)</li>
+<li>Familiarity with <a href="../policy-based-metrics/">Building Policy-Based Metrics</a> -- you should understand the 4-prompt pattern</li>
+</ul>
+<h2 id="1-create-a-golden-dataset">1. Create a Golden Dataset</h2>
+<p>A golden dataset is a curated set of interactions where you already know the expected outcome. Each record has three fields:</p>
+<ul>
+<li><strong><code>query</code></strong> -- The customer side of the interaction.</li>
+<li><strong><code>response</code></strong> -- The agent side of the interaction.</li>
+<li><strong><code>reference</code></strong> -- The policy-correct response for this scenario, used as a benchmark during validation.</li>
+</ul>
+<p>The dataset should cover the range of scenarios your agents handle, with most interactions being compliant and a few deliberately non-compliant. The non-compliant cases are your regression tests -- if a change to your agent tooling causes these to start passing, something is wrong with your metric. If compliant cases start failing, your metric may have become too strict.</p>
+<p>Save this as <code>tests/eval/golden_dataset.json</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">[</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hi, I noticed a duplicate charge of $29.99 on my account this month for my premium subscription. Can I get that corrected?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Thank you for calling Meridian Financial, my name is Sarah. I&#39;d be happy to help with that duplicate charge. For security purposes, could you please verify your account number and the date of birth on file? ... Thank you, Ms. Chen, I&#39;ve confirmed your identity. I can see the duplicate charge of $29.99 posted on March 15th. I&#39;ve initiated a refund for that amount -- you&#39;ll see it back on your card within 3-5 business days. I&#39;ve also flagged this with our billing team to prevent it from recurring. Is there anything else I can help you with today?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">&quot;reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Duplicate charges should be refunded immediately upon verification. Agent must verify customer identity before accessing account details. Inform the customer the refund will appear within 3-5 business days and provide the exact amount. Flag the issue with the billing team for root cause analysis.&quot;</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I&#39;d like to close my investment account and have all my personal data removed from your systems.&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Good afternoon, this is James with Meridian Financial. I&#39;m sorry to hear you&#39;d like to close your account, but I&#39;m here to help. Before I can process that, I&#39;ll need to verify your identity -- could you provide your account number and the last four digits of your Social Security number? ... Thank you, Mr. Alvarez, identity confirmed. I&#39;ve submitted the account closure request effective today. Per our data retention policy, your personal data will be purged from our systems within 30 days, in compliance with applicable regulations. You&#39;ll receive a confirmation email within the hour with a summary of this request and a reference number. Is there anything else before we wrap up?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nt">&quot;reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Account closure is effective immediately upon request. Agent must verify customer identity before processing. Inform the customer that personal data deletion occurs within 30 days per the data retention policy (GDPR Article 17 / CCPA). Send a confirmation email with a reference number.&quot;</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I&#39;m calling because I was charged a $35 overdraft fee but I had set up overdraft protection. Can you explain why I was still charged?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Thank you for reaching out to Meridian Financial, this is Priya speaking. I understand the frustration -- let me look into this for you. Could you please confirm your account number and the last four digits of your Social Security number? ... Thank you, Mr. Park. I can see your overdraft protection is linked to your savings account, but the savings balance was $0 at the time of the transaction, which is why the fee was applied. I&#39;ve submitted a one-time courtesy waiver for the $35 fee -- that will be reflected on your account within 1-2 business days. Going forward, I&#39;d recommend keeping a small buffer in your linked savings account. Would you like me to set up a low-balance alert for that account?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="nt">&quot;reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;If overdraft protection is linked but the backup account had insufficient funds, explain why the fee was applied. Agent may offer a one-time courtesy waiver per Policy FIN-118. Suggest preventive measures such as low-balance alerts. Verify identity before accessing account information.&quot;</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I want to update my mailing address. I just moved to 742 Evergreen Terrace, Springfield.&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Welcome to Meridian Financial, my name is David. I&#39;d be happy to help you update your address. For security, could you please verify your account number and date of birth? ... Perfect, thank you, Ms. Rivera. I&#39;ve updated your mailing address to 742 Evergreen Terrace, Springfield. This will apply to all future statements and correspondence. Please allow one billing cycle for the change to take full effect. Is there anything else I can assist you with today?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="nt">&quot;reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Address changes require identity verification before processing. Confirm the new address back to the customer. Inform them the change applies to all correspondence and may take one billing cycle to reflect on statements.&quot;</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I lost my debit card and I need it replaced immediately. I&#39;m traveling and have no other way to access my funds.&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">    </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Thank you for calling Meridian Financial, this is Angela. I&#39;m sorry to hear about your lost card -- I understand how stressful that can be, especially while traveling. Let me help you right away. Could you verify your account number and the last four digits of your Social Security number? ... Thank you, Mr. Okafor. I&#39;ve deactivated your lost card to prevent unauthorized use and ordered a rush replacement. The new card will be shipped overnight to the address on file. In the meantime, I&#39;ve enabled temporary mobile wallet access so you can make purchases using your phone. You&#39;ll receive a text with activation instructions shortly. Is there anything else I can help with?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">    </span><span class="nt">&quot;reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Lost card reports require immediate deactivation of the compromised card after identity verification. Rush replacement should be offered to traveling customers per Policy FIN-205. If available, enable temporary mobile wallet access as an interim solution. Confirm the shipping address for the replacement.&quot;</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I&#39;m disputing a charge of $189.50 from a merchant I don&#39;t recognize on my latest statement.&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">    </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Good morning, this is Marcus with Meridian Financial. I&#39;m sorry to hear about the unfamiliar charge. I&#39;ll help you get this resolved. Could you verify your account number and your date of birth? ... Thank you, Ms. Tanaka. I can see the $189.50 charge from &#39;GreenLeaf Services&#39; posted on March 22nd. I&#39;ve opened a formal dispute case -- reference number DP-2026-4471. You&#39;ll receive provisional credit for $189.50 within 2 business days while we investigate. The investigation typically takes 30-60 days. We&#39;ll contact you if we need additional information. In the meantime, I&#39;ve flagged your card for enhanced monitoring. Is there anything else I can help with?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="w">    </span><span class="nt">&quot;reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Charge disputes require identity verification before proceeding. Open a formal dispute case and provide the customer with a reference number. Issue provisional credit within the timeframe specified by Regulation E (10 business days, though Meridian policy is 2 business days). Inform the customer of the investigation timeline (30-60 days). Offer enhanced card monitoring.&quot;</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Can you tell me about your current CD rates? I&#39;m thinking about putting $50,000 into a certificate of deposit.&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">    </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Thank you for calling Meridian Financial, this is Laura. Great question about our CD rates -- I&#39;d love to help you explore your options. Our current rates for a $50,000 deposit are: 12-month CD at 4.75% APY, 24-month at 5.10% APY, and 36-month at 5.25% APY. These rates are guaranteed for the term of the CD. Keep in mind that early withdrawal penalties apply -- for a 12-month CD, that&#39;s 90 days of interest. I&#39;d recommend speaking with one of our investment advisors who can help you decide which term best fits your financial goals. Would you like me to schedule a consultation?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">    </span><span class="nt">&quot;reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Provide current CD rates with APY for the relevant deposit amount. Disclose early withdrawal penalties per Truth in Savings Act requirements. Recommend consultation with an investment advisor for deposits over $25,000 per Policy FIN-310. Do not guarantee future rates beyond the stated term.&quot;</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I&#39;m having trouble logging into my online banking. I&#39;ve tried resetting my password but the link never arrives.&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">    </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Welcome to Meridian Financial, this is Raj. I understand how frustrating login issues can be -- let me help you get back in. For security, I&#39;ll need to verify your identity first. Could you provide your account number and date of birth? ... Thank you, Ms. Kim. I can see that your password reset emails are being sent to an outdated email address ending in @oldprovider.com. I&#39;ve updated it to the email address you confirmed and triggered a new password reset. You should receive it within a few minutes. If it doesn&#39;t arrive, check your spam folder. Is there anything else I can help you with?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w">    </span><span class="nt">&quot;reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Password reset issues require identity verification before accessing account settings. Check the email address on file for accuracy. If outdated, update it with the customer&#39;s confirmed new address. Trigger a new password reset and advise the customer to check spam. Do not share the full email address on file -- reference only a partial version.&quot;</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I want to set up automatic bill payments from my checking account. Can you walk me through that?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="w">    </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Thank you for calling Meridian Financial, my name is Chen. I&#39;d be happy to help you set up automatic bill payments. Before we get started, could you please verify your account number and the last four digits of your Social Security number? ... Perfect, thank you, Mr. Brooks. I can set up recurring payments from your checking account. I&#39;ll need the payee name, their account number or payment address, the amount, and the frequency -- weekly, biweekly, or monthly. Once it&#39;s set up, you&#39;ll receive a confirmation email with the details and you can modify or cancel any time through online banking. Shall we go ahead and set up the first one?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="w">    </span><span class="nt">&quot;reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Automatic payment setup requires identity verification. Collect payee details, payment amount, and frequency. Confirm setup via email. Inform the customer they can manage auto-payments through online banking. Ensure sufficient funds warnings are communicated per Policy FIN-112.&quot;</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-0-48" name="__codelineno-0-48" href="#__codelineno-0-48"></a><span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I was told I&#39;d receive a callback from a manager about a complaint I filed last week, but nobody has called me. This is unacceptable.&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-49" name="__codelineno-0-49" href="#__codelineno-0-49"></a><span class="w">    </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Thank you for calling Meridian Financial, this is Diane. I sincerely apologize for the missed callback -- I understand how frustrating that must be, and you&#39;re right to expect better follow-through from us. Let me verify your identity so I can pull up your complaint. Could you provide your account number and date of birth? ... Thank you, Mr. Yamamoto. I can see your complaint filed on March 23rd -- reference CR-2026-0891. The assigned manager is Lisa Torres. I&#39;ve escalated this internally and you will receive a callback from Ms. Torres or her designee within 4 business hours. I&#39;ve also added a note to your case documenting the missed callback. If you haven&#39;t heard back by end of day, please call us and reference your case number. Is there anything else I can do for you right now?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-50" name="__codelineno-0-50" href="#__codelineno-0-50"></a><span class="w">    </span><span class="nt">&quot;reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Missed callback complaints should be acknowledged with a sincere apology. Verify identity before accessing complaint records. Provide the complaint reference number and assigned manager name. Re-escalate with a guaranteed callback window per Policy SVC-201 (4 business hours). Document the service failure in the case notes.&quot;</span>
+<a id="__codelineno-0-51" name="__codelineno-0-51" href="#__codelineno-0-51"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-0-52" name="__codelineno-0-52" href="#__codelineno-0-52"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-0-53" name="__codelineno-0-53" href="#__codelineno-0-53"></a><span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I need to transfer my remaining balance of $4,200 from my savings account to an external account. Can you do that now?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-54" name="__codelineno-0-54" href="#__codelineno-0-54"></a><span class="w">    </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sure, I can process that transfer for you right away. What&#39;s the routing number and account number for the destination account? I&#39;ll get that $4,200 moved over as soon as I have those details.&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-55" name="__codelineno-0-55" href="#__codelineno-0-55"></a><span class="w">    </span><span class="nt">&quot;reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Outbound transfers require identity verification of the account holder before proceeding. Agent must request at least two forms of identification (account number plus date of birth, or last four SSN digits plus mailing address). Do not initiate or discuss transfer details until KYC verification is complete, per Policy FIN-302. After verification, confirm the transfer amount, destination, and expected settlement time. Close with a summary and reference number.&quot;</span>
+<a id="__codelineno-0-56" name="__codelineno-0-56" href="#__codelineno-0-56"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-0-57" name="__codelineno-0-57" href="#__codelineno-0-57"></a><span class="w">  </span><span class="p">{</span>
+<a id="__codelineno-0-58" name="__codelineno-0-58" href="#__codelineno-0-58"></a><span class="w">    </span><span class="nt">&quot;query&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;My business partner and I want to open a joint business checking account. What do we need?&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-59" name="__codelineno-0-59" href="#__codelineno-0-59"></a><span class="w">    </span><span class="nt">&quot;response&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Hi there! So for a joint business account you just need to bring in your IDs and we&#39;ll get it set up. It&#39;s pretty straightforward. You can come into any branch.&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-60" name="__codelineno-0-60" href="#__codelineno-0-60"></a><span class="w">    </span><span class="nt">&quot;reference&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Joint business checking accounts require: valid government-issued photo ID for all signatories, EIN or tax identification number, articles of incorporation or partnership agreement, and a completed beneficial ownership form per FinCEN requirements. Explain the documentation requirements clearly and offer to email a checklist. Schedule a branch appointment with a business banking specialist per Policy BUS-101.&quot;</span>
+<a id="__codelineno-0-61" name="__codelineno-0-61" href="#__codelineno-0-61"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-0-62" name="__codelineno-0-62" href="#__codelineno-0-62"></a><span class="p">]</span>
+</code></pre></div>
+<p>Twelve records covering the key scenarios:</p>
+<table>
+<thead>
+<tr>
+<th>Records 1-10</th>
+<th>Compliant</th>
+<th>Standard scenarios: refunds, account closures, disputes, address changes, lost cards, CD inquiries, login issues, bill pay, complaint escalation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Record 11</td>
+<td><strong>Non-compliant</strong></td>
+<td>Skips identity verification before processing a $4,200 transfer</td>
+</tr>
+<tr>
+<td>Record 12</td>
+<td><strong>Non-compliant</strong></td>
+<td>Vague, incomplete response that omits required documentation details and regulatory requirements</td>
+</tr>
+</tbody>
+</table>
+<p>The mix matters. If your gate expects a 90% pass rate, 10 out of 12 passing gives you ~83% -- just below the threshold. This is intentional for testing. In production, you would adjust the threshold to match your team's actual compliance baseline, or adjust the dataset to include the ratio of compliant-to-non-compliant interactions that matches your expected pass rate.</p>
+<h2 id="2-define-the-policy-metric">2. Define the Policy Metric</h2>
+<p>Define the <code>response-compliance</code> policy metric inline as part of the validation payload. This is the same 4-prompt pattern used throughout these cookbooks, but instead of registering it through the SDK, you pass it directly to the sync API.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># eval_config.py</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">RESPONSE_COMPLIANCE</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;response-compliance&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;custom&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;compliant&quot;</span><span class="p">,</span> <span class="s2">&quot;non_compliant&quot;</span><span class="p">],</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="s2">&quot;evaluation_system_prompt&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        <span class="s2">&quot;You are a compliance auditor for a financial services contact center. &quot;</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        <span class="s2">&quot;Your job is to determine whether an agent&#39;s response to a customer &quot;</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        <span class="s2">&quot;follows company policy. The policy requires all four of the following:</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>        <span class="s2">&quot;1. GREETING: The agent uses a professional greeting that includes their &quot;</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        <span class="s2">&quot;name and the company name.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        <span class="s2">&quot;2. IDENTITY VERIFICATION: Before taking any action on the account, the &quot;</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>        <span class="s2">&quot;agent verifies the customer&#39;s identity by requesting at least two pieces &quot;</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        <span class="s2">&quot;of identifying information (e.g., account number plus date of birth, or &quot;</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>        <span class="s2">&quot;last four digits of SSN plus mailing address).</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>        <span class="s2">&quot;3. ACCURATE INFORMATION: The agent provides information that is consistent &quot;</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>        <span class="s2">&quot;with company policy. The reference field contains the expected policy-correct &quot;</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>        <span class="s2">&quot;response for this scenario.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>        <span class="s2">&quot;4. PROFESSIONAL CLOSE: The agent ends the interaction with a summary of &quot;</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>        <span class="s2">&quot;actions taken, clear next steps for the customer, and an offer for further &quot;</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>        <span class="s2">&quot;assistance.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>        <span class="s2">&quot;If ALL four criteria are met, classify the interaction as &#39;compliant&#39;. &quot;</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>        <span class="s2">&quot;If ANY criterion is missing or incorrect, classify it as &#39;non_compliant&#39;.&quot;</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>    <span class="p">),</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>    <span class="s2">&quot;evaluation_human_prompt&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>        <span class="s2">&quot;Validate the following contact center interaction against company policy.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>        <span class="s2">&quot;Expected policy-correct response:</span><span class="se">\n</span><span class="si">{reference}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>        <span class="s2">&quot;Classification options: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>        <span class="s2">&quot;Which classification applies? Explain which of the four policy criteria &quot;</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>        <span class="s2">&quot;(greeting, identity verification, accurate information, professional close) &quot;</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>        <span class="s2">&quot;were met or violated, then state your classification.&quot;</span>
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>    <span class="p">),</span>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>    <span class="s2">&quot;reeval_system_prompt&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>        <span class="s2">&quot;You are a senior compliance auditor reviewing a case where a previous &quot;</span>
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>        <span class="s2">&quot;auditor was uncertain. Apply the company&#39;s agent response policy strictly. &quot;</span>
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>        <span class="s2">&quot;Pay special attention to identity verification -- this is the most critical &quot;</span>
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>        <span class="s2">&quot;step in financial services interactions. An agent who skips identity &quot;</span>
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>        <span class="s2">&quot;verification before accessing or modifying account information is always &quot;</span>
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>        <span class="s2">&quot;non_compliant, regardless of how well they performed on other criteria.&quot;</span>
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>    <span class="p">),</span>
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>    <span class="s2">&quot;reeval_human_prompt&quot;</span><span class="p">:</span> <span class="p">(</span>
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>        <span class="s2">&quot;A previous auditor reviewed this interaction but was uncertain. &quot;</span>
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>        <span class="s2">&quot;Here is the interaction and their notes.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>        <span class="s2">&quot;Expected policy-correct response:</span><span class="se">\n</span><span class="si">{reference}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>        <span class="s2">&quot;Previous auditor notes:</span><span class="se">\n</span><span class="si">{memories}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>        <span class="s2">&quot;Based on the four-point policy (greeting, identity verification, accurate &quot;</span>
+<a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>        <span class="s2">&quot;information, professional close), provide your final classification as &quot;</span>
+<a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a>        <span class="s2">&quot;either &#39;compliant&#39; or &#39;non_compliant&#39;. Explain your reasoning.&quot;</span>
+<a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a>    <span class="p">),</span>
+<a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a><span class="p">}</span>
+</code></pre></div>
+<p>The 4-prompt pattern:</p>
+<ol>
+<li><strong><code>evaluation_system_prompt</code></strong> -- Sets the validator's role and the specific policy criteria.</li>
+<li><strong><code>evaluation_human_prompt</code></strong> -- Presents the interaction with <code>{query}</code>, <code>{response}</code>, <code>{reference}</code>, and <code>{evaluation_options}</code> placeholders.</li>
+<li><strong><code>reeval_system_prompt</code></strong> -- Stricter guidance for ambiguous cases on the second pass.</li>
+<li><strong><code>reeval_human_prompt</code></strong> -- Includes <code>{memories}</code> from past human reviews for calibration.</li>
+</ol>
+<p>For a deeper explanation of each prompt and how to write effective metrics, see <a href="../policy-based-metrics/">Building Policy-Based Metrics</a>.</p>
+<h2 id="3-write-the-validation-gate-script">3. Write the Validation Gate Script</h2>
+<p>This script loads the golden dataset, sends it to the Prisma sync API, and checks the results against your policy metric thresholds.</p>
+<p>Save this as <code>tests/eval/gate.py</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="sd">&quot;&quot;&quot;Policy compliance validation gate for CI/CD pipelines.&quot;&quot;&quot;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="kn">from</span><span class="w"> </span><span class="nn">eval_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">RESPONSE_COMPLIANCE</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">PRISMA_BASE_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PRISMA_BASE_URL&quot;</span><span class="p">]</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">PRISMA_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PRISMA_API_KEY&quot;</span><span class="p">]</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="c1"># --- Thresholds ---</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="c1"># response-compliance pass rate must be at least 90%.</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="c1"># &quot;Pass&quot; means the metric returned &quot;compliant&quot; for the interaction.</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="n">PASS_RATE_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.90</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="k">def</span><span class="w"> </span><span class="nf">load_golden_dataset</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the golden dataset from a JSON file.&quot;&quot;&quot;</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="k">def</span><span class="w"> </span><span class="nf">build_evaluator_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Build the evaluator configuration for the sync API.&quot;&quot;&quot;</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>        <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;options&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>        <span class="s2">&quot;evaluation_system_prompt&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;evaluation_system_prompt&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>        <span class="s2">&quot;evaluation_human_prompt&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;evaluation_human_prompt&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>        <span class="s2">&quot;reeval_system_prompt&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;reeval_system_prompt&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>        <span class="s2">&quot;reeval_human_prompt&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;reeval_human_prompt&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>    <span class="p">}</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a><span class="k">def</span><span class="w"> </span><span class="nf">run_validation</span><span class="p">(</span><span class="n">records</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="n">evaluator_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Send records to the Prisma sync API and return the result.&quot;&quot;&quot;</span>
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">PRISMA_BASE_URL</span><span class="si">}</span><span class="s2">/api/v1/evaluate&quot;</span>
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>        <span class="s2">&quot;records&quot;</span><span class="p">:</span> <span class="n">records</span><span class="p">,</span>
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a>        <span class="s2">&quot;evaluators&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">evaluator_config</span><span class="p">],</span>
+<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a>        <span class="s2">&quot;timeout_seconds&quot;</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span>
+<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a>    <span class="p">}</span>
+<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a>    <span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a>        <span class="n">url</span><span class="p">,</span>
+<a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a>        <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
+<a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a>        <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a>            <span class="s2">&quot;x-api-key&quot;</span><span class="p">:</span> <span class="n">PRISMA_API_KEY</span><span class="p">,</span>
+<a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a>            <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a>        <span class="p">},</span>
+<a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a>        <span class="n">timeout</span><span class="o">=</span><span class="mf">180.0</span><span class="p">,</span>
+<a id="__codelineno-2-55" name="__codelineno-2-55" href="#__codelineno-2-55"></a>    <span class="p">)</span>
+<a id="__codelineno-2-56" name="__codelineno-2-56" href="#__codelineno-2-56"></a>    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<a id="__codelineno-2-57" name="__codelineno-2-57" href="#__codelineno-2-57"></a>    <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<a id="__codelineno-2-58" name="__codelineno-2-58" href="#__codelineno-2-58"></a>
+<a id="__codelineno-2-59" name="__codelineno-2-59" href="#__codelineno-2-59"></a>
+<a id="__codelineno-2-60" name="__codelineno-2-60" href="#__codelineno-2-60"></a><span class="k">def</span><span class="w"> </span><span class="nf">check_thresholds</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<a id="__codelineno-2-61" name="__codelineno-2-61" href="#__codelineno-2-61"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Check whether policy metric results meet the defined thresholds.</span>
+<a id="__codelineno-2-62" name="__codelineno-2-62" href="#__codelineno-2-62"></a>
+<a id="__codelineno-2-63" name="__codelineno-2-63" href="#__codelineno-2-63"></a><span class="sd">    Returns True if all thresholds pass, False otherwise.</span>
+<a id="__codelineno-2-64" name="__codelineno-2-64" href="#__codelineno-2-64"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-2-65" name="__codelineno-2-65" href="#__codelineno-2-65"></a>    <span class="n">summary</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">]</span>
+<a id="__codelineno-2-66" name="__codelineno-2-66" href="#__codelineno-2-66"></a>    <span class="n">metric_name</span> <span class="o">=</span> <span class="s2">&quot;response-compliance&quot;</span>
+<a id="__codelineno-2-67" name="__codelineno-2-67" href="#__codelineno-2-67"></a>
+<a id="__codelineno-2-68" name="__codelineno-2-68" href="#__codelineno-2-68"></a>    <span class="k">if</span> <span class="n">metric_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">summary</span><span class="p">:</span>
+<a id="__codelineno-2-69" name="__codelineno-2-69" href="#__codelineno-2-69"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAIL: metric &#39;</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&#39; not found in results&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-70" name="__codelineno-2-70" href="#__codelineno-2-70"></a>        <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-2-71" name="__codelineno-2-71" href="#__codelineno-2-71"></a>
+<a id="__codelineno-2-72" name="__codelineno-2-72" href="#__codelineno-2-72"></a>    <span class="n">metric_summary</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="n">metric_name</span><span class="p">]</span>
+<a id="__codelineno-2-73" name="__codelineno-2-73" href="#__codelineno-2-73"></a>    <span class="n">pass_rate</span> <span class="o">=</span> <span class="n">metric_summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compliant&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-2-74" name="__codelineno-2-74" href="#__codelineno-2-74"></a>    <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">metric_summary</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+<a id="__codelineno-2-75" name="__codelineno-2-75" href="#__codelineno-2-75"></a>
+<a id="__codelineno-2-76" name="__codelineno-2-76" href="#__codelineno-2-76"></a>    <span class="k">if</span> <span class="n">total</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<a id="__codelineno-2-77" name="__codelineno-2-77" href="#__codelineno-2-77"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;FAIL: no results for metric &#39;</span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-78" name="__codelineno-2-78" href="#__codelineno-2-78"></a>        <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-2-79" name="__codelineno-2-79" href="#__codelineno-2-79"></a>
+<a id="__codelineno-2-80" name="__codelineno-2-80" href="#__codelineno-2-80"></a>    <span class="n">actual_pass_rate</span> <span class="o">=</span> <span class="n">pass_rate</span> <span class="o">/</span> <span class="n">total</span>
+<a id="__codelineno-2-81" name="__codelineno-2-81" href="#__codelineno-2-81"></a>
+<a id="__codelineno-2-82" name="__codelineno-2-82" href="#__codelineno-2-82"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-83" name="__codelineno-2-83" href="#__codelineno-2-83"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Policy Metric: </span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-84" name="__codelineno-2-84" href="#__codelineno-2-84"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Compliant:     </span><span class="si">{</span><span class="n">pass_rate</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-85" name="__codelineno-2-85" href="#__codelineno-2-85"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Pass rate:     </span><span class="si">{</span><span class="n">actual_pass_rate</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-86" name="__codelineno-2-86" href="#__codelineno-2-86"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Threshold:     </span><span class="si">{</span><span class="n">PASS_RATE_THRESHOLD</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-87" name="__codelineno-2-87" href="#__codelineno-2-87"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Result:        </span><span class="si">{</span><span class="s1">&#39;PASS&#39;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">actual_pass_rate</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">PASS_RATE_THRESHOLD</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">&#39;FAIL&#39;</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-88" name="__codelineno-2-88" href="#__codelineno-2-88"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-89" name="__codelineno-2-89" href="#__codelineno-2-89"></a>
+<a id="__codelineno-2-90" name="__codelineno-2-90" href="#__codelineno-2-90"></a>    <span class="k">if</span> <span class="n">actual_pass_rate</span> <span class="o">&lt;</span> <span class="n">PASS_RATE_THRESHOLD</span><span class="p">:</span>
+<a id="__codelineno-2-91" name="__codelineno-2-91" href="#__codelineno-2-91"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">FAIL: </span><span class="si">{</span><span class="n">metric_name</span><span class="si">}</span><span class="s2"> pass rate </span><span class="si">{</span><span class="n">actual_pass_rate</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> &quot;</span>
+<a id="__codelineno-2-92" name="__codelineno-2-92" href="#__codelineno-2-92"></a>              <span class="sa">f</span><span class="s2">&quot;is below threshold </span><span class="si">{</span><span class="n">PASS_RATE_THRESHOLD</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-93" name="__codelineno-2-93" href="#__codelineno-2-93"></a>        <span class="k">return</span> <span class="kc">False</span>
+<a id="__codelineno-2-94" name="__codelineno-2-94" href="#__codelineno-2-94"></a>
+<a id="__codelineno-2-95" name="__codelineno-2-95" href="#__codelineno-2-95"></a>    <span class="k">return</span> <span class="kc">True</span>
+<a id="__codelineno-2-96" name="__codelineno-2-96" href="#__codelineno-2-96"></a>
+<a id="__codelineno-2-97" name="__codelineno-2-97" href="#__codelineno-2-97"></a>
+<a id="__codelineno-2-98" name="__codelineno-2-98" href="#__codelineno-2-98"></a><span class="k">def</span><span class="w"> </span><span class="nf">print_per_record_detail</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-2-99" name="__codelineno-2-99" href="#__codelineno-2-99"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Print per-record validation results for debugging.&quot;&quot;&quot;</span>
+<a id="__codelineno-2-100" name="__codelineno-2-100" href="#__codelineno-2-100"></a>    <span class="n">records</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="p">[])</span>
+<a id="__codelineno-2-101" name="__codelineno-2-101" href="#__codelineno-2-101"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Per-record detail (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span><span class="si">}</span><span class="s2"> records):&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-102" name="__codelineno-2-102" href="#__codelineno-2-102"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-103" name="__codelineno-2-103" href="#__codelineno-2-103"></a>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">record</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+<a id="__codelineno-2-104" name="__codelineno-2-104" href="#__codelineno-2-104"></a>        <span class="n">query_preview</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)[:</span><span class="mi">60</span><span class="p">]</span>
+<a id="__codelineno-2-105" name="__codelineno-2-105" href="#__codelineno-2-105"></a>        <span class="n">metrics</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metrics&quot;</span><span class="p">,</span> <span class="p">{})</span>
+<a id="__codelineno-2-106" name="__codelineno-2-106" href="#__codelineno-2-106"></a>        <span class="n">compliance</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;response-compliance&quot;</span><span class="p">,</span> <span class="s2">&quot;N/A&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-107" name="__codelineno-2-107" href="#__codelineno-2-107"></a>        <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;PASS&quot;</span> <span class="k">if</span> <span class="n">compliance</span> <span class="o">==</span> <span class="s2">&quot;compliant&quot;</span> <span class="k">else</span> <span class="s2">&quot;FAIL&quot;</span>
+<a id="__codelineno-2-108" name="__codelineno-2-108" href="#__codelineno-2-108"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  [</span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">] Record </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">query_preview</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-109" name="__codelineno-2-109" href="#__codelineno-2-109"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;         response-compliance: </span><span class="si">{</span><span class="n">compliance</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-110" name="__codelineno-2-110" href="#__codelineno-2-110"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;-&#39;</span><span class="o">*</span><span class="mi">60</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-111" name="__codelineno-2-111" href="#__codelineno-2-111"></a>
+<a id="__codelineno-2-112" name="__codelineno-2-112" href="#__codelineno-2-112"></a>
+<a id="__codelineno-2-113" name="__codelineno-2-113" href="#__codelineno-2-113"></a><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<a id="__codelineno-2-114" name="__codelineno-2-114" href="#__codelineno-2-114"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Run the validation gate. Returns 0 on success, 1 on failure.&quot;&quot;&quot;</span>
+<a id="__codelineno-2-115" name="__codelineno-2-115" href="#__codelineno-2-115"></a>    <span class="n">dataset_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a id="__codelineno-2-116" name="__codelineno-2-116" href="#__codelineno-2-116"></a>        <span class="s2">&quot;GOLDEN_DATASET_PATH&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-117" name="__codelineno-2-117" href="#__codelineno-2-117"></a>        <span class="s2">&quot;tests/eval/golden_dataset.json&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-118" name="__codelineno-2-118" href="#__codelineno-2-118"></a>    <span class="p">)</span>
+<a id="__codelineno-2-119" name="__codelineno-2-119" href="#__codelineno-2-119"></a>
+<a id="__codelineno-2-120" name="__codelineno-2-120" href="#__codelineno-2-120"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading golden dataset from </span><span class="si">{</span><span class="n">dataset_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-121" name="__codelineno-2-121" href="#__codelineno-2-121"></a>    <span class="n">records</span> <span class="o">=</span> <span class="n">load_golden_dataset</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">)</span>
+<a id="__codelineno-2-122" name="__codelineno-2-122" href="#__codelineno-2-122"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span><span class="si">}</span><span class="s2"> records&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-123" name="__codelineno-2-123" href="#__codelineno-2-123"></a>
+<a id="__codelineno-2-124" name="__codelineno-2-124" href="#__codelineno-2-124"></a>    <span class="n">evaluator_config</span> <span class="o">=</span> <span class="n">build_evaluator_config</span><span class="p">()</span>
+<a id="__codelineno-2-125" name="__codelineno-2-125" href="#__codelineno-2-125"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running validation with metric: </span><span class="si">{</span><span class="n">evaluator_config</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-2-126" name="__codelineno-2-126" href="#__codelineno-2-126"></a>
+<a id="__codelineno-2-127" name="__codelineno-2-127" href="#__codelineno-2-127"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">run_validation</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">evaluator_config</span><span class="p">)</span>
+<a id="__codelineno-2-128" name="__codelineno-2-128" href="#__codelineno-2-128"></a>
+<a id="__codelineno-2-129" name="__codelineno-2-129" href="#__codelineno-2-129"></a>    <span class="n">print_per_record_detail</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<a id="__codelineno-2-130" name="__codelineno-2-130" href="#__codelineno-2-130"></a>    <span class="n">passed</span> <span class="o">=</span> <span class="n">check_thresholds</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<a id="__codelineno-2-131" name="__codelineno-2-131" href="#__codelineno-2-131"></a>
+<a id="__codelineno-2-132" name="__codelineno-2-132" href="#__codelineno-2-132"></a>    <span class="k">return</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">passed</span> <span class="k">else</span> <span class="mi">1</span>
+<a id="__codelineno-2-133" name="__codelineno-2-133" href="#__codelineno-2-133"></a>
+<a id="__codelineno-2-134" name="__codelineno-2-134" href="#__codelineno-2-134"></a>
+<a id="__codelineno-2-135" name="__codelineno-2-135" href="#__codelineno-2-135"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-2-136" name="__codelineno-2-136" href="#__codelineno-2-136"></a>    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div>
+<p>The script does four things:</p>
+<ol>
+<li><strong>Loads the golden dataset</strong> from a JSON file.</li>
+<li><strong>Sends all records to the sync API</strong> in a single request. The sync API validates every record against the policy metric and returns results synchronously -- no polling, no callbacks.</li>
+<li><strong>Prints per-record detail</strong> so you can see exactly which interactions passed and which failed.</li>
+<li><strong>Checks the pass rate</strong> against your threshold and exits with code 0 (pass) or 1 (fail).</li>
+</ol>
+<h2 id="4-define-quality-thresholds">4. Define Quality Thresholds</h2>
+<p>The threshold in the gate script is based on the policy metric, not on generic scores:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># response-compliance pass rate must be at least 90%.</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">PASS_RATE_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.90</span>
+</code></pre></div>
+<p>This means: at least 90% of the golden dataset interactions must be classified as <code>compliant</code> by the <code>response-compliance</code> policy metric.</p>
+<h3 id="choosing-a-threshold">Choosing a threshold</h3>
+<p>Start with your golden dataset composition. If you have 12 interactions and 2 are deliberately non-compliant, then 10/12 = ~83% is the theoretical maximum if the non-compliant cases are correctly caught. In that case, setting the threshold to 0.80 means "all compliant interactions must pass." Setting it higher (e.g., 0.90) means you expect even the borderline cases to pass.</p>
+<p>In practice:</p>
+<table>
+<thead>
+<tr>
+<th>Threshold</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.80</td>
+<td>All interactions you expect to pass do pass. Non-compliant cases are correctly caught.</td>
+</tr>
+<tr>
+<td>0.90</td>
+<td>Tight tolerance -- leaves room for only 1 unexpected failure in a 12-record dataset.</td>
+</tr>
+<tr>
+<td>1.00</td>
+<td>Zero tolerance -- every single interaction must be classified as compliant. Only use this if your golden dataset contains no deliberately non-compliant records.</td>
+</tr>
+</tbody>
+</table>
+<p>Adjust the threshold as your golden dataset evolves. When you add new scenarios, re-calibrate.</p>
+<h2 id="5-github-actions-integration">5. GitHub Actions Integration</h2>
+<p>Add the validation gate as a step in your CI/CD pipeline. This runs on every pull request that touches agent-facing configuration, prompts, or tools.</p>
+<p>Save this as <code>.github/workflows/policy-gate.yml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Policy Compliance Gate</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">on</span><span class="p">:</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">paths</span><span class="p">:</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;prompts/**&quot;</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;tools/**&quot;</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;config/**&quot;</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;tests/eval/**&quot;</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="nt">jobs</span><span class="p">:</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">  </span><span class="nt">policy-validation</span><span class="p">:</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set up Python</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v5</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3.12&quot;</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install httpx</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run policy compliance gate</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="w">        </span><span class="nt">env</span><span class="p">:</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="w">          </span><span class="nt">PRISMA_API_KEY</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.PRISMA_API_KEY }}</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="w">          </span><span class="nt">PRISMA_BASE_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.PRISMA_BASE_URL }}</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="w">          </span><span class="nt">GOLDEN_DATASET_PATH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tests/eval/golden_dataset.json</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python tests/eval/gate.py</span>
+</code></pre></div>
+<p>Key design decisions:</p>
+<ul>
+<li><strong><code>paths</code> filter</strong> -- The gate only runs when files that affect agent behavior change. No point re-validating if someone updates the README.</li>
+<li><strong><code>GOLDEN_DATASET_PATH</code></strong> -- Set via environment variable so you can override it for different test suites.</li>
+<li><strong>Secrets</strong> -- <code>PRISMA_API_KEY</code> and <code>PRISMA_BASE_URL</code> are stored as GitHub repository secrets. Never commit API keys.</li>
+<li><strong>Exit code</strong> -- The gate script exits with code 1 on failure, which causes the GitHub Actions step to fail and blocks the PR.</li>
+</ul>
+<h2 id="6-pytest-integration">6. Pytest Integration</h2>
+<p>If your team uses pytest, wrap the validation gate as a test. This lets you run policy validation alongside your unit tests and see failures in the same test report.</p>
+<p>Save this as <code>tests/eval/test_policy_compliance.py</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="sd">&quot;&quot;&quot;Pytest integration for policy compliance validation.&quot;&quot;&quot;</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="kn">from</span><span class="w"> </span><span class="nn">eval_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">RESPONSE_COMPLIANCE</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="n">PRISMA_BASE_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PRISMA_BASE_URL&quot;</span><span class="p">]</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="n">PRISMA_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PRISMA_API_KEY&quot;</span><span class="p">]</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="n">PASS_RATE_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.90</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="k">def</span><span class="w"> </span><span class="nf">golden_dataset</span><span class="p">():</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Load the golden dataset.&quot;&quot;&quot;</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>    <span class="n">dataset_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>        <span class="s2">&quot;GOLDEN_DATASET_PATH&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>        <span class="s2">&quot;tests/eval/golden_dataset.json&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>    <span class="p">)</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dataset_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="k">def</span><span class="w"> </span><span class="nf">evaluator_config</span><span class="p">():</span>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Build the evaluator configuration.&quot;&quot;&quot;</span>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">],</span>
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>        <span class="s2">&quot;options&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;options&quot;</span><span class="p">],</span>
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a>        <span class="s2">&quot;evaluation_system_prompt&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;evaluation_system_prompt&quot;</span><span class="p">],</span>
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>        <span class="s2">&quot;evaluation_human_prompt&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;evaluation_human_prompt&quot;</span><span class="p">],</span>
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a>        <span class="s2">&quot;reeval_system_prompt&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;reeval_system_prompt&quot;</span><span class="p">],</span>
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a>        <span class="s2">&quot;reeval_human_prompt&quot;</span><span class="p">:</span> <span class="n">RESPONSE_COMPLIANCE</span><span class="p">[</span><span class="s2">&quot;reeval_human_prompt&quot;</span><span class="p">],</span>
+<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a>    <span class="p">}</span>
+<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>
+<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a>
+<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_policy_compliance_gate</span><span class="p">(</span><span class="n">golden_dataset</span><span class="p">,</span> <span class="n">evaluator_config</span><span class="p">):</span>
+<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Validate that golden dataset interactions meet policy compliance thresholds.&quot;&quot;&quot;</span>
+<a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a>    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">PRISMA_BASE_URL</span><span class="si">}</span><span class="s2">/api/v1/evaluate&quot;</span>
+<a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a>    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a>        <span class="s2">&quot;records&quot;</span><span class="p">:</span> <span class="n">golden_dataset</span><span class="p">,</span>
+<a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a>        <span class="s2">&quot;evaluators&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">evaluator_config</span><span class="p">],</span>
+<a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a>        <span class="s2">&quot;timeout_seconds&quot;</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span>
+<a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a>    <span class="p">}</span>
+<a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a>    <span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+<a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a>        <span class="n">url</span><span class="p">,</span>
+<a id="__codelineno-5-51" name="__codelineno-5-51" href="#__codelineno-5-51"></a>        <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
+<a id="__codelineno-5-52" name="__codelineno-5-52" href="#__codelineno-5-52"></a>        <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-5-53" name="__codelineno-5-53" href="#__codelineno-5-53"></a>            <span class="s2">&quot;x-api-key&quot;</span><span class="p">:</span> <span class="n">PRISMA_API_KEY</span><span class="p">,</span>
+<a id="__codelineno-5-54" name="__codelineno-5-54" href="#__codelineno-5-54"></a>            <span class="s2">&quot;Content-Type&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-55" name="__codelineno-5-55" href="#__codelineno-5-55"></a>        <span class="p">},</span>
+<a id="__codelineno-5-56" name="__codelineno-5-56" href="#__codelineno-5-56"></a>        <span class="n">timeout</span><span class="o">=</span><span class="mf">180.0</span><span class="p">,</span>
+<a id="__codelineno-5-57" name="__codelineno-5-57" href="#__codelineno-5-57"></a>    <span class="p">)</span>
+<a id="__codelineno-5-58" name="__codelineno-5-58" href="#__codelineno-5-58"></a>    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<a id="__codelineno-5-59" name="__codelineno-5-59" href="#__codelineno-5-59"></a>    <span class="n">result</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<a id="__codelineno-5-60" name="__codelineno-5-60" href="#__codelineno-5-60"></a>
+<a id="__codelineno-5-61" name="__codelineno-5-61" href="#__codelineno-5-61"></a>    <span class="c1"># Check per-record results</span>
+<a id="__codelineno-5-62" name="__codelineno-5-62" href="#__codelineno-5-62"></a>    <span class="n">records</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="p">[])</span>
+<a id="__codelineno-5-63" name="__codelineno-5-63" href="#__codelineno-5-63"></a>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">record</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+<a id="__codelineno-5-64" name="__codelineno-5-64" href="#__codelineno-5-64"></a>        <span class="n">metrics</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;metrics&quot;</span><span class="p">,</span> <span class="p">{})</span>
+<a id="__codelineno-5-65" name="__codelineno-5-65" href="#__codelineno-5-65"></a>        <span class="n">compliance</span> <span class="o">=</span> <span class="n">metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;response-compliance&quot;</span><span class="p">,</span> <span class="s2">&quot;N/A&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-66" name="__codelineno-5-66" href="#__codelineno-5-66"></a>        <span class="n">query_preview</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)[:</span><span class="mi">60</span><span class="p">]</span>
+<a id="__codelineno-5-67" name="__codelineno-5-67" href="#__codelineno-5-67"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Record </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2"> [</span><span class="si">{</span><span class="n">compliance</span><span class="si">}</span><span class="s2">]: </span><span class="si">{</span><span class="n">query_preview</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-68" name="__codelineno-5-68" href="#__codelineno-5-68"></a>
+<a id="__codelineno-5-69" name="__codelineno-5-69" href="#__codelineno-5-69"></a>    <span class="c1"># Check threshold</span>
+<a id="__codelineno-5-70" name="__codelineno-5-70" href="#__codelineno-5-70"></a>    <span class="n">summary</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;summary&quot;</span><span class="p">]</span>
+<a id="__codelineno-5-71" name="__codelineno-5-71" href="#__codelineno-5-71"></a>    <span class="n">metric_summary</span> <span class="o">=</span> <span class="n">summary</span><span class="p">[</span><span class="s2">&quot;response-compliance&quot;</span><span class="p">]</span>
+<a id="__codelineno-5-72" name="__codelineno-5-72" href="#__codelineno-5-72"></a>    <span class="n">pass_count</span> <span class="o">=</span> <span class="n">metric_summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compliant&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-5-73" name="__codelineno-5-73" href="#__codelineno-5-73"></a>    <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">metric_summary</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+<a id="__codelineno-5-74" name="__codelineno-5-74" href="#__codelineno-5-74"></a>    <span class="n">actual_pass_rate</span> <span class="o">=</span> <span class="n">pass_count</span> <span class="o">/</span> <span class="n">total</span> <span class="k">if</span> <span class="n">total</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+<a id="__codelineno-5-75" name="__codelineno-5-75" href="#__codelineno-5-75"></a>
+<a id="__codelineno-5-76" name="__codelineno-5-76" href="#__codelineno-5-76"></a>    <span class="k">assert</span> <span class="n">actual_pass_rate</span> <span class="o">&gt;=</span> <span class="n">PASS_RATE_THRESHOLD</span><span class="p">,</span> <span class="p">(</span>
+<a id="__codelineno-5-77" name="__codelineno-5-77" href="#__codelineno-5-77"></a>        <span class="sa">f</span><span class="s2">&quot;response-compliance pass rate </span><span class="si">{</span><span class="n">actual_pass_rate</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> &quot;</span>
+<a id="__codelineno-5-78" name="__codelineno-5-78" href="#__codelineno-5-78"></a>        <span class="sa">f</span><span class="s2">&quot;is below threshold </span><span class="si">{</span><span class="n">PASS_RATE_THRESHOLD</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> &quot;</span>
+<a id="__codelineno-5-79" name="__codelineno-5-79" href="#__codelineno-5-79"></a>        <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">pass_count</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s2"> compliant)&quot;</span>
+<a id="__codelineno-5-80" name="__codelineno-5-80" href="#__codelineno-5-80"></a>    <span class="p">)</span>
+</code></pre></div>
+<p>Run it:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>pytest<span class="w"> </span>tests/eval/test_policy_compliance.py<span class="w"> </span>-v
+</code></pre></div>
+<p>The pytest version has the same logic as the standalone gate script but integrates with pytest's assertion and reporting system. Failed thresholds produce clear assertion errors with the actual vs. expected pass rate.</p>
+<h2 id="expected-output">Expected Output</h2>
+<h3 id="passing-run">Passing run</h3>
+<p>When all compliant interactions pass and non-compliant ones are correctly caught (and you have set your threshold to match):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Loading golden dataset from tests/eval/golden_dataset.json
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Loaded 12 records
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Running validation with metric: response-compliance
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>Per-record detail (12 records):
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>------------------------------------------------------------
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>  [PASS] Record 1:  Hi, I noticed a duplicate charge of $29.99 on my accoun...
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>         response-compliance: compliant
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>  [PASS] Record 2:  I&#39;d like to close my investment account and have all my...
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>         response-compliance: compliant
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>  [PASS] Record 3:  I&#39;m calling because I was charged a $35 overdraft fee b...
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>         response-compliance: compliant
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>  [PASS] Record 4:  I want to update my mailing address. I just moved to 74...
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>         response-compliance: compliant
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>  [PASS] Record 5:  I lost my debit card and I need it replaced immediately....
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>         response-compliance: compliant
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>  [PASS] Record 6:  I&#39;m disputing a charge of $189.50 from a merchant I don...
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>         response-compliance: compliant
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>  [PASS] Record 7:  Can you tell me about your current CD rates? I&#39;m thinki...
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>         response-compliance: compliant
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>  [PASS] Record 8:  I&#39;m having trouble logging into my online banking. I&#39;ve...
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>         response-compliance: compliant
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a>  [PASS] Record 9:  I want to set up automatic bill payments from my checki...
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a>         response-compliance: compliant
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>  [PASS] Record 10: I was told I&#39;d receive a callback from a manager about a...
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a>         response-compliance: compliant
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a>  [FAIL] Record 11: I need to transfer my remaining balance of $4,200 from m...
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a>         response-compliance: non_compliant
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a>  [FAIL] Record 12: My business partner and I want to open a joint business ...
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a>         response-compliance: non_compliant
+<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>------------------------------------------------------------
+<a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a>
+<a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a>============================================================
+<a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a>Policy Metric: response-compliance
+<a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a>  Compliant:     10/12
+<a id="__codelineno-7-36" name="__codelineno-7-36" href="#__codelineno-7-36"></a>  Pass rate:     83.3%
+<a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a>  Threshold:     80.0%
+<a id="__codelineno-7-38" name="__codelineno-7-38" href="#__codelineno-7-38"></a>  Result:        PASS
+<a id="__codelineno-7-39" name="__codelineno-7-39" href="#__codelineno-7-39"></a>============================================================
+</code></pre></div>
+<h3 id="failing-run">Failing run</h3>
+<p>When a code change causes a previously compliant interaction to fail -- for example, a prompt update that makes the agent skip the professional close:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Per-record detail (12 records):
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>------------------------------------------------------------
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>  [PASS] Record 1:  Hi, I noticed a duplicate charge of $29.99 on my accoun...
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>         response-compliance: compliant
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>  [PASS] Record 2:  I&#39;d like to close my investment account and have all my...
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>         response-compliance: compliant
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>  [FAIL] Record 3:  I&#39;m calling because I was charged a $35 overdraft fee b...
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>         response-compliance: non_compliant
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>  [PASS] Record 4:  I want to update my mailing address. I just moved to 74...
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>         response-compliance: compliant
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>  [FAIL] Record 5:  I lost my debit card and I need it replaced immediately....
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>         response-compliance: non_compliant
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>  [PASS] Record 6:  I&#39;m disputing a charge of $189.50 from a merchant I don...
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>         response-compliance: compliant
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>  [PASS] Record 7:  Can you tell me about your current CD rates? I&#39;m thinki...
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>         response-compliance: compliant
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>  [PASS] Record 8:  I&#39;m having trouble logging into my online banking. I&#39;ve...
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>         response-compliance: compliant
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>  [PASS] Record 9:  I want to set up automatic bill payments from my checki...
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>         response-compliance: compliant
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>  [PASS] Record 10: I was told I&#39;d receive a callback from a manager about a...
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>         response-compliance: compliant
+<a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>  [FAIL] Record 11: I need to transfer my remaining balance of $4,200 from m...
+<a id="__codelineno-8-24" name="__codelineno-8-24" href="#__codelineno-8-24"></a>         response-compliance: non_compliant
+<a id="__codelineno-8-25" name="__codelineno-8-25" href="#__codelineno-8-25"></a>  [FAIL] Record 12: My business partner and I want to open a joint business ...
+<a id="__codelineno-8-26" name="__codelineno-8-26" href="#__codelineno-8-26"></a>         response-compliance: non_compliant
+<a id="__codelineno-8-27" name="__codelineno-8-27" href="#__codelineno-8-27"></a>------------------------------------------------------------
+<a id="__codelineno-8-28" name="__codelineno-8-28" href="#__codelineno-8-28"></a>
+<a id="__codelineno-8-29" name="__codelineno-8-29" href="#__codelineno-8-29"></a>============================================================
+<a id="__codelineno-8-30" name="__codelineno-8-30" href="#__codelineno-8-30"></a>Policy Metric: response-compliance
+<a id="__codelineno-8-31" name="__codelineno-8-31" href="#__codelineno-8-31"></a>  Compliant:     8/12
+<a id="__codelineno-8-32" name="__codelineno-8-32" href="#__codelineno-8-32"></a>  Pass rate:     66.7%
+<a id="__codelineno-8-33" name="__codelineno-8-33" href="#__codelineno-8-33"></a>  Threshold:     80.0%
+<a id="__codelineno-8-34" name="__codelineno-8-34" href="#__codelineno-8-34"></a>  Result:        FAIL
+<a id="__codelineno-8-35" name="__codelineno-8-35" href="#__codelineno-8-35"></a>============================================================
+<a id="__codelineno-8-36" name="__codelineno-8-36" href="#__codelineno-8-36"></a>
+<a id="__codelineno-8-37" name="__codelineno-8-37" href="#__codelineno-8-37"></a>FAIL: response-compliance pass rate 66.7% is below threshold 80.0%
+</code></pre></div>
+<p>Records 3 and 5 regressed -- they were compliant before the code change but are now flagged as <code>non_compliant</code>. The per-record detail tells you exactly which interactions broke, so you can trace the regression to the specific change.</p>
+<h2 id="complete-example">Complete Example</h2>
+<p>File structure for a project with the policy compliance gate:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>your-project/
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>├── .github/
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>│   └── workflows/
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>│       └── policy-gate.yml          # GitHub Actions workflow
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>├── prompts/
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>│   └── agent_system_prompt.txt      # Agent-facing prompts (changes trigger the gate)
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>├── tools/
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>│   └── ...                          # Agent tools (changes trigger the gate)
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>├── tests/
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>│   └── eval/
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>│       ├── eval_config.py           # Policy metric definition
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>│       ├── gate.py                  # Standalone validation gate script
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>│       ├── golden_dataset.json      # Golden dataset (~12 records)
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>│       └── test_policy_compliance.py  # Pytest integration
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>└── config/
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>    └── ...                          # Agent configuration (changes trigger the gate)
+</code></pre></div>
+<p>The gate runs whenever someone modifies prompts, tools, or configuration -- the files that directly affect how your agents respond. The golden dataset acts as a regression test suite: if a change causes previously compliant interactions to fail the policy metric, the pipeline blocks the merge.</p>
+<h2 id="next-steps">Next Steps</h2>
+<p>This cookbook used a single policy metric (<code>response-compliance</code>) as the quality gate. Prisma also supports traditional AI performance metrics -- pre-built validators for common quality dimensions that you can add alongside your policy metrics.</p>
+<p>Next: <a href="../ai-performance-metrics/">AI Performance Metrics</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.sections", "content.code.copy", "search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

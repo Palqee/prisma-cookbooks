@@ -1,0 +1,1776 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Practical guides for transforming human-review workflows with the Prisma AI SDK">
+      
+      
+      
+        <link rel="canonical" href="https://palqee.github.io/prisma-cookbooks/realtime-policy-monitoring/">
+      
+      
+        <link rel="prev" href="../human-review/">
+      
+      
+        <link rel="next" href="../cicd-policy-compliance/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Real-Time Policy Monitoring - Palqee Prisma Cookbooks</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="purple">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#real-time-policy-monitoring-in-production" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Palqee Prisma Cookbooks" class="md-header__button md-logo" aria-label="Palqee Prisma Cookbooks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Palqee Prisma Cookbooks
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Real-Time Policy Monitoring
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Palqee Prisma Cookbooks" class="md-nav__button md-logo" aria-label="Palqee Prisma Cookbooks" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Palqee Prisma Cookbooks
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting Started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contact-center-agents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Evaluating Contact Center Agents
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../policy-based-metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Building Policy-Based Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../human-review/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Human Review & Evaluation Memory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Real-Time Policy Monitoring
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Real-Time Policy Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You'll Learn
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-install-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Install Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-configure-environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Configure Environment Variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-define-policy-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Define Policy Metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-build-the-monitoring-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Build the Monitoring Service
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-test-the-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Test the Service
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-update-metrics-without-restart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Update Metrics Without Restart
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-monitoring-and-alerting-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Monitoring and Alerting Patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Monitoring and Alerting Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#viewing-results-in-prisma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Viewing results in Prisma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alerting-on-violation-rates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alerting on violation rates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics-to-track" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key metrics to track
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complete-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complete Example
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Complete Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#production-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production considerations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cicd-policy-compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Policy Compliance in CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ai-performance-metrics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI Performance Metrics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-learn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What You'll Learn
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-install-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Install Dependencies
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-configure-environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Configure Environment Variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-define-policy-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Define Policy Metrics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-build-the-monitoring-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Build the Monitoring Service
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-test-the-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Test the Service
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-update-metrics-without-restart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Update Metrics Without Restart
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-monitoring-and-alerting-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Monitoring and Alerting Patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Monitoring and Alerting Patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#viewing-results-in-prisma" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Viewing results in Prisma
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alerting-on-violation-rates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alerting on violation rates
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-metrics-to-track" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key metrics to track
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#complete-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Complete Example
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Complete Example">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#production-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production considerations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#next-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Next Steps
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="real-time-policy-monitoring-in-production">Real-Time Policy Monitoring in Production</h1>
+<p>A contact center platform validates every agent interaction as it happens, not in batch. OTLP logs from a live telephony system feed Prisma for continuous policy compliance monitoring with alerting on violations.</p>
+<h2 id="what-youll-learn">What You'll Learn</h2>
+<ul>
+<li>Build a FastAPI service that receives live transcript events from your CRM or telephony platform</li>
+<li>Log each interaction to Prisma for real-time policy validation via OTLP</li>
+<li>Define policy metrics that catch compliance violations and escalation procedure failures</li>
+<li>Update policy metrics on a running service without restarting</li>
+<li>Set up monitoring and alerting patterns for violation rates and compliance thresholds</li>
+</ul>
+<h2 id="prerequisites">Prerequisites</h2>
+<ul>
+<li><strong>Python 3.10+</strong></li>
+<li><strong>A Prisma AI API key</strong> (from your Prisma instance settings)</li>
+<li><strong>Access to a running Prisma instance</strong></li>
+<li>Familiarity with <a href="../getting-started/">Getting Started</a> and <a href="../policy-based-metrics/">Building Policy-Based Metrics</a></li>
+</ul>
+<h2 id="1-install-dependencies">1. Install Dependencies</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>prisma-ai<span class="w"> </span>fastapi<span class="w"> </span>uvicorn
+</code></pre></div>
+<p>The <code>prisma-ai</code> package provides the SDK for OTLP log ingestion and policy validation. <code>fastapi</code> and <code>uvicorn</code> provide the web framework and ASGI server for receiving live transcript webhooks.</p>
+<h2 id="2-configure-environment-variables">2. Configure Environment Variables</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PRISMA_API_KEY</span><span class="o">=</span><span class="s2">&quot;prisma_sk_your_key_here&quot;</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PRISMA_BASE_URL</span><span class="o">=</span><span class="s2">&quot;https://your-prisma-instance.example.com&quot;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">PRISMA_WORKSPACE_ID</span><span class="o">=</span><span class="s2">&quot;your-workspace-id&quot;</span>
+</code></pre></div>
+<h2 id="3-define-policy-metrics">3. Define Policy Metrics</h2>
+<p>Define two policy metrics that validate contact center interactions against your organization's compliance standards.</p>
+<p>The first metric, <code>response-compliance</code>, validates whether agent responses follow your company's communication policies -- tone, accuracy, required disclosures, and prohibited language.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">prisma_ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">Evaluators</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">response_compliance</span> <span class="o">=</span> <span class="n">Evaluators</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;response-compliance&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;compliant&quot;</span><span class="p">,</span> <span class="s2">&quot;non_compliant&quot;</span><span class="p">,</span> <span class="s2">&quot;needs_review&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">evaluation_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        <span class="s2">&quot;You are a contact center compliance reviewer. Your task is to &quot;</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>        <span class="s2">&quot;determine whether an agent&#39;s response follows company communication &quot;</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="s2">&quot;policies.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>        <span class="s2">&quot;The policies require:</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        <span class="s2">&quot;1. PROFESSIONAL TONE: The agent is courteous, empathetic, and avoids &quot;</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        <span class="s2">&quot;dismissive or confrontational language.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        <span class="s2">&quot;2. ACCURATE INFORMATION: The agent provides correct information about &quot;</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>        <span class="s2">&quot;products, services, and procedures. No guessing or speculation.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>        <span class="s2">&quot;3. REQUIRED DISCLOSURES: When discussing pricing, contracts, or policy &quot;</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>        <span class="s2">&quot;changes, the agent includes all required disclaimers.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>        <span class="s2">&quot;4. PROHIBITED LANGUAGE: The agent does not make guarantees, promises &quot;</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="s2">&quot;about timelines without verification, or statements that could create &quot;</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>        <span class="s2">&quot;legal liability.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>        <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>        <span class="s2">&quot;- compliant: All policies are followed.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>        <span class="s2">&quot;- non_compliant: One or more policies are clearly violated.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>        <span class="s2">&quot;- needs_review: The response is in a gray area where compliance &quot;</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>        <span class="s2">&quot;cannot be confidently determined without additional context.&quot;</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>    <span class="p">),</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>    <span class="n">evaluation_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>        <span class="s2">&quot;Review the following contact center interaction for policy compliance.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>        <span class="s2">&quot;Classify the response as one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>        <span class="s2">&quot;For each policy (tone, accuracy, disclosures, prohibited language), &quot;</span>
+<a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a>        <span class="s2">&quot;state whether it was followed or violated, then provide your classification.&quot;</span>
+<a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a>    <span class="p">),</span>
+<a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a>    <span class="n">reeval_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>        <span class="s2">&quot;You are a senior contact center compliance reviewer performing a &quot;</span>
+<a id="__codelineno-2-36" name="__codelineno-2-36" href="#__codelineno-2-36"></a>        <span class="s2">&quot;second-pass review. Apply the communication policies strictly.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-37" name="__codelineno-2-37" href="#__codelineno-2-37"></a>        <span class="s2">&quot;Pay particular attention to implicit guarantees -- statements that &quot;</span>
+<a id="__codelineno-2-38" name="__codelineno-2-38" href="#__codelineno-2-38"></a>        <span class="s2">&quot;stop short of a direct promise but still set customer expectations &quot;</span>
+<a id="__codelineno-2-39" name="__codelineno-2-39" href="#__codelineno-2-39"></a>        <span class="s2">&quot;beyond what the agent can deliver. These are the most common &quot;</span>
+<a id="__codelineno-2-40" name="__codelineno-2-40" href="#__codelineno-2-40"></a>        <span class="s2">&quot;borderline violations.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-41" name="__codelineno-2-41" href="#__codelineno-2-41"></a>        <span class="s2">&quot;You have access to decisions from previous compliance reviews to &quot;</span>
+<a id="__codelineno-2-42" name="__codelineno-2-42" href="#__codelineno-2-42"></a>        <span class="s2">&quot;calibrate your judgment.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-43" name="__codelineno-2-43" href="#__codelineno-2-43"></a>        <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-44" name="__codelineno-2-44" href="#__codelineno-2-44"></a>    <span class="p">),</span>
+<a id="__codelineno-2-45" name="__codelineno-2-45" href="#__codelineno-2-45"></a>    <span class="n">reeval_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-2-46" name="__codelineno-2-46" href="#__codelineno-2-46"></a>        <span class="s2">&quot;Re-evaluate this contact center interaction for policy compliance &quot;</span>
+<a id="__codelineno-2-47" name="__codelineno-2-47" href="#__codelineno-2-47"></a>        <span class="s2">&quot;using context from previous compliance reviews.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-48" name="__codelineno-2-48" href="#__codelineno-2-48"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-49" name="__codelineno-2-49" href="#__codelineno-2-49"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-50" name="__codelineno-2-50" href="#__codelineno-2-50"></a>        <span class="s2">&quot;Relevant past compliance review decisions:</span><span class="se">\n</span><span class="si">{memories}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-2-51" name="__codelineno-2-51" href="#__codelineno-2-51"></a>        <span class="s2">&quot;Based on the interaction and review history, provide your final &quot;</span>
+<a id="__codelineno-2-52" name="__codelineno-2-52" href="#__codelineno-2-52"></a>        <span class="s2">&quot;classification with specific policy findings.&quot;</span>
+<a id="__codelineno-2-53" name="__codelineno-2-53" href="#__codelineno-2-53"></a>    <span class="p">),</span>
+<a id="__codelineno-2-54" name="__codelineno-2-54" href="#__codelineno-2-54"></a><span class="p">)</span>
+</code></pre></div>
+<p>The second metric, <code>escalation-procedure</code>, validates whether the agent followed the correct escalation process when a customer requests a supervisor, threatens legal action, or reports a safety concern.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">escalation_procedure</span> <span class="o">=</span> <span class="n">Evaluators</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;escalation-procedure&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;procedure_followed&quot;</span><span class="p">,</span> <span class="s2">&quot;procedure_violated&quot;</span><span class="p">,</span> <span class="s2">&quot;not_applicable&quot;</span><span class="p">],</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">evaluation_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        <span class="s2">&quot;You are an escalation process reviewer for a contact center. Your &quot;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>        <span class="s2">&quot;task is to determine whether an agent followed the correct escalation &quot;</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>        <span class="s2">&quot;procedure when an escalation trigger was present.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>        <span class="s2">&quot;Escalation triggers include:</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>        <span class="s2">&quot;- Customer explicitly requests a supervisor or manager</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>        <span class="s2">&quot;- Customer threatens legal action or mentions an attorney</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>        <span class="s2">&quot;- Customer reports a safety concern or physical harm</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>        <span class="s2">&quot;- Customer expresses intent to contact media or regulators</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>        <span class="s2">&quot;When a trigger is present, the required procedure is:</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>        <span class="s2">&quot;1. ACKNOWLEDGE: The agent acknowledges the customer&#39;s concern &quot;</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>        <span class="s2">&quot;without being dismissive.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>        <span class="s2">&quot;2. DOCUMENT: The agent confirms the details of the situation.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>        <span class="s2">&quot;3. TRANSFER: The agent initiates a transfer to the appropriate &quot;</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>        <span class="s2">&quot;escalation path (supervisor, legal, safety team) without delay.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>        <span class="s2">&quot;If no escalation trigger is present, classify as not_applicable.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>        <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>        <span class="s2">&quot;- procedure_followed: An escalation trigger was present and the &quot;</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>        <span class="s2">&quot;agent followed all three steps.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>        <span class="s2">&quot;- procedure_violated: An escalation trigger was present but the &quot;</span>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>        <span class="s2">&quot;agent skipped one or more steps, or attempted to resolve the issue &quot;</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>        <span class="s2">&quot;without escalating.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>        <span class="s2">&quot;- not_applicable: No escalation trigger was present in the interaction.&quot;</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>    <span class="p">),</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>    <span class="n">evaluation_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>        <span class="s2">&quot;Review the following contact center interaction for escalation &quot;</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>        <span class="s2">&quot;procedure compliance.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>        <span class="s2">&quot;Classify the response as one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>        <span class="s2">&quot;First determine whether an escalation trigger is present. If so, &quot;</span>
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>        <span class="s2">&quot;assess each step (acknowledge, document, transfer). Then provide &quot;</span>
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>        <span class="s2">&quot;your classification.&quot;</span>
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>    <span class="p">),</span>
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>    <span class="n">reeval_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>        <span class="s2">&quot;You are a senior escalation process reviewer performing a &quot;</span>
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>        <span class="s2">&quot;second-pass review. Apply the escalation procedure strictly.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>        <span class="s2">&quot;The most critical violation is an agent who attempts to de-escalate &quot;</span>
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>        <span class="s2">&quot;or resolve the issue themselves when a transfer is required. Even &quot;</span>
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>        <span class="s2">&quot;well-intentioned attempts to help the customer directly are procedure &quot;</span>
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>        <span class="s2">&quot;violations when a trigger is present.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>        <span class="s2">&quot;You have access to decisions from previous escalation reviews to &quot;</span>
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>        <span class="s2">&quot;calibrate your judgment.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a>        <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>    <span class="p">),</span>
+<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>    <span class="n">reeval_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a>        <span class="s2">&quot;Re-evaluate this contact center interaction for escalation procedure &quot;</span>
+<a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>        <span class="s2">&quot;compliance using context from previous escalation reviews.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>        <span class="s2">&quot;Relevant past escalation review decisions:</span><span class="se">\n</span><span class="si">{memories}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a>        <span class="s2">&quot;Based on the interaction and review history, provide your final &quot;</span>
+<a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a>        <span class="s2">&quot;classification. Identify the specific escalation trigger (if any) &quot;</span>
+<a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a>        <span class="s2">&quot;and assess each procedure step.&quot;</span>
+<a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a>    <span class="p">),</span>
+<a id="__codelineno-3-59" name="__codelineno-3-59" href="#__codelineno-3-59"></a><span class="p">)</span>
+</code></pre></div>
+<h2 id="4-build-the-monitoring-service">4. Build the Monitoring Service</h2>
+<p>Create a file called <code>monitor.py</code>. This FastAPI application receives live transcript events from your CRM or telephony platform via a POST webhook, logs each interaction to Prisma for real-time validation, and manages the Prisma session lifecycle.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="sd">&quot;&quot;&quot;Real-time policy monitoring service for contact center interactions.&quot;&quot;&quot;</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">asynccontextmanager</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="kn">import</span><span class="w"> </span><span class="nn">prisma_ai</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="kn">from</span><span class="w"> </span><span class="nn">prisma_ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">EvaluationConfig</span><span class="p">,</span> <span class="n">Evaluators</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;policy-monitor&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="c1"># 1. Policy metric definitions</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="n">response_compliance</span> <span class="o">=</span> <span class="n">Evaluators</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;response-compliance&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a>    <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;compliant&quot;</span><span class="p">,</span> <span class="s2">&quot;non_compliant&quot;</span><span class="p">,</span> <span class="s2">&quot;needs_review&quot;</span><span class="p">],</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>    <span class="n">evaluation_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a>        <span class="s2">&quot;You are a contact center compliance reviewer. Your task is to &quot;</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a>        <span class="s2">&quot;determine whether an agent&#39;s response follows company communication &quot;</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>        <span class="s2">&quot;policies.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a>        <span class="s2">&quot;The policies require:</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a>        <span class="s2">&quot;1. PROFESSIONAL TONE: The agent is courteous, empathetic, and avoids &quot;</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a>        <span class="s2">&quot;dismissive or confrontational language.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a>        <span class="s2">&quot;2. ACCURATE INFORMATION: The agent provides correct information about &quot;</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>        <span class="s2">&quot;products, services, and procedures. No guessing or speculation.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>        <span class="s2">&quot;3. REQUIRED DISCLOSURES: When discussing pricing, contracts, or policy &quot;</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a>        <span class="s2">&quot;changes, the agent includes all required disclaimers.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a>        <span class="s2">&quot;4. PROHIBITED LANGUAGE: The agent does not make guarantees, promises &quot;</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>        <span class="s2">&quot;about timelines without verification, or statements that could create &quot;</span>
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a>        <span class="s2">&quot;legal liability.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a>        <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a>        <span class="s2">&quot;- compliant: All policies are followed.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a>        <span class="s2">&quot;- non_compliant: One or more policies are clearly violated.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a>        <span class="s2">&quot;- needs_review: The response is in a gray area where compliance &quot;</span>
+<a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a>        <span class="s2">&quot;cannot be confidently determined without additional context.&quot;</span>
+<a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a>    <span class="p">),</span>
+<a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a>    <span class="n">evaluation_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a>        <span class="s2">&quot;Review the following contact center interaction for policy compliance.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-43" name="__codelineno-4-43" href="#__codelineno-4-43"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-44" name="__codelineno-4-44" href="#__codelineno-4-44"></a>        <span class="s2">&quot;Classify the response as one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-45" name="__codelineno-4-45" href="#__codelineno-4-45"></a>        <span class="s2">&quot;For each policy (tone, accuracy, disclosures, prohibited language), &quot;</span>
+<a id="__codelineno-4-46" name="__codelineno-4-46" href="#__codelineno-4-46"></a>        <span class="s2">&quot;state whether it was followed or violated, then provide your classification.&quot;</span>
+<a id="__codelineno-4-47" name="__codelineno-4-47" href="#__codelineno-4-47"></a>    <span class="p">),</span>
+<a id="__codelineno-4-48" name="__codelineno-4-48" href="#__codelineno-4-48"></a>    <span class="n">reeval_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-4-49" name="__codelineno-4-49" href="#__codelineno-4-49"></a>        <span class="s2">&quot;You are a senior contact center compliance reviewer performing a &quot;</span>
+<a id="__codelineno-4-50" name="__codelineno-4-50" href="#__codelineno-4-50"></a>        <span class="s2">&quot;second-pass review. Apply the communication policies strictly.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-51" name="__codelineno-4-51" href="#__codelineno-4-51"></a>        <span class="s2">&quot;Pay particular attention to implicit guarantees -- statements that &quot;</span>
+<a id="__codelineno-4-52" name="__codelineno-4-52" href="#__codelineno-4-52"></a>        <span class="s2">&quot;stop short of a direct promise but still set customer expectations &quot;</span>
+<a id="__codelineno-4-53" name="__codelineno-4-53" href="#__codelineno-4-53"></a>        <span class="s2">&quot;beyond what the agent can deliver. These are the most common &quot;</span>
+<a id="__codelineno-4-54" name="__codelineno-4-54" href="#__codelineno-4-54"></a>        <span class="s2">&quot;borderline violations.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-55" name="__codelineno-4-55" href="#__codelineno-4-55"></a>        <span class="s2">&quot;You have access to decisions from previous compliance reviews to &quot;</span>
+<a id="__codelineno-4-56" name="__codelineno-4-56" href="#__codelineno-4-56"></a>        <span class="s2">&quot;calibrate your judgment.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-57" name="__codelineno-4-57" href="#__codelineno-4-57"></a>        <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-58" name="__codelineno-4-58" href="#__codelineno-4-58"></a>    <span class="p">),</span>
+<a id="__codelineno-4-59" name="__codelineno-4-59" href="#__codelineno-4-59"></a>    <span class="n">reeval_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-4-60" name="__codelineno-4-60" href="#__codelineno-4-60"></a>        <span class="s2">&quot;Re-evaluate this contact center interaction for policy compliance &quot;</span>
+<a id="__codelineno-4-61" name="__codelineno-4-61" href="#__codelineno-4-61"></a>        <span class="s2">&quot;using context from previous compliance reviews.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-62" name="__codelineno-4-62" href="#__codelineno-4-62"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-63" name="__codelineno-4-63" href="#__codelineno-4-63"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-64" name="__codelineno-4-64" href="#__codelineno-4-64"></a>        <span class="s2">&quot;Relevant past compliance review decisions:</span><span class="se">\n</span><span class="si">{memories}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-65" name="__codelineno-4-65" href="#__codelineno-4-65"></a>        <span class="s2">&quot;Based on the interaction and review history, provide your final &quot;</span>
+<a id="__codelineno-4-66" name="__codelineno-4-66" href="#__codelineno-4-66"></a>        <span class="s2">&quot;classification with specific policy findings.&quot;</span>
+<a id="__codelineno-4-67" name="__codelineno-4-67" href="#__codelineno-4-67"></a>    <span class="p">),</span>
+<a id="__codelineno-4-68" name="__codelineno-4-68" href="#__codelineno-4-68"></a><span class="p">)</span>
+<a id="__codelineno-4-69" name="__codelineno-4-69" href="#__codelineno-4-69"></a>
+<a id="__codelineno-4-70" name="__codelineno-4-70" href="#__codelineno-4-70"></a><span class="n">escalation_procedure</span> <span class="o">=</span> <span class="n">Evaluators</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span>
+<a id="__codelineno-4-71" name="__codelineno-4-71" href="#__codelineno-4-71"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;escalation-procedure&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-72" name="__codelineno-4-72" href="#__codelineno-4-72"></a>    <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;procedure_followed&quot;</span><span class="p">,</span> <span class="s2">&quot;procedure_violated&quot;</span><span class="p">,</span> <span class="s2">&quot;not_applicable&quot;</span><span class="p">],</span>
+<a id="__codelineno-4-73" name="__codelineno-4-73" href="#__codelineno-4-73"></a>    <span class="n">evaluation_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-4-74" name="__codelineno-4-74" href="#__codelineno-4-74"></a>        <span class="s2">&quot;You are an escalation process reviewer for a contact center. Your &quot;</span>
+<a id="__codelineno-4-75" name="__codelineno-4-75" href="#__codelineno-4-75"></a>        <span class="s2">&quot;task is to determine whether an agent followed the correct escalation &quot;</span>
+<a id="__codelineno-4-76" name="__codelineno-4-76" href="#__codelineno-4-76"></a>        <span class="s2">&quot;procedure when an escalation trigger was present.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-77" name="__codelineno-4-77" href="#__codelineno-4-77"></a>        <span class="s2">&quot;Escalation triggers include:</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-78" name="__codelineno-4-78" href="#__codelineno-4-78"></a>        <span class="s2">&quot;- Customer explicitly requests a supervisor or manager</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-79" name="__codelineno-4-79" href="#__codelineno-4-79"></a>        <span class="s2">&quot;- Customer threatens legal action or mentions an attorney</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-80" name="__codelineno-4-80" href="#__codelineno-4-80"></a>        <span class="s2">&quot;- Customer reports a safety concern or physical harm</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-81" name="__codelineno-4-81" href="#__codelineno-4-81"></a>        <span class="s2">&quot;- Customer expresses intent to contact media or regulators</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-82" name="__codelineno-4-82" href="#__codelineno-4-82"></a>        <span class="s2">&quot;When a trigger is present, the required procedure is:</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-83" name="__codelineno-4-83" href="#__codelineno-4-83"></a>        <span class="s2">&quot;1. ACKNOWLEDGE: The agent acknowledges the customer&#39;s concern &quot;</span>
+<a id="__codelineno-4-84" name="__codelineno-4-84" href="#__codelineno-4-84"></a>        <span class="s2">&quot;without being dismissive.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-85" name="__codelineno-4-85" href="#__codelineno-4-85"></a>        <span class="s2">&quot;2. DOCUMENT: The agent confirms the details of the situation.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-86" name="__codelineno-4-86" href="#__codelineno-4-86"></a>        <span class="s2">&quot;3. TRANSFER: The agent initiates a transfer to the appropriate &quot;</span>
+<a id="__codelineno-4-87" name="__codelineno-4-87" href="#__codelineno-4-87"></a>        <span class="s2">&quot;escalation path (supervisor, legal, safety team) without delay.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-88" name="__codelineno-4-88" href="#__codelineno-4-88"></a>        <span class="s2">&quot;If no escalation trigger is present, classify as not_applicable.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-89" name="__codelineno-4-89" href="#__codelineno-4-89"></a>        <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-90" name="__codelineno-4-90" href="#__codelineno-4-90"></a>        <span class="s2">&quot;- procedure_followed: An escalation trigger was present and the &quot;</span>
+<a id="__codelineno-4-91" name="__codelineno-4-91" href="#__codelineno-4-91"></a>        <span class="s2">&quot;agent followed all three steps.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-92" name="__codelineno-4-92" href="#__codelineno-4-92"></a>        <span class="s2">&quot;- procedure_violated: An escalation trigger was present but the &quot;</span>
+<a id="__codelineno-4-93" name="__codelineno-4-93" href="#__codelineno-4-93"></a>        <span class="s2">&quot;agent skipped one or more steps, or attempted to resolve the issue &quot;</span>
+<a id="__codelineno-4-94" name="__codelineno-4-94" href="#__codelineno-4-94"></a>        <span class="s2">&quot;without escalating.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-95" name="__codelineno-4-95" href="#__codelineno-4-95"></a>        <span class="s2">&quot;- not_applicable: No escalation trigger was present in the interaction.&quot;</span>
+<a id="__codelineno-4-96" name="__codelineno-4-96" href="#__codelineno-4-96"></a>    <span class="p">),</span>
+<a id="__codelineno-4-97" name="__codelineno-4-97" href="#__codelineno-4-97"></a>    <span class="n">evaluation_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-4-98" name="__codelineno-4-98" href="#__codelineno-4-98"></a>        <span class="s2">&quot;Review the following contact center interaction for escalation &quot;</span>
+<a id="__codelineno-4-99" name="__codelineno-4-99" href="#__codelineno-4-99"></a>        <span class="s2">&quot;procedure compliance.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-100" name="__codelineno-4-100" href="#__codelineno-4-100"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-101" name="__codelineno-4-101" href="#__codelineno-4-101"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-102" name="__codelineno-4-102" href="#__codelineno-4-102"></a>        <span class="s2">&quot;Classify the response as one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-103" name="__codelineno-4-103" href="#__codelineno-4-103"></a>        <span class="s2">&quot;First determine whether an escalation trigger is present. If so, &quot;</span>
+<a id="__codelineno-4-104" name="__codelineno-4-104" href="#__codelineno-4-104"></a>        <span class="s2">&quot;assess each step (acknowledge, document, transfer). Then provide &quot;</span>
+<a id="__codelineno-4-105" name="__codelineno-4-105" href="#__codelineno-4-105"></a>        <span class="s2">&quot;your classification.&quot;</span>
+<a id="__codelineno-4-106" name="__codelineno-4-106" href="#__codelineno-4-106"></a>    <span class="p">),</span>
+<a id="__codelineno-4-107" name="__codelineno-4-107" href="#__codelineno-4-107"></a>    <span class="n">reeval_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-4-108" name="__codelineno-4-108" href="#__codelineno-4-108"></a>        <span class="s2">&quot;You are a senior escalation process reviewer performing a &quot;</span>
+<a id="__codelineno-4-109" name="__codelineno-4-109" href="#__codelineno-4-109"></a>        <span class="s2">&quot;second-pass review. Apply the escalation procedure strictly.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-110" name="__codelineno-4-110" href="#__codelineno-4-110"></a>        <span class="s2">&quot;The most critical violation is an agent who attempts to de-escalate &quot;</span>
+<a id="__codelineno-4-111" name="__codelineno-4-111" href="#__codelineno-4-111"></a>        <span class="s2">&quot;or resolve the issue themselves when a transfer is required. Even &quot;</span>
+<a id="__codelineno-4-112" name="__codelineno-4-112" href="#__codelineno-4-112"></a>        <span class="s2">&quot;well-intentioned attempts to help the customer directly are procedure &quot;</span>
+<a id="__codelineno-4-113" name="__codelineno-4-113" href="#__codelineno-4-113"></a>        <span class="s2">&quot;violations when a trigger is present.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-114" name="__codelineno-4-114" href="#__codelineno-4-114"></a>        <span class="s2">&quot;You have access to decisions from previous escalation reviews to &quot;</span>
+<a id="__codelineno-4-115" name="__codelineno-4-115" href="#__codelineno-4-115"></a>        <span class="s2">&quot;calibrate your judgment.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-116" name="__codelineno-4-116" href="#__codelineno-4-116"></a>        <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-117" name="__codelineno-4-117" href="#__codelineno-4-117"></a>    <span class="p">),</span>
+<a id="__codelineno-4-118" name="__codelineno-4-118" href="#__codelineno-4-118"></a>    <span class="n">reeval_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-4-119" name="__codelineno-4-119" href="#__codelineno-4-119"></a>        <span class="s2">&quot;Re-evaluate this contact center interaction for escalation procedure &quot;</span>
+<a id="__codelineno-4-120" name="__codelineno-4-120" href="#__codelineno-4-120"></a>        <span class="s2">&quot;compliance using context from previous escalation reviews.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-121" name="__codelineno-4-121" href="#__codelineno-4-121"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-122" name="__codelineno-4-122" href="#__codelineno-4-122"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-123" name="__codelineno-4-123" href="#__codelineno-4-123"></a>        <span class="s2">&quot;Relevant past escalation review decisions:</span><span class="se">\n</span><span class="si">{memories}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-124" name="__codelineno-4-124" href="#__codelineno-4-124"></a>        <span class="s2">&quot;Based on the interaction and review history, provide your final &quot;</span>
+<a id="__codelineno-4-125" name="__codelineno-4-125" href="#__codelineno-4-125"></a>        <span class="s2">&quot;classification. Identify the specific escalation trigger (if any) &quot;</span>
+<a id="__codelineno-4-126" name="__codelineno-4-126" href="#__codelineno-4-126"></a>        <span class="s2">&quot;and assess each procedure step.&quot;</span>
+<a id="__codelineno-4-127" name="__codelineno-4-127" href="#__codelineno-4-127"></a>    <span class="p">),</span>
+<a id="__codelineno-4-128" name="__codelineno-4-128" href="#__codelineno-4-128"></a><span class="p">)</span>
+<a id="__codelineno-4-129" name="__codelineno-4-129" href="#__codelineno-4-129"></a>
+<a id="__codelineno-4-130" name="__codelineno-4-130" href="#__codelineno-4-130"></a>
+<a id="__codelineno-4-131" name="__codelineno-4-131" href="#__codelineno-4-131"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-4-132" name="__codelineno-4-132" href="#__codelineno-4-132"></a><span class="c1"># 2. FastAPI lifespan — Prisma init and shutdown</span>
+<a id="__codelineno-4-133" name="__codelineno-4-133" href="#__codelineno-4-133"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-4-134" name="__codelineno-4-134" href="#__codelineno-4-134"></a><span class="nd">@asynccontextmanager</span>
+<a id="__codelineno-4-135" name="__codelineno-4-135" href="#__codelineno-4-135"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+<a id="__codelineno-4-136" name="__codelineno-4-136" href="#__codelineno-4-136"></a>    <span class="c1"># Startup: initialize Prisma with policy metrics and OTLP logging</span>
+<a id="__codelineno-4-137" name="__codelineno-4-137" href="#__codelineno-4-137"></a>    <span class="n">session</span> <span class="o">=</span> <span class="n">prisma_ai</span><span class="o">.</span><span class="n">init</span><span class="p">(</span>
+<a id="__codelineno-4-138" name="__codelineno-4-138" href="#__codelineno-4-138"></a>        <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;contact-center-monitoring&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-139" name="__codelineno-4-139" href="#__codelineno-4-139"></a>        <span class="n">evaluators</span><span class="o">=</span><span class="p">[</span><span class="n">response_compliance</span><span class="p">,</span> <span class="n">escalation_procedure</span><span class="p">],</span>
+<a id="__codelineno-4-140" name="__codelineno-4-140" href="#__codelineno-4-140"></a>        <span class="n">enable_logging</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-4-141" name="__codelineno-4-141" href="#__codelineno-4-141"></a>    <span class="p">)</span>
+<a id="__codelineno-4-142" name="__codelineno-4-142" href="#__codelineno-4-142"></a>    <span class="n">data_logger</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+<a id="__codelineno-4-143" name="__codelineno-4-143" href="#__codelineno-4-143"></a>    <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
+<a id="__codelineno-4-144" name="__codelineno-4-144" href="#__codelineno-4-144"></a>    <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">data_logger</span> <span class="o">=</span> <span class="n">data_logger</span>
+<a id="__codelineno-4-145" name="__codelineno-4-145" href="#__codelineno-4-145"></a>
+<a id="__codelineno-4-146" name="__codelineno-4-146" href="#__codelineno-4-146"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+<a id="__codelineno-4-147" name="__codelineno-4-147" href="#__codelineno-4-147"></a>        <span class="s2">&quot;Prisma AI initialized — project=</span><span class="si">%s</span><span class="s2">, policy metrics active&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-148" name="__codelineno-4-148" href="#__codelineno-4-148"></a>        <span class="n">session</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+<a id="__codelineno-4-149" name="__codelineno-4-149" href="#__codelineno-4-149"></a>    <span class="p">)</span>
+<a id="__codelineno-4-150" name="__codelineno-4-150" href="#__codelineno-4-150"></a>
+<a id="__codelineno-4-151" name="__codelineno-4-151" href="#__codelineno-4-151"></a>    <span class="k">yield</span>
+<a id="__codelineno-4-152" name="__codelineno-4-152" href="#__codelineno-4-152"></a>
+<a id="__codelineno-4-153" name="__codelineno-4-153" href="#__codelineno-4-153"></a>    <span class="c1"># Shutdown: flush pending OTLP logs and close the session</span>
+<a id="__codelineno-4-154" name="__codelineno-4-154" href="#__codelineno-4-154"></a>    <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+<a id="__codelineno-4-155" name="__codelineno-4-155" href="#__codelineno-4-155"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Prisma AI session ended, pending logs flushed&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-156" name="__codelineno-4-156" href="#__codelineno-4-156"></a>
+<a id="__codelineno-4-157" name="__codelineno-4-157" href="#__codelineno-4-157"></a>
+<a id="__codelineno-4-158" name="__codelineno-4-158" href="#__codelineno-4-158"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Policy Monitoring Service&quot;</span><span class="p">,</span> <span class="n">lifespan</span><span class="o">=</span><span class="n">lifespan</span><span class="p">)</span>
+<a id="__codelineno-4-159" name="__codelineno-4-159" href="#__codelineno-4-159"></a>
+<a id="__codelineno-4-160" name="__codelineno-4-160" href="#__codelineno-4-160"></a>
+<a id="__codelineno-4-161" name="__codelineno-4-161" href="#__codelineno-4-161"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-4-162" name="__codelineno-4-162" href="#__codelineno-4-162"></a><span class="c1"># 3. Request/response models</span>
+<a id="__codelineno-4-163" name="__codelineno-4-163" href="#__codelineno-4-163"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-4-164" name="__codelineno-4-164" href="#__codelineno-4-164"></a><span class="k">class</span><span class="w"> </span><span class="nc">TranscriptEvent</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a id="__codelineno-4-165" name="__codelineno-4-165" href="#__codelineno-4-165"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;A transcript event from the CRM or telephony platform.&quot;&quot;&quot;</span>
+<a id="__codelineno-4-166" name="__codelineno-4-166" href="#__codelineno-4-166"></a>    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span>          <span class="c1"># Customer side of the interaction</span>
+<a id="__codelineno-4-167" name="__codelineno-4-167" href="#__codelineno-4-167"></a>    <span class="n">response</span><span class="p">:</span> <span class="nb">str</span>       <span class="c1"># Agent side of the interaction</span>
+<a id="__codelineno-4-168" name="__codelineno-4-168" href="#__codelineno-4-168"></a>    <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="c1"># Optional policy-correct response for comparison</span>
+<a id="__codelineno-4-169" name="__codelineno-4-169" href="#__codelineno-4-169"></a>
+<a id="__codelineno-4-170" name="__codelineno-4-170" href="#__codelineno-4-170"></a>
+<a id="__codelineno-4-171" name="__codelineno-4-171" href="#__codelineno-4-171"></a><span class="k">class</span><span class="w"> </span><span class="nc">TranscriptResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a id="__codelineno-4-172" name="__codelineno-4-172" href="#__codelineno-4-172"></a>    <span class="n">status</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-4-173" name="__codelineno-4-173" href="#__codelineno-4-173"></a>
+<a id="__codelineno-4-174" name="__codelineno-4-174" href="#__codelineno-4-174"></a>
+<a id="__codelineno-4-175" name="__codelineno-4-175" href="#__codelineno-4-175"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-4-176" name="__codelineno-4-176" href="#__codelineno-4-176"></a><span class="c1"># 4. Transcript ingestion endpoint</span>
+<a id="__codelineno-4-177" name="__codelineno-4-177" href="#__codelineno-4-177"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-4-178" name="__codelineno-4-178" href="#__codelineno-4-178"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/transcripts&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">TranscriptResponse</span><span class="p">)</span>
+<a id="__codelineno-4-179" name="__codelineno-4-179" href="#__codelineno-4-179"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">receive_transcript</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">TranscriptEvent</span><span class="p">):</span>
+<a id="__codelineno-4-180" name="__codelineno-4-180" href="#__codelineno-4-180"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Receive a live transcript event and log it to Prisma for validation.&quot;&quot;&quot;</span>
+<a id="__codelineno-4-181" name="__codelineno-4-181" href="#__codelineno-4-181"></a>    <span class="n">data_logger</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">data_logger</span>
+<a id="__codelineno-4-182" name="__codelineno-4-182" href="#__codelineno-4-182"></a>    <span class="k">if</span> <span class="n">data_logger</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-4-183" name="__codelineno-4-183" href="#__codelineno-4-183"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">503</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Prisma session not active&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-184" name="__codelineno-4-184" href="#__codelineno-4-184"></a>
+<a id="__codelineno-4-185" name="__codelineno-4-185" href="#__codelineno-4-185"></a>    <span class="n">data_logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+<a id="__codelineno-4-186" name="__codelineno-4-186" href="#__codelineno-4-186"></a>        <span class="n">query</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">query</span><span class="p">,</span>
+<a id="__codelineno-4-187" name="__codelineno-4-187" href="#__codelineno-4-187"></a>        <span class="n">response</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">response</span><span class="p">,</span>
+<a id="__codelineno-4-188" name="__codelineno-4-188" href="#__codelineno-4-188"></a>        <span class="n">reference</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span>
+<a id="__codelineno-4-189" name="__codelineno-4-189" href="#__codelineno-4-189"></a>    <span class="p">)</span>
+<a id="__codelineno-4-190" name="__codelineno-4-190" href="#__codelineno-4-190"></a>
+<a id="__codelineno-4-191" name="__codelineno-4-191" href="#__codelineno-4-191"></a>    <span class="k">return</span> <span class="n">TranscriptResponse</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="s2">&quot;logged&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-192" name="__codelineno-4-192" href="#__codelineno-4-192"></a>
+<a id="__codelineno-4-193" name="__codelineno-4-193" href="#__codelineno-4-193"></a>
+<a id="__codelineno-4-194" name="__codelineno-4-194" href="#__codelineno-4-194"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-4-195" name="__codelineno-4-195" href="#__codelineno-4-195"></a><span class="c1"># 5. Health check</span>
+<a id="__codelineno-4-196" name="__codelineno-4-196" href="#__codelineno-4-196"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-4-197" name="__codelineno-4-197" href="#__codelineno-4-197"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/health&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-198" name="__codelineno-4-198" href="#__codelineno-4-198"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">health</span><span class="p">():</span>
+<a id="__codelineno-4-199" name="__codelineno-4-199" href="#__codelineno-4-199"></a>    <span class="n">session</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">session</span>
+<a id="__codelineno-4-200" name="__codelineno-4-200" href="#__codelineno-4-200"></a>    <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-4-201" name="__codelineno-4-201" href="#__codelineno-4-201"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;degraded&quot;</span><span class="p">,</span> <span class="s2">&quot;prisma&quot;</span><span class="p">:</span> <span class="s2">&quot;not initialized&quot;</span><span class="p">}</span>
+<a id="__codelineno-4-202" name="__codelineno-4-202" href="#__codelineno-4-202"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-4-203" name="__codelineno-4-203" href="#__codelineno-4-203"></a>        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;healthy&quot;</span><span class="p">,</span>
+<a id="__codelineno-4-204" name="__codelineno-4-204" href="#__codelineno-4-204"></a>        <span class="s2">&quot;prisma_project_id&quot;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+<a id="__codelineno-4-205" name="__codelineno-4-205" href="#__codelineno-4-205"></a>    <span class="p">}</span>
+</code></pre></div>
+<p>Key points:</p>
+<ul>
+<li><code>prisma_ai.init()</code> creates the project, registers both policy metrics, and configures the OTLP logs pipeline. The <code>enable_logging=True</code> flag activates the DataLogger for manual log ingestion.</li>
+<li><code>session.get_logger()</code> returns the DataLogger. Each <code>data_logger.log()</code> call sends a structured OTLP log record to your Prisma instance for validation against both policy metrics.</li>
+<li>The <code>/transcripts</code> endpoint is a webhook target. Configure your CRM or telephony platform to POST transcript events here as interactions complete.</li>
+<li><code>session.end()</code> on shutdown flushes any pending OTLP log records before the process exits.</li>
+</ul>
+<h2 id="5-test-the-service">5. Test the Service</h2>
+<p>Start the server:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>uvicorn<span class="w"> </span>monitor:app<span class="w"> </span>--host<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="w"> </span><span class="m">8000</span>
+</code></pre></div>
+<p>Send a compliant interaction:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/transcripts<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="s1">    &quot;query&quot;: &quot;I have been waiting three weeks for my refund. What is going on?&quot;,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="s1">    &quot;response&quot;: &quot;I understand your frustration, and I apologize for the delay. Let me pull up your account to check the status of your refund right now. I can see the refund was processed on the 15th — it typically takes 5-10 business days to appear in your account. If it has not arrived by Friday, please call us back and we will escalate this to our finance team.&quot;</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="s1">  }&#39;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;logged&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>Send an interaction with an escalation trigger:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/transcripts<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="s1">    &quot;query&quot;: &quot;This is unacceptable. I want to speak to your supervisor immediately.&quot;,</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="s1">    &quot;response&quot;: &quot;I completely understand your frustration. Let me make sure I have all the details of your concern documented, and I will transfer you to my supervisor right away. Please hold for just a moment.&quot;</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="s1">  }&#39;</span>
+</code></pre></div>
+<p>Send a non-compliant interaction:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/transcripts<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="s1">    &quot;query&quot;: &quot;Will my claim be approved?&quot;,</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="s1">    &quot;response&quot;: &quot;Yes, absolutely. You will definitely get approved and should see the payout within a week.&quot;</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="s1">  }&#39;</span>
+</code></pre></div>
+<p>Behind the scenes, each <code>data_logger.log()</code> call sends an OTLP log record to Prisma. The validation pipeline runs both policy metrics on every interaction:</p>
+<ul>
+<li><strong>response-compliance</strong> catches the guarantee and timeline promise in the third example ("Yes, absolutely" and "definitely get approved" violate the prohibited language policy).</li>
+<li><strong>escalation-procedure</strong> validates that the second example follows the acknowledge-document-transfer sequence correctly.</li>
+</ul>
+<p>Check the health endpoint:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>curl<span class="w"> </span>http://localhost:8000/health
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;healthy&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;prisma_project_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;contact-center-monitoring&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h2 id="6-update-metrics-without-restart">6. Update Metrics Without Restart</h2>
+<p>You can add or change policy metrics on a running service without restarting the process. This is useful for responding to new compliance requirements, adding metrics for a new product line, or tightening criteria after an audit finding.</p>
+<p>Add an admin endpoint to the service:</p>
+<blockquote>
+<p><strong>Note:</strong> In production, protect administrative endpoints with authentication middleware. This example omits auth for brevity.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/admin/update-metrics&quot;</span><span class="p">)</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_metrics</span><span class="p">():</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a data-handling metric without restarting the service.&quot;&quot;&quot;</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">session</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">session</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Prisma session not active&quot;</span><span class="p">}</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    <span class="n">data_handling</span> <span class="o">=</span> <span class="n">Evaluators</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;data-handling&quot;</span><span class="p">,</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>        <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;compliant&quot;</span><span class="p">,</span> <span class="s2">&quot;violation&quot;</span><span class="p">,</span> <span class="s2">&quot;needs_review&quot;</span><span class="p">],</span>
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>        <span class="n">evaluation_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>            <span class="s2">&quot;You are a data handling compliance reviewer for a contact center. &quot;</span>
+<a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>            <span class="s2">&quot;Your task is to determine whether an agent&#39;s response properly &quot;</span>
+<a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>            <span class="s2">&quot;handles sensitive customer data.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>            <span class="s2">&quot;The policies require:</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>            <span class="s2">&quot;1. Never read back full account numbers, SSNs, or credit card numbers.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>            <span class="s2">&quot;2. Verify identity through approved methods only (last 4 digits, &quot;</span>
+<a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>            <span class="s2">&quot;security questions).</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>            <span class="s2">&quot;3. Never share one customer&#39;s information with another caller.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>            <span class="s2">&quot;4. Do not store or repeat sensitive data unnecessarily.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>            <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>            <span class="s2">&quot;- compliant: All data handling policies are followed.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>            <span class="s2">&quot;- violation: The agent exposed, repeated, or mishandled &quot;</span>
+<a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>            <span class="s2">&quot;sensitive data.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>            <span class="s2">&quot;- needs_review: The interaction involves sensitive data but &quot;</span>
+<a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>            <span class="s2">&quot;compliance cannot be confidently determined.&quot;</span>
+<a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>        <span class="p">),</span>
+<a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>        <span class="n">evaluation_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>            <span class="s2">&quot;Review the following interaction for data handling compliance.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>            <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>            <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>            <span class="s2">&quot;Classify the response as one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>            <span class="s2">&quot;Identify any sensitive data present and assess whether it was &quot;</span>
+<a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a>            <span class="s2">&quot;handled correctly.&quot;</span>
+<a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a>        <span class="p">),</span>
+<a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>        <span class="n">reeval_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a>            <span class="s2">&quot;You are a senior data handling compliance reviewer performing &quot;</span>
+<a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a>            <span class="s2">&quot;a second-pass review. Apply data handling policies strictly.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a>            <span class="s2">&quot;Even partial exposure of sensitive data (e.g., reading back 6 &quot;</span>
+<a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a>            <span class="s2">&quot;of 16 credit card digits) is a violation.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a>            <span class="s2">&quot;You have access to decisions from previous reviews to calibrate &quot;</span>
+<a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>            <span class="s2">&quot;your judgment.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a>            <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a>        <span class="p">),</span>
+<a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a>        <span class="n">reeval_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a>            <span class="s2">&quot;Re-evaluate this interaction for data handling compliance using &quot;</span>
+<a id="__codelineno-12-47" name="__codelineno-12-47" href="#__codelineno-12-47"></a>            <span class="s2">&quot;context from previous data handling reviews.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-48" name="__codelineno-12-48" href="#__codelineno-12-48"></a>            <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-49" name="__codelineno-12-49" href="#__codelineno-12-49"></a>            <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-50" name="__codelineno-12-50" href="#__codelineno-12-50"></a>            <span class="s2">&quot;Relevant past data handling review decisions:</span><span class="se">\n</span><span class="si">{memories}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-12-51" name="__codelineno-12-51" href="#__codelineno-12-51"></a>            <span class="s2">&quot;Based on the interaction and review history, provide your final &quot;</span>
+<a id="__codelineno-12-52" name="__codelineno-12-52" href="#__codelineno-12-52"></a>            <span class="s2">&quot;classification.&quot;</span>
+<a id="__codelineno-12-53" name="__codelineno-12-53" href="#__codelineno-12-53"></a>        <span class="p">),</span>
+<a id="__codelineno-12-54" name="__codelineno-12-54" href="#__codelineno-12-54"></a>    <span class="p">)</span>
+<a id="__codelineno-12-55" name="__codelineno-12-55" href="#__codelineno-12-55"></a>
+<a id="__codelineno-12-56" name="__codelineno-12-56" href="#__codelineno-12-56"></a>    <span class="n">session</span><span class="o">.</span><span class="n">update_evaluation_config</span><span class="p">(</span>
+<a id="__codelineno-12-57" name="__codelineno-12-57" href="#__codelineno-12-57"></a>        <span class="n">EvaluationConfig</span><span class="p">(</span>
+<a id="__codelineno-12-58" name="__codelineno-12-58" href="#__codelineno-12-58"></a>            <span class="n">evaluators</span><span class="o">=</span><span class="p">[</span>
+<a id="__codelineno-12-59" name="__codelineno-12-59" href="#__codelineno-12-59"></a>                <span class="n">response_compliance</span><span class="p">,</span>
+<a id="__codelineno-12-60" name="__codelineno-12-60" href="#__codelineno-12-60"></a>                <span class="n">escalation_procedure</span><span class="p">,</span>
+<a id="__codelineno-12-61" name="__codelineno-12-61" href="#__codelineno-12-61"></a>                <span class="n">data_handling</span><span class="p">,</span>
+<a id="__codelineno-12-62" name="__codelineno-12-62" href="#__codelineno-12-62"></a>            <span class="p">],</span>
+<a id="__codelineno-12-63" name="__codelineno-12-63" href="#__codelineno-12-63"></a>        <span class="p">)</span>
+<a id="__codelineno-12-64" name="__codelineno-12-64" href="#__codelineno-12-64"></a>    <span class="p">)</span>
+<a id="__codelineno-12-65" name="__codelineno-12-65" href="#__codelineno-12-65"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;policy metrics updated, data-handling metric added&quot;</span><span class="p">}</span>
+</code></pre></div>
+<p>After calling this endpoint, all new interactions are validated against three policy metrics instead of two. Interactions that were already logged continue to use the configuration that was active when they arrived.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>http://localhost:8000/admin/update-metrics
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="p">{</span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;policy metrics updated, data-handling metric added&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h2 id="7-monitoring-and-alerting-patterns">7. Monitoring and Alerting Patterns</h2>
+<p>Once the service is running and interactions are flowing through Prisma, set up monitoring to detect compliance trends and alert on violations.</p>
+<h3 id="viewing-results-in-prisma">Viewing results in Prisma</h3>
+<p>Open your Prisma instance and navigate to the <code>contact-center-monitoring</code> project. The project overview shows:</p>
+<ul>
+<li><strong>Total validations</strong> -- how many interactions have been validated</li>
+<li><strong>Per-metric pass rates</strong> -- the percentage of interactions classified as compliant for each policy metric</li>
+<li><strong>HITL requests</strong> -- interactions routed to human review after ambiguous validation results</li>
+<li><strong>Violation breakdown</strong> -- which policy metrics are producing the most non-compliant classifications</li>
+</ul>
+<p>Click on a specific policy metric to see per-interaction detail: the customer message, the agent response, the classification, and the validator's reasoning.</p>
+<h3 id="alerting-on-violation-rates">Alerting on violation rates</h3>
+<p>Use the Prisma REST API or analytics integration layer to build alerting on top of your validation data. A typical pattern is a scheduled check that queries violation rates and triggers alerts when compliance drops below a threshold.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="sd">&quot;&quot;&quot;Compliance alerting — run on a schedule (e.g., every 15 minutes).&quot;&quot;&quot;</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="n">PRISMA_API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PRISMA_API_KEY&quot;</span><span class="p">]</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="n">PRISMA_BASE_URL</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;PRISMA_BASE_URL&quot;</span><span class="p">]</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="n">ALERT_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.90</span>  <span class="c1"># Alert if compliance drops below 90%</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="k">def</span><span class="w"> </span><span class="nf">check_compliance_rates</span><span class="p">():</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Query Prisma for recent validation results and alert on violations.&quot;&quot;&quot;</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>    <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">PRISMA_BASE_URL</span><span class="si">}</span><span class="s2">/api/v1/projects/contact-center-monitoring/metrics&quot;</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>    <span class="k">with</span> <span class="n">httpx</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>        <span class="n">resp</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>            <span class="n">url</span><span class="p">,</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>            <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;x-api-key&quot;</span><span class="p">:</span> <span class="n">PRISMA_API_KEY</span><span class="p">},</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;window&quot;</span><span class="p">:</span> <span class="s2">&quot;1h&quot;</span><span class="p">},</span>  <span class="c1"># Last hour of validations</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>        <span class="p">)</span>
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>        <span class="n">resp</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>        <span class="n">metrics</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>    <span class="k">for</span> <span class="n">metric_name</span><span class="p">,</span> <span class="n">metric_data</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a>        <span class="n">compliance_rate</span> <span class="o">=</span> <span class="n">metric_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compliance_rate&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a>        <span class="n">violation_count</span> <span class="o">=</span> <span class="n">metric_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;violation_count&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a>
+<a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a>        <span class="k">if</span> <span class="n">compliance_rate</span> <span class="o">&lt;</span> <span class="n">ALERT_THRESHOLD</span><span class="p">:</span>
+<a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a>            <span class="n">send_alert</span><span class="p">(</span>
+<a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a>                <span class="n">metric</span><span class="o">=</span><span class="n">metric_name</span><span class="p">,</span>
+<a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a>                <span class="n">compliance_rate</span><span class="o">=</span><span class="n">compliance_rate</span><span class="p">,</span>
+<a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a>                <span class="n">violation_count</span><span class="o">=</span><span class="n">violation_count</span><span class="p">,</span>
+<a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a>            <span class="p">)</span>
+<a id="__codelineno-15-34" name="__codelineno-15-34" href="#__codelineno-15-34"></a>
+<a id="__codelineno-15-35" name="__codelineno-15-35" href="#__codelineno-15-35"></a>
+<a id="__codelineno-15-36" name="__codelineno-15-36" href="#__codelineno-15-36"></a><span class="k">def</span><span class="w"> </span><span class="nf">send_alert</span><span class="p">(</span><span class="n">metric</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">compliance_rate</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">violation_count</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<a id="__codelineno-15-37" name="__codelineno-15-37" href="#__codelineno-15-37"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Send an alert to your monitoring system.&quot;&quot;&quot;</span>
+<a id="__codelineno-15-38" name="__codelineno-15-38" href="#__codelineno-15-38"></a>    <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+<a id="__codelineno-15-39" name="__codelineno-15-39" href="#__codelineno-15-39"></a>        <span class="sa">f</span><span class="s2">&quot;COMPLIANCE ALERT: </span><span class="si">{</span><span class="n">metric</span><span class="si">}</span><span class="s2"> compliance rate dropped to &quot;</span>
+<a id="__codelineno-15-40" name="__codelineno-15-40" href="#__codelineno-15-40"></a>        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">compliance_rate</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">violation_count</span><span class="si">}</span><span class="s2"> violations in last hour)&quot;</span>
+<a id="__codelineno-15-41" name="__codelineno-15-41" href="#__codelineno-15-41"></a>    <span class="p">)</span>
+<a id="__codelineno-15-42" name="__codelineno-15-42" href="#__codelineno-15-42"></a>    <span class="c1"># Route to your alerting system: Slack, PagerDuty, email, etc.</span>
+<a id="__codelineno-15-43" name="__codelineno-15-43" href="#__codelineno-15-43"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+<a id="__codelineno-15-44" name="__codelineno-15-44" href="#__codelineno-15-44"></a>
+<a id="__codelineno-15-45" name="__codelineno-15-45" href="#__codelineno-15-45"></a>
+<a id="__codelineno-15-46" name="__codelineno-15-46" href="#__codelineno-15-46"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<a id="__codelineno-15-47" name="__codelineno-15-47" href="#__codelineno-15-47"></a>    <span class="n">check_compliance_rates</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="key-metrics-to-track">Key metrics to track</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>What it tells you</th>
+<th>Alert threshold (example)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>response-compliance</code> compliance rate</td>
+<td>Percentage of interactions that pass communication policy validation</td>
+<td>Alert if &lt; 90% over a 1-hour window</td>
+</tr>
+<tr>
+<td><code>escalation-procedure</code> violation rate</td>
+<td>How often agents fail to follow the escalation process</td>
+<td>Alert if &gt; 5% of escalation-trigger interactions are violations</td>
+</tr>
+<tr>
+<td>Ambiguous / needs_review rate</td>
+<td>How often the validator cannot make a confident classification</td>
+<td>Investigate if &gt; 15% -- your metric prompts may need tightening</td>
+</tr>
+<tr>
+<td>Human review queue depth</td>
+<td>How many interactions are waiting for human review</td>
+<td>Alert if queue exceeds a time-based SLA (e.g., &gt; 50 pending for &gt; 2 hours)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="complete-example">Complete Example</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="sd">&quot;&quot;&quot;Real-time policy monitoring service for contact center interactions.&quot;&quot;&quot;</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">asynccontextmanager</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="kn">import</span><span class="w"> </span><span class="nn">prisma_ai</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="kn">from</span><span class="w"> </span><span class="nn">prisma_ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">EvaluationConfig</span><span class="p">,</span> <span class="n">Evaluators</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;policy-monitor&quot;</span><span class="p">)</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="c1"># 1. Policy metric definitions</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="n">response_compliance</span> <span class="o">=</span> <span class="n">Evaluators</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;response-compliance&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>    <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;compliant&quot;</span><span class="p">,</span> <span class="s2">&quot;non_compliant&quot;</span><span class="p">,</span> <span class="s2">&quot;needs_review&quot;</span><span class="p">],</span>
+<a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a>    <span class="n">evaluation_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>        <span class="s2">&quot;You are a contact center compliance reviewer. Your task is to &quot;</span>
+<a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a>        <span class="s2">&quot;determine whether an agent&#39;s response follows company communication &quot;</span>
+<a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>        <span class="s2">&quot;policies.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a>        <span class="s2">&quot;The policies require:</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>        <span class="s2">&quot;1. PROFESSIONAL TONE: The agent is courteous, empathetic, and avoids &quot;</span>
+<a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a>        <span class="s2">&quot;dismissive or confrontational language.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a>        <span class="s2">&quot;2. ACCURATE INFORMATION: The agent provides correct information about &quot;</span>
+<a id="__codelineno-16-28" name="__codelineno-16-28" href="#__codelineno-16-28"></a>        <span class="s2">&quot;products, services, and procedures. No guessing or speculation.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a>        <span class="s2">&quot;3. REQUIRED DISCLOSURES: When discussing pricing, contracts, or policy &quot;</span>
+<a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a>        <span class="s2">&quot;changes, the agent includes all required disclaimers.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-31" name="__codelineno-16-31" href="#__codelineno-16-31"></a>        <span class="s2">&quot;4. PROHIBITED LANGUAGE: The agent does not make guarantees, promises &quot;</span>
+<a id="__codelineno-16-32" name="__codelineno-16-32" href="#__codelineno-16-32"></a>        <span class="s2">&quot;about timelines without verification, or statements that could create &quot;</span>
+<a id="__codelineno-16-33" name="__codelineno-16-33" href="#__codelineno-16-33"></a>        <span class="s2">&quot;legal liability.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-34" name="__codelineno-16-34" href="#__codelineno-16-34"></a>        <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-35" name="__codelineno-16-35" href="#__codelineno-16-35"></a>        <span class="s2">&quot;- compliant: All policies are followed.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-36" name="__codelineno-16-36" href="#__codelineno-16-36"></a>        <span class="s2">&quot;- non_compliant: One or more policies are clearly violated.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-37" name="__codelineno-16-37" href="#__codelineno-16-37"></a>        <span class="s2">&quot;- needs_review: The response is in a gray area where compliance &quot;</span>
+<a id="__codelineno-16-38" name="__codelineno-16-38" href="#__codelineno-16-38"></a>        <span class="s2">&quot;cannot be confidently determined without additional context.&quot;</span>
+<a id="__codelineno-16-39" name="__codelineno-16-39" href="#__codelineno-16-39"></a>    <span class="p">),</span>
+<a id="__codelineno-16-40" name="__codelineno-16-40" href="#__codelineno-16-40"></a>    <span class="n">evaluation_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-16-41" name="__codelineno-16-41" href="#__codelineno-16-41"></a>        <span class="s2">&quot;Review the following contact center interaction for policy compliance.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-42" name="__codelineno-16-42" href="#__codelineno-16-42"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-43" name="__codelineno-16-43" href="#__codelineno-16-43"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-44" name="__codelineno-16-44" href="#__codelineno-16-44"></a>        <span class="s2">&quot;Classify the response as one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-45" name="__codelineno-16-45" href="#__codelineno-16-45"></a>        <span class="s2">&quot;For each policy (tone, accuracy, disclosures, prohibited language), &quot;</span>
+<a id="__codelineno-16-46" name="__codelineno-16-46" href="#__codelineno-16-46"></a>        <span class="s2">&quot;state whether it was followed or violated, then provide your classification.&quot;</span>
+<a id="__codelineno-16-47" name="__codelineno-16-47" href="#__codelineno-16-47"></a>    <span class="p">),</span>
+<a id="__codelineno-16-48" name="__codelineno-16-48" href="#__codelineno-16-48"></a>    <span class="n">reeval_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-16-49" name="__codelineno-16-49" href="#__codelineno-16-49"></a>        <span class="s2">&quot;You are a senior contact center compliance reviewer performing a &quot;</span>
+<a id="__codelineno-16-50" name="__codelineno-16-50" href="#__codelineno-16-50"></a>        <span class="s2">&quot;second-pass review. Apply the communication policies strictly.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-51" name="__codelineno-16-51" href="#__codelineno-16-51"></a>        <span class="s2">&quot;Pay particular attention to implicit guarantees -- statements that &quot;</span>
+<a id="__codelineno-16-52" name="__codelineno-16-52" href="#__codelineno-16-52"></a>        <span class="s2">&quot;stop short of a direct promise but still set customer expectations &quot;</span>
+<a id="__codelineno-16-53" name="__codelineno-16-53" href="#__codelineno-16-53"></a>        <span class="s2">&quot;beyond what the agent can deliver. These are the most common &quot;</span>
+<a id="__codelineno-16-54" name="__codelineno-16-54" href="#__codelineno-16-54"></a>        <span class="s2">&quot;borderline violations.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-55" name="__codelineno-16-55" href="#__codelineno-16-55"></a>        <span class="s2">&quot;You have access to decisions from previous compliance reviews to &quot;</span>
+<a id="__codelineno-16-56" name="__codelineno-16-56" href="#__codelineno-16-56"></a>        <span class="s2">&quot;calibrate your judgment.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-57" name="__codelineno-16-57" href="#__codelineno-16-57"></a>        <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-58" name="__codelineno-16-58" href="#__codelineno-16-58"></a>    <span class="p">),</span>
+<a id="__codelineno-16-59" name="__codelineno-16-59" href="#__codelineno-16-59"></a>    <span class="n">reeval_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-16-60" name="__codelineno-16-60" href="#__codelineno-16-60"></a>        <span class="s2">&quot;Re-evaluate this contact center interaction for policy compliance &quot;</span>
+<a id="__codelineno-16-61" name="__codelineno-16-61" href="#__codelineno-16-61"></a>        <span class="s2">&quot;using context from previous compliance reviews.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-62" name="__codelineno-16-62" href="#__codelineno-16-62"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-63" name="__codelineno-16-63" href="#__codelineno-16-63"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-64" name="__codelineno-16-64" href="#__codelineno-16-64"></a>        <span class="s2">&quot;Relevant past compliance review decisions:</span><span class="se">\n</span><span class="si">{memories}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-65" name="__codelineno-16-65" href="#__codelineno-16-65"></a>        <span class="s2">&quot;Based on the interaction and review history, provide your final &quot;</span>
+<a id="__codelineno-16-66" name="__codelineno-16-66" href="#__codelineno-16-66"></a>        <span class="s2">&quot;classification with specific policy findings.&quot;</span>
+<a id="__codelineno-16-67" name="__codelineno-16-67" href="#__codelineno-16-67"></a>    <span class="p">),</span>
+<a id="__codelineno-16-68" name="__codelineno-16-68" href="#__codelineno-16-68"></a><span class="p">)</span>
+<a id="__codelineno-16-69" name="__codelineno-16-69" href="#__codelineno-16-69"></a>
+<a id="__codelineno-16-70" name="__codelineno-16-70" href="#__codelineno-16-70"></a><span class="n">escalation_procedure</span> <span class="o">=</span> <span class="n">Evaluators</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span>
+<a id="__codelineno-16-71" name="__codelineno-16-71" href="#__codelineno-16-71"></a>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;escalation-procedure&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-72" name="__codelineno-16-72" href="#__codelineno-16-72"></a>    <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;procedure_followed&quot;</span><span class="p">,</span> <span class="s2">&quot;procedure_violated&quot;</span><span class="p">,</span> <span class="s2">&quot;not_applicable&quot;</span><span class="p">],</span>
+<a id="__codelineno-16-73" name="__codelineno-16-73" href="#__codelineno-16-73"></a>    <span class="n">evaluation_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-16-74" name="__codelineno-16-74" href="#__codelineno-16-74"></a>        <span class="s2">&quot;You are an escalation process reviewer for a contact center. Your &quot;</span>
+<a id="__codelineno-16-75" name="__codelineno-16-75" href="#__codelineno-16-75"></a>        <span class="s2">&quot;task is to determine whether an agent followed the correct escalation &quot;</span>
+<a id="__codelineno-16-76" name="__codelineno-16-76" href="#__codelineno-16-76"></a>        <span class="s2">&quot;procedure when an escalation trigger was present.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-77" name="__codelineno-16-77" href="#__codelineno-16-77"></a>        <span class="s2">&quot;Escalation triggers include:</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-78" name="__codelineno-16-78" href="#__codelineno-16-78"></a>        <span class="s2">&quot;- Customer explicitly requests a supervisor or manager</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-79" name="__codelineno-16-79" href="#__codelineno-16-79"></a>        <span class="s2">&quot;- Customer threatens legal action or mentions an attorney</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-80" name="__codelineno-16-80" href="#__codelineno-16-80"></a>        <span class="s2">&quot;- Customer reports a safety concern or physical harm</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-81" name="__codelineno-16-81" href="#__codelineno-16-81"></a>        <span class="s2">&quot;- Customer expresses intent to contact media or regulators</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-82" name="__codelineno-16-82" href="#__codelineno-16-82"></a>        <span class="s2">&quot;When a trigger is present, the required procedure is:</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-83" name="__codelineno-16-83" href="#__codelineno-16-83"></a>        <span class="s2">&quot;1. ACKNOWLEDGE: The agent acknowledges the customer&#39;s concern &quot;</span>
+<a id="__codelineno-16-84" name="__codelineno-16-84" href="#__codelineno-16-84"></a>        <span class="s2">&quot;without being dismissive.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-85" name="__codelineno-16-85" href="#__codelineno-16-85"></a>        <span class="s2">&quot;2. DOCUMENT: The agent confirms the details of the situation.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-86" name="__codelineno-16-86" href="#__codelineno-16-86"></a>        <span class="s2">&quot;3. TRANSFER: The agent initiates a transfer to the appropriate &quot;</span>
+<a id="__codelineno-16-87" name="__codelineno-16-87" href="#__codelineno-16-87"></a>        <span class="s2">&quot;escalation path (supervisor, legal, safety team) without delay.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-88" name="__codelineno-16-88" href="#__codelineno-16-88"></a>        <span class="s2">&quot;If no escalation trigger is present, classify as not_applicable.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-89" name="__codelineno-16-89" href="#__codelineno-16-89"></a>        <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-90" name="__codelineno-16-90" href="#__codelineno-16-90"></a>        <span class="s2">&quot;- procedure_followed: An escalation trigger was present and the &quot;</span>
+<a id="__codelineno-16-91" name="__codelineno-16-91" href="#__codelineno-16-91"></a>        <span class="s2">&quot;agent followed all three steps.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-92" name="__codelineno-16-92" href="#__codelineno-16-92"></a>        <span class="s2">&quot;- procedure_violated: An escalation trigger was present but the &quot;</span>
+<a id="__codelineno-16-93" name="__codelineno-16-93" href="#__codelineno-16-93"></a>        <span class="s2">&quot;agent skipped one or more steps, or attempted to resolve the issue &quot;</span>
+<a id="__codelineno-16-94" name="__codelineno-16-94" href="#__codelineno-16-94"></a>        <span class="s2">&quot;without escalating.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-95" name="__codelineno-16-95" href="#__codelineno-16-95"></a>        <span class="s2">&quot;- not_applicable: No escalation trigger was present in the interaction.&quot;</span>
+<a id="__codelineno-16-96" name="__codelineno-16-96" href="#__codelineno-16-96"></a>    <span class="p">),</span>
+<a id="__codelineno-16-97" name="__codelineno-16-97" href="#__codelineno-16-97"></a>    <span class="n">evaluation_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-16-98" name="__codelineno-16-98" href="#__codelineno-16-98"></a>        <span class="s2">&quot;Review the following contact center interaction for escalation &quot;</span>
+<a id="__codelineno-16-99" name="__codelineno-16-99" href="#__codelineno-16-99"></a>        <span class="s2">&quot;procedure compliance.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-100" name="__codelineno-16-100" href="#__codelineno-16-100"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-101" name="__codelineno-16-101" href="#__codelineno-16-101"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-102" name="__codelineno-16-102" href="#__codelineno-16-102"></a>        <span class="s2">&quot;Classify the response as one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-103" name="__codelineno-16-103" href="#__codelineno-16-103"></a>        <span class="s2">&quot;First determine whether an escalation trigger is present. If so, &quot;</span>
+<a id="__codelineno-16-104" name="__codelineno-16-104" href="#__codelineno-16-104"></a>        <span class="s2">&quot;assess each step (acknowledge, document, transfer). Then provide &quot;</span>
+<a id="__codelineno-16-105" name="__codelineno-16-105" href="#__codelineno-16-105"></a>        <span class="s2">&quot;your classification.&quot;</span>
+<a id="__codelineno-16-106" name="__codelineno-16-106" href="#__codelineno-16-106"></a>    <span class="p">),</span>
+<a id="__codelineno-16-107" name="__codelineno-16-107" href="#__codelineno-16-107"></a>    <span class="n">reeval_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-16-108" name="__codelineno-16-108" href="#__codelineno-16-108"></a>        <span class="s2">&quot;You are a senior escalation process reviewer performing a &quot;</span>
+<a id="__codelineno-16-109" name="__codelineno-16-109" href="#__codelineno-16-109"></a>        <span class="s2">&quot;second-pass review. Apply the escalation procedure strictly.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-110" name="__codelineno-16-110" href="#__codelineno-16-110"></a>        <span class="s2">&quot;The most critical violation is an agent who attempts to de-escalate &quot;</span>
+<a id="__codelineno-16-111" name="__codelineno-16-111" href="#__codelineno-16-111"></a>        <span class="s2">&quot;or resolve the issue themselves when a transfer is required. Even &quot;</span>
+<a id="__codelineno-16-112" name="__codelineno-16-112" href="#__codelineno-16-112"></a>        <span class="s2">&quot;well-intentioned attempts to help the customer directly are procedure &quot;</span>
+<a id="__codelineno-16-113" name="__codelineno-16-113" href="#__codelineno-16-113"></a>        <span class="s2">&quot;violations when a trigger is present.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-114" name="__codelineno-16-114" href="#__codelineno-16-114"></a>        <span class="s2">&quot;You have access to decisions from previous escalation reviews to &quot;</span>
+<a id="__codelineno-16-115" name="__codelineno-16-115" href="#__codelineno-16-115"></a>        <span class="s2">&quot;calibrate your judgment.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-116" name="__codelineno-16-116" href="#__codelineno-16-116"></a>        <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-117" name="__codelineno-16-117" href="#__codelineno-16-117"></a>    <span class="p">),</span>
+<a id="__codelineno-16-118" name="__codelineno-16-118" href="#__codelineno-16-118"></a>    <span class="n">reeval_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-16-119" name="__codelineno-16-119" href="#__codelineno-16-119"></a>        <span class="s2">&quot;Re-evaluate this contact center interaction for escalation procedure &quot;</span>
+<a id="__codelineno-16-120" name="__codelineno-16-120" href="#__codelineno-16-120"></a>        <span class="s2">&quot;compliance using context from previous escalation reviews.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-121" name="__codelineno-16-121" href="#__codelineno-16-121"></a>        <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-122" name="__codelineno-16-122" href="#__codelineno-16-122"></a>        <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-123" name="__codelineno-16-123" href="#__codelineno-16-123"></a>        <span class="s2">&quot;Relevant past escalation review decisions:</span><span class="se">\n</span><span class="si">{memories}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-124" name="__codelineno-16-124" href="#__codelineno-16-124"></a>        <span class="s2">&quot;Based on the interaction and review history, provide your final &quot;</span>
+<a id="__codelineno-16-125" name="__codelineno-16-125" href="#__codelineno-16-125"></a>        <span class="s2">&quot;classification. Identify the specific escalation trigger (if any) &quot;</span>
+<a id="__codelineno-16-126" name="__codelineno-16-126" href="#__codelineno-16-126"></a>        <span class="s2">&quot;and assess each procedure step.&quot;</span>
+<a id="__codelineno-16-127" name="__codelineno-16-127" href="#__codelineno-16-127"></a>    <span class="p">),</span>
+<a id="__codelineno-16-128" name="__codelineno-16-128" href="#__codelineno-16-128"></a><span class="p">)</span>
+<a id="__codelineno-16-129" name="__codelineno-16-129" href="#__codelineno-16-129"></a>
+<a id="__codelineno-16-130" name="__codelineno-16-130" href="#__codelineno-16-130"></a>
+<a id="__codelineno-16-131" name="__codelineno-16-131" href="#__codelineno-16-131"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-16-132" name="__codelineno-16-132" href="#__codelineno-16-132"></a><span class="c1"># 2. FastAPI lifespan — Prisma init and shutdown</span>
+<a id="__codelineno-16-133" name="__codelineno-16-133" href="#__codelineno-16-133"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-16-134" name="__codelineno-16-134" href="#__codelineno-16-134"></a><span class="nd">@asynccontextmanager</span>
+<a id="__codelineno-16-135" name="__codelineno-16-135" href="#__codelineno-16-135"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+<a id="__codelineno-16-136" name="__codelineno-16-136" href="#__codelineno-16-136"></a>    <span class="n">session</span> <span class="o">=</span> <span class="n">prisma_ai</span><span class="o">.</span><span class="n">init</span><span class="p">(</span>
+<a id="__codelineno-16-137" name="__codelineno-16-137" href="#__codelineno-16-137"></a>        <span class="n">project_name</span><span class="o">=</span><span class="s2">&quot;contact-center-monitoring&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-138" name="__codelineno-16-138" href="#__codelineno-16-138"></a>        <span class="n">evaluators</span><span class="o">=</span><span class="p">[</span><span class="n">response_compliance</span><span class="p">,</span> <span class="n">escalation_procedure</span><span class="p">],</span>
+<a id="__codelineno-16-139" name="__codelineno-16-139" href="#__codelineno-16-139"></a>        <span class="n">enable_logging</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-16-140" name="__codelineno-16-140" href="#__codelineno-16-140"></a>    <span class="p">)</span>
+<a id="__codelineno-16-141" name="__codelineno-16-141" href="#__codelineno-16-141"></a>    <span class="n">data_logger</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+<a id="__codelineno-16-142" name="__codelineno-16-142" href="#__codelineno-16-142"></a>    <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
+<a id="__codelineno-16-143" name="__codelineno-16-143" href="#__codelineno-16-143"></a>    <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">data_logger</span> <span class="o">=</span> <span class="n">data_logger</span>
+<a id="__codelineno-16-144" name="__codelineno-16-144" href="#__codelineno-16-144"></a>
+<a id="__codelineno-16-145" name="__codelineno-16-145" href="#__codelineno-16-145"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+<a id="__codelineno-16-146" name="__codelineno-16-146" href="#__codelineno-16-146"></a>        <span class="s2">&quot;Prisma AI initialized — project=</span><span class="si">%s</span><span class="s2">, policy metrics active&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-147" name="__codelineno-16-147" href="#__codelineno-16-147"></a>        <span class="n">session</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+<a id="__codelineno-16-148" name="__codelineno-16-148" href="#__codelineno-16-148"></a>    <span class="p">)</span>
+<a id="__codelineno-16-149" name="__codelineno-16-149" href="#__codelineno-16-149"></a>
+<a id="__codelineno-16-150" name="__codelineno-16-150" href="#__codelineno-16-150"></a>    <span class="k">yield</span>
+<a id="__codelineno-16-151" name="__codelineno-16-151" href="#__codelineno-16-151"></a>
+<a id="__codelineno-16-152" name="__codelineno-16-152" href="#__codelineno-16-152"></a>    <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+<a id="__codelineno-16-153" name="__codelineno-16-153" href="#__codelineno-16-153"></a>    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Prisma AI session ended, pending logs flushed&quot;</span><span class="p">)</span>
+<a id="__codelineno-16-154" name="__codelineno-16-154" href="#__codelineno-16-154"></a>
+<a id="__codelineno-16-155" name="__codelineno-16-155" href="#__codelineno-16-155"></a>
+<a id="__codelineno-16-156" name="__codelineno-16-156" href="#__codelineno-16-156"></a><span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Policy Monitoring Service&quot;</span><span class="p">,</span> <span class="n">lifespan</span><span class="o">=</span><span class="n">lifespan</span><span class="p">)</span>
+<a id="__codelineno-16-157" name="__codelineno-16-157" href="#__codelineno-16-157"></a>
+<a id="__codelineno-16-158" name="__codelineno-16-158" href="#__codelineno-16-158"></a>
+<a id="__codelineno-16-159" name="__codelineno-16-159" href="#__codelineno-16-159"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-16-160" name="__codelineno-16-160" href="#__codelineno-16-160"></a><span class="c1"># 3. Request/response models</span>
+<a id="__codelineno-16-161" name="__codelineno-16-161" href="#__codelineno-16-161"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-16-162" name="__codelineno-16-162" href="#__codelineno-16-162"></a><span class="k">class</span><span class="w"> </span><span class="nc">TranscriptEvent</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a id="__codelineno-16-163" name="__codelineno-16-163" href="#__codelineno-16-163"></a>    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-16-164" name="__codelineno-16-164" href="#__codelineno-16-164"></a>    <span class="n">response</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-16-165" name="__codelineno-16-165" href="#__codelineno-16-165"></a>    <span class="n">reference</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<a id="__codelineno-16-166" name="__codelineno-16-166" href="#__codelineno-16-166"></a>
+<a id="__codelineno-16-167" name="__codelineno-16-167" href="#__codelineno-16-167"></a>
+<a id="__codelineno-16-168" name="__codelineno-16-168" href="#__codelineno-16-168"></a><span class="k">class</span><span class="w"> </span><span class="nc">TranscriptResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a id="__codelineno-16-169" name="__codelineno-16-169" href="#__codelineno-16-169"></a>    <span class="n">status</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-16-170" name="__codelineno-16-170" href="#__codelineno-16-170"></a>
+<a id="__codelineno-16-171" name="__codelineno-16-171" href="#__codelineno-16-171"></a>
+<a id="__codelineno-16-172" name="__codelineno-16-172" href="#__codelineno-16-172"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-16-173" name="__codelineno-16-173" href="#__codelineno-16-173"></a><span class="c1"># 4. Transcript ingestion endpoint</span>
+<a id="__codelineno-16-174" name="__codelineno-16-174" href="#__codelineno-16-174"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-16-175" name="__codelineno-16-175" href="#__codelineno-16-175"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/transcripts&quot;</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">TranscriptResponse</span><span class="p">)</span>
+<a id="__codelineno-16-176" name="__codelineno-16-176" href="#__codelineno-16-176"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">receive_transcript</span><span class="p">(</span><span class="n">event</span><span class="p">:</span> <span class="n">TranscriptEvent</span><span class="p">):</span>
+<a id="__codelineno-16-177" name="__codelineno-16-177" href="#__codelineno-16-177"></a>    <span class="n">data_logger</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">data_logger</span>
+<a id="__codelineno-16-178" name="__codelineno-16-178" href="#__codelineno-16-178"></a>    <span class="k">if</span> <span class="n">data_logger</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-16-179" name="__codelineno-16-179" href="#__codelineno-16-179"></a>        <span class="k">raise</span> <span class="n">HTTPException</span><span class="p">(</span><span class="n">status_code</span><span class="o">=</span><span class="mi">503</span><span class="p">,</span> <span class="n">detail</span><span class="o">=</span><span class="s2">&quot;Prisma session not active&quot;</span><span class="p">)</span>
+<a id="__codelineno-16-180" name="__codelineno-16-180" href="#__codelineno-16-180"></a>
+<a id="__codelineno-16-181" name="__codelineno-16-181" href="#__codelineno-16-181"></a>    <span class="n">data_logger</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+<a id="__codelineno-16-182" name="__codelineno-16-182" href="#__codelineno-16-182"></a>        <span class="n">query</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">query</span><span class="p">,</span>
+<a id="__codelineno-16-183" name="__codelineno-16-183" href="#__codelineno-16-183"></a>        <span class="n">response</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">response</span><span class="p">,</span>
+<a id="__codelineno-16-184" name="__codelineno-16-184" href="#__codelineno-16-184"></a>        <span class="n">reference</span><span class="o">=</span><span class="n">event</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span>
+<a id="__codelineno-16-185" name="__codelineno-16-185" href="#__codelineno-16-185"></a>    <span class="p">)</span>
+<a id="__codelineno-16-186" name="__codelineno-16-186" href="#__codelineno-16-186"></a>    <span class="k">return</span> <span class="n">TranscriptResponse</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="s2">&quot;logged&quot;</span><span class="p">)</span>
+<a id="__codelineno-16-187" name="__codelineno-16-187" href="#__codelineno-16-187"></a>
+<a id="__codelineno-16-188" name="__codelineno-16-188" href="#__codelineno-16-188"></a>
+<a id="__codelineno-16-189" name="__codelineno-16-189" href="#__codelineno-16-189"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-16-190" name="__codelineno-16-190" href="#__codelineno-16-190"></a><span class="c1"># 5. Health check</span>
+<a id="__codelineno-16-191" name="__codelineno-16-191" href="#__codelineno-16-191"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-16-192" name="__codelineno-16-192" href="#__codelineno-16-192"></a><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/health&quot;</span><span class="p">)</span>
+<a id="__codelineno-16-193" name="__codelineno-16-193" href="#__codelineno-16-193"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">health</span><span class="p">():</span>
+<a id="__codelineno-16-194" name="__codelineno-16-194" href="#__codelineno-16-194"></a>    <span class="n">session</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">session</span>
+<a id="__codelineno-16-195" name="__codelineno-16-195" href="#__codelineno-16-195"></a>    <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-16-196" name="__codelineno-16-196" href="#__codelineno-16-196"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;degraded&quot;</span><span class="p">,</span> <span class="s2">&quot;prisma&quot;</span><span class="p">:</span> <span class="s2">&quot;not initialized&quot;</span><span class="p">}</span>
+<a id="__codelineno-16-197" name="__codelineno-16-197" href="#__codelineno-16-197"></a>    <span class="k">return</span> <span class="p">{</span>
+<a id="__codelineno-16-198" name="__codelineno-16-198" href="#__codelineno-16-198"></a>        <span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;healthy&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-199" name="__codelineno-16-199" href="#__codelineno-16-199"></a>        <span class="s2">&quot;prisma_project_id&quot;</span><span class="p">:</span> <span class="n">session</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
+<a id="__codelineno-16-200" name="__codelineno-16-200" href="#__codelineno-16-200"></a>    <span class="p">}</span>
+<a id="__codelineno-16-201" name="__codelineno-16-201" href="#__codelineno-16-201"></a>
+<a id="__codelineno-16-202" name="__codelineno-16-202" href="#__codelineno-16-202"></a>
+<a id="__codelineno-16-203" name="__codelineno-16-203" href="#__codelineno-16-203"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-16-204" name="__codelineno-16-204" href="#__codelineno-16-204"></a><span class="c1"># 6. Admin: update policy metrics without restart</span>
+<a id="__codelineno-16-205" name="__codelineno-16-205" href="#__codelineno-16-205"></a><span class="c1"># ---------------------------------------------------------------------------</span>
+<a id="__codelineno-16-206" name="__codelineno-16-206" href="#__codelineno-16-206"></a><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/admin/update-metrics&quot;</span><span class="p">)</span>
+<a id="__codelineno-16-207" name="__codelineno-16-207" href="#__codelineno-16-207"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_metrics</span><span class="p">():</span>
+<a id="__codelineno-16-208" name="__codelineno-16-208" href="#__codelineno-16-208"></a>    <span class="n">session</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">session</span>
+<a id="__codelineno-16-209" name="__codelineno-16-209" href="#__codelineno-16-209"></a>    <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-16-210" name="__codelineno-16-210" href="#__codelineno-16-210"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Prisma session not active&quot;</span><span class="p">}</span>
+<a id="__codelineno-16-211" name="__codelineno-16-211" href="#__codelineno-16-211"></a>
+<a id="__codelineno-16-212" name="__codelineno-16-212" href="#__codelineno-16-212"></a>    <span class="n">data_handling</span> <span class="o">=</span> <span class="n">Evaluators</span><span class="o">.</span><span class="n">custom</span><span class="p">(</span>
+<a id="__codelineno-16-213" name="__codelineno-16-213" href="#__codelineno-16-213"></a>        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;data-handling&quot;</span><span class="p">,</span>
+<a id="__codelineno-16-214" name="__codelineno-16-214" href="#__codelineno-16-214"></a>        <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;compliant&quot;</span><span class="p">,</span> <span class="s2">&quot;violation&quot;</span><span class="p">,</span> <span class="s2">&quot;needs_review&quot;</span><span class="p">],</span>
+<a id="__codelineno-16-215" name="__codelineno-16-215" href="#__codelineno-16-215"></a>        <span class="n">evaluation_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-16-216" name="__codelineno-16-216" href="#__codelineno-16-216"></a>            <span class="s2">&quot;You are a data handling compliance reviewer for a contact center. &quot;</span>
+<a id="__codelineno-16-217" name="__codelineno-16-217" href="#__codelineno-16-217"></a>            <span class="s2">&quot;Your task is to determine whether an agent&#39;s response properly &quot;</span>
+<a id="__codelineno-16-218" name="__codelineno-16-218" href="#__codelineno-16-218"></a>            <span class="s2">&quot;handles sensitive customer data.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-219" name="__codelineno-16-219" href="#__codelineno-16-219"></a>            <span class="s2">&quot;The policies require:</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-220" name="__codelineno-16-220" href="#__codelineno-16-220"></a>            <span class="s2">&quot;1. Never read back full account numbers, SSNs, or credit card numbers.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-221" name="__codelineno-16-221" href="#__codelineno-16-221"></a>            <span class="s2">&quot;2. Verify identity through approved methods only (last 4 digits, &quot;</span>
+<a id="__codelineno-16-222" name="__codelineno-16-222" href="#__codelineno-16-222"></a>            <span class="s2">&quot;security questions).</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-223" name="__codelineno-16-223" href="#__codelineno-16-223"></a>            <span class="s2">&quot;3. Never share one customer&#39;s information with another caller.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-224" name="__codelineno-16-224" href="#__codelineno-16-224"></a>            <span class="s2">&quot;4. Do not store or repeat sensitive data unnecessarily.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-225" name="__codelineno-16-225" href="#__codelineno-16-225"></a>            <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-226" name="__codelineno-16-226" href="#__codelineno-16-226"></a>            <span class="s2">&quot;- compliant: All data handling policies are followed.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-227" name="__codelineno-16-227" href="#__codelineno-16-227"></a>            <span class="s2">&quot;- violation: The agent exposed, repeated, or mishandled &quot;</span>
+<a id="__codelineno-16-228" name="__codelineno-16-228" href="#__codelineno-16-228"></a>            <span class="s2">&quot;sensitive data.</span><span class="se">\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-229" name="__codelineno-16-229" href="#__codelineno-16-229"></a>            <span class="s2">&quot;- needs_review: The interaction involves sensitive data but &quot;</span>
+<a id="__codelineno-16-230" name="__codelineno-16-230" href="#__codelineno-16-230"></a>            <span class="s2">&quot;compliance cannot be confidently determined.&quot;</span>
+<a id="__codelineno-16-231" name="__codelineno-16-231" href="#__codelineno-16-231"></a>        <span class="p">),</span>
+<a id="__codelineno-16-232" name="__codelineno-16-232" href="#__codelineno-16-232"></a>        <span class="n">evaluation_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-16-233" name="__codelineno-16-233" href="#__codelineno-16-233"></a>            <span class="s2">&quot;Review the following interaction for data handling compliance.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-234" name="__codelineno-16-234" href="#__codelineno-16-234"></a>            <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-235" name="__codelineno-16-235" href="#__codelineno-16-235"></a>            <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-236" name="__codelineno-16-236" href="#__codelineno-16-236"></a>            <span class="s2">&quot;Classify the response as one of: </span><span class="si">{evaluation_options}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-237" name="__codelineno-16-237" href="#__codelineno-16-237"></a>            <span class="s2">&quot;Identify any sensitive data present and assess whether it was &quot;</span>
+<a id="__codelineno-16-238" name="__codelineno-16-238" href="#__codelineno-16-238"></a>            <span class="s2">&quot;handled correctly.&quot;</span>
+<a id="__codelineno-16-239" name="__codelineno-16-239" href="#__codelineno-16-239"></a>        <span class="p">),</span>
+<a id="__codelineno-16-240" name="__codelineno-16-240" href="#__codelineno-16-240"></a>        <span class="n">reeval_system_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-16-241" name="__codelineno-16-241" href="#__codelineno-16-241"></a>            <span class="s2">&quot;You are a senior data handling compliance reviewer performing &quot;</span>
+<a id="__codelineno-16-242" name="__codelineno-16-242" href="#__codelineno-16-242"></a>            <span class="s2">&quot;a second-pass review. Apply data handling policies strictly.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-243" name="__codelineno-16-243" href="#__codelineno-16-243"></a>            <span class="s2">&quot;Even partial exposure of sensitive data (e.g., reading back 6 &quot;</span>
+<a id="__codelineno-16-244" name="__codelineno-16-244" href="#__codelineno-16-244"></a>            <span class="s2">&quot;of 16 credit card digits) is a violation.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-245" name="__codelineno-16-245" href="#__codelineno-16-245"></a>            <span class="s2">&quot;You have access to decisions from previous reviews to calibrate &quot;</span>
+<a id="__codelineno-16-246" name="__codelineno-16-246" href="#__codelineno-16-246"></a>            <span class="s2">&quot;your judgment.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-247" name="__codelineno-16-247" href="#__codelineno-16-247"></a>            <span class="s2">&quot;Classify the response into one of: </span><span class="si">{evaluation_options}</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-248" name="__codelineno-16-248" href="#__codelineno-16-248"></a>        <span class="p">),</span>
+<a id="__codelineno-16-249" name="__codelineno-16-249" href="#__codelineno-16-249"></a>        <span class="n">reeval_human_prompt</span><span class="o">=</span><span class="p">(</span>
+<a id="__codelineno-16-250" name="__codelineno-16-250" href="#__codelineno-16-250"></a>            <span class="s2">&quot;Re-evaluate this interaction for data handling compliance using &quot;</span>
+<a id="__codelineno-16-251" name="__codelineno-16-251" href="#__codelineno-16-251"></a>            <span class="s2">&quot;context from previous data handling reviews.</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-252" name="__codelineno-16-252" href="#__codelineno-16-252"></a>            <span class="s2">&quot;Customer message:</span><span class="se">\n</span><span class="si">{query}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-253" name="__codelineno-16-253" href="#__codelineno-16-253"></a>            <span class="s2">&quot;Agent response:</span><span class="se">\n</span><span class="si">{response}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-254" name="__codelineno-16-254" href="#__codelineno-16-254"></a>            <span class="s2">&quot;Relevant past data handling review decisions:</span><span class="se">\n</span><span class="si">{memories}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+<a id="__codelineno-16-255" name="__codelineno-16-255" href="#__codelineno-16-255"></a>            <span class="s2">&quot;Based on the interaction and review history, provide your final &quot;</span>
+<a id="__codelineno-16-256" name="__codelineno-16-256" href="#__codelineno-16-256"></a>            <span class="s2">&quot;classification.&quot;</span>
+<a id="__codelineno-16-257" name="__codelineno-16-257" href="#__codelineno-16-257"></a>        <span class="p">),</span>
+<a id="__codelineno-16-258" name="__codelineno-16-258" href="#__codelineno-16-258"></a>    <span class="p">)</span>
+<a id="__codelineno-16-259" name="__codelineno-16-259" href="#__codelineno-16-259"></a>
+<a id="__codelineno-16-260" name="__codelineno-16-260" href="#__codelineno-16-260"></a>    <span class="n">session</span><span class="o">.</span><span class="n">update_evaluation_config</span><span class="p">(</span>
+<a id="__codelineno-16-261" name="__codelineno-16-261" href="#__codelineno-16-261"></a>        <span class="n">EvaluationConfig</span><span class="p">(</span>
+<a id="__codelineno-16-262" name="__codelineno-16-262" href="#__codelineno-16-262"></a>            <span class="n">evaluators</span><span class="o">=</span><span class="p">[</span>
+<a id="__codelineno-16-263" name="__codelineno-16-263" href="#__codelineno-16-263"></a>                <span class="n">response_compliance</span><span class="p">,</span>
+<a id="__codelineno-16-264" name="__codelineno-16-264" href="#__codelineno-16-264"></a>                <span class="n">escalation_procedure</span><span class="p">,</span>
+<a id="__codelineno-16-265" name="__codelineno-16-265" href="#__codelineno-16-265"></a>                <span class="n">data_handling</span><span class="p">,</span>
+<a id="__codelineno-16-266" name="__codelineno-16-266" href="#__codelineno-16-266"></a>            <span class="p">],</span>
+<a id="__codelineno-16-267" name="__codelineno-16-267" href="#__codelineno-16-267"></a>        <span class="p">)</span>
+<a id="__codelineno-16-268" name="__codelineno-16-268" href="#__codelineno-16-268"></a>    <span class="p">)</span>
+<a id="__codelineno-16-269" name="__codelineno-16-269" href="#__codelineno-16-269"></a>    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;policy metrics updated, data-handling metric added&quot;</span><span class="p">}</span>
+</code></pre></div>
+<h3 id="production-considerations">Production considerations</h3>
+<p><strong>Scaling.</strong> The <code>/transcripts</code> endpoint is stateless -- the DataLogger handles batching and delivery of OTLP log records internally. You can run multiple instances of this service behind a load balancer. Each instance initializes its own Prisma session and DataLogger, and all instances write to the same project.</p>
+<p><strong>Error handling.</strong> If <code>data_logger.log()</code> fails (network issue, Prisma instance unavailable), the OTLP SDK retries with exponential backoff. The <code>/transcripts</code> endpoint returns <code>200</code> immediately because logging is asynchronous -- the interaction is queued for delivery, not sent synchronously. If Prisma is down for an extended period, the OTLP batch queue will eventually fill and drop records. Monitor your service logs for OTLP delivery warnings.</p>
+<p><strong>Backpressure.</strong> For high-volume contact centers (thousands of interactions per minute), the OTLP batch processor handles backpressure by batching records and flushing at intervals. If your volume consistently exceeds the batch processor's capacity, increase the batch size and flush interval in the OTLP SDK configuration, or partition interactions across multiple Prisma projects by team or product line.</p>
+<p><strong>Graceful shutdown.</strong> Calling <code>session.end()</code> in the lifespan shutdown handler is important. It signals the OTLP batch processor to flush any pending log records before the process exits. Without this, interactions logged in the final seconds before shutdown could be lost.</p>
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li><a href="../getting-started/">Getting Started</a> -- set up Prisma AI and run your first policy validation</li>
+<li><a href="../policy-based-metrics/">Building Policy-Based Metrics</a> -- learn the 4-prompt pattern for writing effective policy metrics</li>
+<li><a href="../human-review/">Human Review &amp; Evaluation Memory</a> -- make your policy metrics smarter over time with human feedback</li>
+<li><a href="../cicd-policy-compliance/">Policy Compliance in CI/CD</a> -- add policy checks to your deployment pipeline</li>
+</ul>
+<p>Next: add policy checks to your deployment pipeline.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.sections", "content.code.copy", "search.highlight", "search.suggest"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

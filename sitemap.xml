@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://palqee.github.io/prisma-cookbooks/</loc>
+         <lastmod>2026-04-01</lastmod>
+    </url>
+    <url>
+         <loc>https://palqee.github.io/prisma-cookbooks/ai-performance-metrics/</loc>
+         <lastmod>2026-04-01</lastmod>
+    </url>
+    <url>
+         <loc>https://palqee.github.io/prisma-cookbooks/cicd-policy-compliance/</loc>
+         <lastmod>2026-04-01</lastmod>
+    </url>
+    <url>
+         <loc>https://palqee.github.io/prisma-cookbooks/contact-center-agents/</loc>
+         <lastmod>2026-04-01</lastmod>
+    </url>
+    <url>
+         <loc>https://palqee.github.io/prisma-cookbooks/getting-started/</loc>
+         <lastmod>2026-04-01</lastmod>
+    </url>
+    <url>
+         <loc>https://palqee.github.io/prisma-cookbooks/human-review/</loc>
+         <lastmod>2026-04-01</lastmod>
+    </url>
+    <url>
+         <loc>https://palqee.github.io/prisma-cookbooks/policy-based-metrics/</loc>
+         <lastmod>2026-04-01</lastmod>
+    </url>
+    <url>
+         <loc>https://palqee.github.io/prisma-cookbooks/realtime-policy-monitoring/</loc>
+         <lastmod>2026-04-01</lastmod>
+    </url>
+</urlset>
